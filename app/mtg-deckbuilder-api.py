@@ -1,16 +1,8 @@
-from flask import Flask, jsonify
-from flask_sqlalchemy import SQLAlchemy
 from app import app
-from app.models import Card, CardSchema
+from app.routes import routes_blueprint
 
-
-@app.route('/')
-def hello():
-    cards = Card.query.all()
-    cards_schema = CardSchema(many=True)
-    res = cards_schema.dump(cards)
-    return jsonify(res.data)
+app.register_blueprint(routes_blueprint)
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
