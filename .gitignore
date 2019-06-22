@@ -9,3 +9,9 @@
 *.db
 app/app.db
 app/app.db
+mydata.fs.tmp
+mydata.fs.old
+mydata.fs.lock
+mydata.fs.index
+mydata.fs
+app/app.db

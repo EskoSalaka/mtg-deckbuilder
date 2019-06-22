@@ -1,6 +1,6 @@
 from pprint import pprint
 
-from app.models import Card
+from app.models import Card, Set
 from app import db
 
 from mtgtools.MtgDB import MtgDB
@@ -10,22 +10,30 @@ mtg_db = MtgDB('mydata.fs')
 # mtg_db.full_update_from_scryfall(verbose=True)
 sets = mtg_db.root.scryfall_sets
 cards = mtg_db.root.scryfall_cards
-print(cards)
-s = cards.where(id='8532d72a-b2d2-49e1-85ea-35f4c91c6c8d')[0].__dict__
-pprint(s)
 
-print(s.keys())
+print(cards)
+print(sets)
+
+set1 = Set.query.all()[10]
+print(set1.name)
+print(set1.cards)
+
+# for mset in sets:
+#     sargs = dict(mset.__dict__)
+#     del sargs['_cards']
+#     del sargs['_sideboard']
+#     del sargs['creation_date']
+#     sd = Set(**sargs)
+#     db.session.add(sd)
 #
-# print(cards)
-# k = 0
-# for card in cards:
-#     args = card.__dict__
-#     del args['power_num']
-#     del args['toughness_num']
-#     del args['loyalty_num']
+#     for card in mset.cards:
+#         cargs = card.__dict__
+#         del cargs['power_num']
+#         del cargs['toughness_num']
+#         del cargs['loyalty_num']
 #
-#     cd = Card(**args)
-#     db.session.add(cd)
+#         cd = Card(**dict(cargs, set_ref=sd))
+#         db.session.add(cd)
 #     print(k)
 #     k += 1
 #
