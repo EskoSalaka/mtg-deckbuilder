@@ -1,7 +1,4 @@
-from pprint import pprint
-
-from app.models import Card, Set
-from app import db
+from backend.app.models import Set
 
 from mtgtools.MtgDB import MtgDB
 

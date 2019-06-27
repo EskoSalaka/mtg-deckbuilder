@@ -1,7 +1,8 @@
 from flask import Blueprint
 from flask.json import jsonify
+from flask import request
 
-from app.models import CardSchema, Card, SetSchema, Set
+from backend.app.models import CardSchema, Card, SetSchema, Set
 
 routes_blueprint = Blueprint('routes', __name__,)
 
@@ -16,6 +17,7 @@ def all_cards():
 
 @routes_blueprint.route('/api/sets/')
 def all_sets():
+    print(request.args)
     cards = Set.query.all()
     sets_schema = SetSchema(many=True)
     res = sets_schema.dump(cards)

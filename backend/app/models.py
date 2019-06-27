@@ -1,4 +1,4 @@
-from app import db, ma
+from backend.app import db, ma
 
 SCRYFALL_CARD_FIELDS = ('id', 'name', 'layout', 'uri', 'scryfall_uri', 'cmc', 'type_line',
                         'oracle_text', 'mana_cost', 'power', 'toughness', 'loyalty', 'life_modifier',

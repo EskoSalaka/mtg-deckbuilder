@@ -1,5 +1,5 @@
-from app import app
-from app.routes import routes_blueprint
+from backend.app import app
+from backend.app.routes import routes_blueprint
 
 app.register_blueprint(routes_blueprint)
 
