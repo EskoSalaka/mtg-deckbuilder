@@ -6,8 +6,8 @@ export default class CardImageBox extends Component {
     return (
       <Popper
         anchorEl={this.props.line}
-        placement="top-end"
-        id={this.props.cardapi_id}
+        placement="top-start"
+        id="CardPopper"
         open={this.props.isOpen}>
         <img src={this.props.image} alt="" />
       </Popper>

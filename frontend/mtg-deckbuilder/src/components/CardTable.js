@@ -53,19 +53,45 @@ class CardTable extends React.Component {
   }
 
   handleClick = (e, card) => {
+    e.preventDefault()
     // access to e.target here
     console.log('click', card.name)
     console.log(e.screenX, e.screenY)
   }
 
   handleMouseEnter = (e, card) => {
+    e.preventDefault()
+    console.log(e.currentTarget)
+
+    const x = e.clientX
+    const y = e.clientY
+
+    const getBoundingClientRect = () => {
+      return {
+        width: 0,
+        height: 0,
+        top: y,
+        bottom: y,
+        left: x + 20,
+        right: x + 20
+      }
+    }
+
     console.log('entering', card.name)
     this.setState({ cardImageToShow: card.image_uris.small })
     this.setState({ showCardIamge: true })
-    this.setState({ lineEL: e.currentTarget })
+    console.log(getBoundingClientRect())
+    this.setState({
+      lineEL: {
+        clientWidth: 0,
+        clientHeight: 0,
+        getBoundingClientRect
+      }
+    })
   }
 
   handleMouseLeave = (e, card) => {
+    e.preventDefault()
     console.log('leaving', card.name)
     this.setState({ showCardIamge: false })
     this.setState({ lineEL: null })
