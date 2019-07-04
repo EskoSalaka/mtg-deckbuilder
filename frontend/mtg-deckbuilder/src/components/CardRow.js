@@ -1,52 +1,39 @@
 import React from 'react'
-import { withStyles } from '@material-ui/core/styles'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
+import { makeStyles } from '@material-ui/styles'
 
-const StyledTableCell = withStyles(theme => ({
-  head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white
-  },
+const styles = makeStyles({
   body: {
-    fontSize: 14,
+    fontSize: 12,
     userSelect: 'none'
-  }
-}))(TableCell)
+  },
 
-const StyledTableRow = withStyles(theme => ({
-  root: {
+  row: {
     '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.background.default
+      backgroundColor: '#a8a5a8'
     }
   }
-}))(TableRow)
+})
 
-class CardRow extends React.Component {
-  render() {
-    return (
-      <StyledTableRow
-        value={this.props.card}
-        hover
-        onClick={e => this.props.handleClick(e, this.props.card)}
-        onMouseEnter={e => this.props.handleMouseEnter(e, this.props.card)}
-        onMouseLeave={e => this.props.handleMouseLeave(e, this.props.card)}
-        key={this.props.card.api_id}>
-        <StyledTableCell align="left">{this.props.card.name}</StyledTableCell>
-        <StyledTableCell align="left">
-          {this.props.card.type_line}
-        </StyledTableCell>
-        <StyledTableCell align="left">
-          {this.props.card.power}
-          {'/'}
-          {this.props.card.toughness}
-        </StyledTableCell>
-        <StyledTableCell align="left">
-          {this.props.card.mana_cost}
-        </StyledTableCell>
-      </StyledTableRow>
-    )
-  }
+export default function CardRow(props) {
+  const classes = styles()
+  return (
+    <TableRow
+      className={classes.row}
+      value={props.card}
+      hover
+      onClick={e => props.handleClick(e, props.card)}
+      onMouseEnter={e => props.handleMouseEnter(e, props.card)}
+      onMouseLeave={e => props.handleMouseLeave(e, props.card)}>
+      <TableCell className={classes.body}>{props.card.name}</TableCell>
+      <TableCell className={classes.body}>{props.card.type_line}</TableCell>
+      <TableCell className={classes.body}>
+        {props.card.power}
+        {'/'}
+        {props.card.toughness}
+      </TableCell>
+      <TableCell align="left">{props.card.mana_cost}</TableCell>
+    </TableRow>
+  )
 }
-
-export default CardRow

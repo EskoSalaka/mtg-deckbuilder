@@ -1,6 +1,8 @@
 import React from 'react'
 import cardsService from './services/cards'
 import CardTable from './components/CardTable'
+import MTGAppBar from './components/MTGAppBar'
+import Grid from '@material-ui/core/Grid'
 
 class App extends React.Component {
   constructor(props) {
@@ -20,7 +22,16 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <CardTable cards={this.state.cards} />
+        <MTGAppBar />
+
+        <Grid container justify="center" spacing={10}>
+          <Grid key={1} item>
+            <CardTable cards={this.state.cards} />
+          </Grid>
+          <Grid key={2} item>
+            <CardTable cards={this.state.cards} />
+          </Grid>
+        </Grid>
       </div>
     )
   }
