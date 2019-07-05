@@ -1,9 +1,16 @@
 import React from 'react'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
+import ManaCost from './ManaCost'
 import { makeStyles } from '@material-ui/styles'
 
 const styles = makeStyles({
+  manaBody: {
+    fontSize: 18,
+    userSelect: 'none',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap'
+  },
   body: {
     fontSize: 12,
     userSelect: 'none'
@@ -18,6 +25,7 @@ const styles = makeStyles({
 
 export default function CardRow(props) {
   const classes = styles()
+
   return (
     <TableRow
       className={classes.row}
@@ -33,7 +41,9 @@ export default function CardRow(props) {
         {'/'}
         {props.card.toughness}
       </TableCell>
-      <TableCell align="left">{props.card.mana_cost}</TableCell>
+      <TableCell className={classes.manaBody}>
+        <ManaCost manaCost={props.card.mana_cost} />
+      </TableCell>
     </TableRow>
   )
 }

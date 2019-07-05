@@ -9,7 +9,7 @@ routes_blueprint = Blueprint('routes', __name__,)
 
 @routes_blueprint.route('/api/cards/')
 def all_cards():
-    cards = Card.query.all()[0:150]
+    cards = Card.query.all()[0:50]
     cards_schema = CardSchema(many=True)
     res = cards_schema.dump(cards)
     return jsonify(res.data)
