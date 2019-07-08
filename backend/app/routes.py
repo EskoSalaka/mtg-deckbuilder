@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, url_for
 from flask.json import jsonify
 from flask import request
 
@@ -9,18 +9,27 @@ routes_blueprint = Blueprint('routes', __name__,)
 
 @routes_blueprint.route('/api/cards/')
 def all_cards():
-    cards = Card.query.all()[0:50]
+    page = request.args.get('page', 1, type=int)
+    paginator = Card.query.paginate(page, 300, False)
+
+    next_page = url_for('routes.all_cards', page=paginator.next().page, _external=True) if paginator.has_next else ''
+
+    cards = paginator.items
     cards_schema = CardSchema(many=True)
     res = cards_schema.dump(cards)
-    return jsonify(res.data)
+    return jsonify(total_pages=paginator.pages,
+                   total_cards=paginator.total,
+                   has_next=paginator.has_next,
+                   next_page=next_page,
+                   page=paginator.page,
+                   data=res.data)
 
 
 @routes_blueprint.route('/api/sets/')
 def all_sets():
-    print(request.args)
-    cards = Set.query.all()
+    sets = Set.query.all()
     sets_schema = SetSchema(many=True)
-    res = sets_schema.dump(cards)
+    res = sets_schema.dump(sets)
     return jsonify(res.data)
 
 
