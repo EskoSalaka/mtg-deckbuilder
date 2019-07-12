@@ -15,8 +15,8 @@ class App extends React.Component {
   async componentDidMount() {
     console.log('Dm')
     let cards = await cardsService.getAll()
+    cards = cards.slice(20)
     this.setState({ cards })
-    console.log(this.state.cards[0])
   }
 
   render() {

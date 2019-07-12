@@ -12,3 +12,4 @@ ma = Marshmallow(app)
 migrate = Migrate(app, db)
 
 
+from backend.app import routes, models
