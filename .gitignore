@@ -16,3 +16,17 @@ mydata.fs.index
 mydata.fs
 app/app.db
 ~$Time.xlsx
+backend/.env
+.idea/inspectionProfiles/Project_Default.xml
+backend/app/__pycache__/routes.cpython-37.pyc
+backend/app/__pycache__/models.cpython-37.pyc
+backend/app/__pycache__/database.cpython-37.pyc
+backend/app/__pycache__/config.cpython-37.pyc
+backend/app/__pycache__/__init__.cpython-37.pyc
+backend/__pycache__/__init__.cpython-37.pyc
+backend/.env
+backend/.env
+*.pyc
+*.pyc
+backend/migrations/versions/__pycache__/9b4224523a1e_.cpython-37.pyc
+backend/migrations/versions/9b4224523a1e_.py
