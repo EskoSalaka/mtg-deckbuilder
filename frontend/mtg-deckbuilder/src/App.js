@@ -6,7 +6,7 @@ import Grid from "@material-ui/core/Grid"
 import MTGFooter from "./components/MTGFooter"
 import { Container, withStyles, Divider } from "@material-ui/core"
 import { makeStyles } from "@material-ui/styles"
-import CardImageList from "./components/CardImageList"
+import CardImageGrid from "./components/CardImageGrid"
 
 const styles = theme => ({
   root: {
@@ -15,7 +15,7 @@ const styles = theme => ({
   mainContainer: {
     flexDirection: "row",
     display: "flex",
-    maxWidth: "1600px",
+    maxWidth: "1600",
     justifyContent: "center",
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2)
@@ -50,7 +50,7 @@ class App extends React.Component {
       <div className={classes.root}>
         <MTGAppBar />
         <Container className={classes.mainContainer} justify="center">
-          <CardImageList cards={this.state.cards} />
+          <CardImageGrid cards={this.state.cards} />
         </Container>
         <Divider className={classes.divider} />
         <MTGFooter />
