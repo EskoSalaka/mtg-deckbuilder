@@ -1,24 +1,21 @@
-import React from 'react'
-import { withStyles } from '@material-ui/core/styles'
-import TableBody from '@material-ui/core/TableBody'
-import TableHead from '@material-ui/core/TableHead'
-import Table from '@material-ui/core/Table'
-import Paper from '@material-ui/core/Paper'
-import CardRow from './CardRow'
-import HeaderRow from './HeaderRow'
-import CardImageBox from './CardImageBox'
+import React from "react"
+import { withStyles } from "@material-ui/core/styles"
+import TableBody from "@material-ui/core/TableBody"
+import TableHead from "@material-ui/core/TableHead"
+import Table from "@material-ui/core/Table"
+import Paper from "@material-ui/core/Paper"
+import CardRow from "./CardRow"
+import HeaderRow from "./HeaderRow"
+import CardImageBox from "./CardImageBox"
 
 const styles = theme => ({
   root: {
-    maxHeight: 600,
-    maxWidth: 500,
     marginTop: theme.spacing(3),
-    overflowY: 'scroll'
+    overflowY: "scroll",
+    maxHeight: 500
   },
   table: {
-    maxWidth: 500,
-    maxHeight: 600,
-    overflowY: 'scroll'
+    overflowY: "scroll"
   },
   headerCell: {
     head: {
@@ -36,7 +33,7 @@ class CardTable extends React.PureComponent {
     super(props)
 
     this.state = {
-      cardImageToShow: '',
+      cardImageToShow: "",
       showCardIamge: false,
       anchorPosition: null,
       lineEL: null
@@ -67,22 +64,10 @@ class CardTable extends React.PureComponent {
         right: x + 20
       }
     }
-
-    this.setState({ cardImageToShow: card.image_uris.small })
-    this.setState({ showCardIamge: true })
-    this.setState({
-      lineEL: {
-        clientWidth: 0,
-        clientHeight: 0,
-        getBoundingClientRect
-      }
-    })
   }
 
   handleMouseLeave = (e, card) => {
     e.preventDefault()
-    this.setState({ showCardIamge: false })
-    this.setState({ lineEL: null })
   }
 
   render() {

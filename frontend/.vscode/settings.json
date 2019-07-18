@@ -1,0 +1,8 @@
+{
+  "eslint.alwaysShowStatus": true,
+  "eslint.run": "onSave",
+  "prettier.printWidth": 100,
+  "prettier.semi": false,
+  "editor.formatOnSave": true,
+  "editor.snippetSuggestions": "top"
+}

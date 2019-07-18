@@ -30,3 +30,5 @@ backend/.env
 *.pyc
 backend/migrations/versions/__pycache__/9b4224523a1e_.cpython-37.pyc
 backend/migrations/versions/9b4224523a1e_.py
+.idea/inspectionProfiles/Project_Default.xml
+backend/__pycache__/__init__.cpython-37.pyc
