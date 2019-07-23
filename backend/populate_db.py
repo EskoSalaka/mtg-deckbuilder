@@ -1,6 +1,5 @@
 from pprint import pprint
 
-from backend.app.models import Set
 from backend.app.models import Card, Set, Color, SCRYFALL_SET_FIELDS, SCRYFALL_CARD_FIELDS
 from backend.app import db
 

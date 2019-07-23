@@ -1,11 +1,8 @@
 import React from "react"
 import cardsService from "./services/cards"
-import CardTable from "./components/CardTable"
 import MTGAppBar from "./components/MTGAppBar"
-import Grid from "@material-ui/core/Grid"
 import MTGFooter from "./components/MTGFooter"
 import { Container, withStyles, Divider } from "@material-ui/core"
-import { makeStyles } from "@material-ui/styles"
 import CardImageGrid from "./components/CardImageGrid"
 
 const styles = theme => ({

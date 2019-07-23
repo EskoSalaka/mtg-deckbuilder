@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import LazyLoad from "react-lazyload"
 import { Grid, Link } from "@material-ui/core"
 import CardImage from "./CardImage"

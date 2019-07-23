@@ -12,7 +12,7 @@ routes_blueprint = Blueprint('routes', __name__,)
 @routes_blueprint.route('/api/cards/')
 def cards():
     page = request.args.get('page', 1, type=int)
-    paginator = Card.query.paginate(page, 300, False)
+    paginator = Card.query.paginate(12, 300, False)
 
     next_page = url_for('routes.cards', page=paginator.next().page, _external=True) if paginator.has_next else ''
 
@@ -80,23 +80,31 @@ def colors():
     return jsonify(res.data)
 
 
-@routes_blueprint.route('/api/cards/<id>')
+@routes_blueprint.route('/api/cards/<id>/')
 def card(id):
     card = Card.query.filter_by(id=id).first_or_404()
     cards_schema = CardSchema()
     return jsonify(cards_schema.dump(card).data)
 
 
-@routes_blueprint.route('/api/sets/<id>/')
-def set(id):
-    mset = Set.query.filter_by(id=id).first_or_404()
+@routes_blueprint.route('/api/sets/<code>/')
+def set(code):
+    mset = Set.query.filter_by(code=code).first_or_404()
     sets_schema = SetSchema()
     return jsonify(sets_schema.dump(mset).data)
 
+@routes_blueprint.route('/api/sets/<code>/cards/')
+def set_cards(code):
+    mset = Set.query.filter_by(code=code).first_or_404()
+    cards = mset.cards
+    cards_schema = CardSchema(many=True)
+    res = cards_schema.dump(cards)
+    return jsonify(total_items=len(cards),
+                   data=res.data)
 
-@routes_blueprint.route('/api/sets/<id>/booster/')
-def booster(id):
-    mset = Set.query.filter_by(id=id).first_or_404()
+@routes_blueprint.route('/api/sets/<code>/booster/')
+def set_booster(code):
+    mset = Set.query.filter_by(code=code).first_or_404()
     cards = mset.cards
     args = request.args
 
