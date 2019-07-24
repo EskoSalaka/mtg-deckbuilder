@@ -5,12 +5,14 @@ import { Fab } from "@material-ui/core"
 
 const styles = makeStyles(theme => ({
   flipButton: {
-    marginTop: "40px",
-    marginLeft: "150px",
+    marginTop: "25%",
+    marginLeft: "70%",
     position: "absolute",
     opacity: 0.4,
     width: 60,
     height: 50,
+    zIndex: 100001,
+
     "&:hover": {
       opacity: 0.7
     }

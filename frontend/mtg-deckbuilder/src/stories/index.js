@@ -11,11 +11,15 @@ import { MuiThemeProvider } from "@material-ui/core/styles"
 import "./mana.css"
 import CardTitleBox from "../components/CardInfoBox/CardTitleBox"
 import CardInfoBox from "../components/CardInfoBox/CardInfoBox"
+import CardImage from "../components/CardImage"
 
 let cards = mock_cards()
 let c = cards[0]
 
-storiesOf("cardImageGrid", module).add("Full list", () => <CardImageList cards={cards} />)
+storiesOf("Card image grid", module).add("Full list", () => <CardImageList cards={cards} />)
+
+storiesOf("Card image", module).add("Image", () => <CardImage card={c} />)
+
 storiesOf("Card info window", module)
   .add("Full box", () => (
     <MuiThemeProvider muiTheme={baseTheme}>
