@@ -5,11 +5,14 @@ import { makeStyles } from "@material-ui/styles"
 
 const styles = makeStyles({
   container: {
-    padding: 10
+    paddingTop: 8
+  },
+  gridItem: {
+    padding: 2
   }
 })
 
-export default function FunctionName({ card }) {
+export default function CardLegalityGrid({ cardLegalities }) {
   const classes = styles()
   const formats = [
     "standard",
@@ -26,18 +29,11 @@ export default function FunctionName({ card }) {
   ]
 
   return (
-    <Grid
-      container
-      className={classes.container}
-      spacing={1}
-      direction="row"
-      justify="flex-start"
-      alignItems="center"
-    >
+    <Grid container className={classes.container} direction="row" justify="left" alignItems="left">
       {formats.map(function(key) {
         return (
-          <Grid item xs={4}>
-            <LegalityIndicator format={key} legality={card.legalities[key]} />
+          <Grid item xs={4} className={classes.gridItem}>
+            <LegalityIndicator format={key} legality={cardLegalities[key]} />
           </Grid>
         )
       })}

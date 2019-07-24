@@ -13,6 +13,10 @@ const styles = makeStyles({
     backgroundColor: "#5e8847d9",
     width: 90
   },
+  restricted: {
+    backgroundColor: "#cfac00",
+    width: 90
+  },
   content: {
     justifyContent: "center",
     paddingLeft: 5,
@@ -36,7 +40,15 @@ export default function LegalityIndicator({ format, legality }) {
   const classes = styles()
 
   return (
-    <Card className={legality === "legal" ? classes.positive : classes.negative}>
+    <Card
+      className={
+        legality === "legal"
+          ? classes.positive
+          : legality === "restricted"
+          ? classes.restricted
+          : classes.negative
+      }
+    >
       <CardContent className={classes.content}>
         <Typography className={classes.title} variant="h5" component="h2">
           {format.toUpperCase()}

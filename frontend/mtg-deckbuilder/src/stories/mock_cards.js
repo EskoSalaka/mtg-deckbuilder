@@ -1,6 +1,126 @@
 export default function mock_cards () {
     return (
         [
+          {
+            "object": "card",
+            "id": "6ee6cd34-c117-4d7e-97d1-8f8464bfaac8",
+            "oracle_id": "47795817-73e5-4af6-bd1e-d69b193e8e9e",
+            "multiverse_ids": [
+              78694
+            ],
+            "mtgo_id": 21237,
+            "mtgo_foil_id": 21238,
+            "tcgplayer_id": 11938,
+            "name": "Akki Lavarunner // Tok-Tok, Volcano Born",
+            "lang": "en",
+            "released_at": "2004-10-01",
+            "uri": "https://api.scryfall.com/cards/6ee6cd34-c117-4d7e-97d1-8f8464bfaac8",
+            "scryfall_uri": "https://scryfall.com/card/chk/153/akki-lavarunner-tok-tok-volcano-born?utm_source=api",
+            "layout": "flip",
+            "highres_image": true,
+            "image_uris": {
+              "small": "https://img.scryfall.com/cards/small/front/6/e/6ee6cd34-c117-4d7e-97d1-8f8464bfaac8.jpg?1562761096",
+              "normal": "https://img.scryfall.com/cards/normal/front/6/e/6ee6cd34-c117-4d7e-97d1-8f8464bfaac8.jpg?1562761096",
+              "large": "https://img.scryfall.com/cards/large/front/6/e/6ee6cd34-c117-4d7e-97d1-8f8464bfaac8.jpg?1562761096",
+              "png": "https://img.scryfall.com/cards/png/front/6/e/6ee6cd34-c117-4d7e-97d1-8f8464bfaac8.png?1562761096",
+              "art_crop": "https://img.scryfall.com/cards/art_crop/front/6/e/6ee6cd34-c117-4d7e-97d1-8f8464bfaac8.jpg?1562761096",
+              "border_crop": "https://img.scryfall.com/cards/border_crop/front/6/e/6ee6cd34-c117-4d7e-97d1-8f8464bfaac8.jpg?1562761096"
+            },
+            "mana_cost": "{3}{R}",
+            "cmc": 4,
+            "type_line": "Creature — Goblin Warrior // Legendary Creature — Goblin Shaman",
+            "colors": [
+              "R"
+            ],
+            "color_identity": [
+              "R"
+            ],
+            "card_faces": [
+              {
+                "object": "card_face",
+                "name": "Akki Lavarunner",
+                "mana_cost": "{3}{R}",
+                "type_line": "Creature — Goblin Warrior",
+                "oracle_text": "Haste\nWhenever Akki Lavarunner deals damage to an opponent, flip it.",
+                "power": "1",
+                "toughness": "1",
+                "artist": "Matt Cavotta",
+                "illustration_id": "54705304-6aeb-4722-9a17-9006db12b939"
+              },
+              {
+                "object": "card_face",
+                "name": "Tok-Tok, Volcano Born",
+                "mana_cost": "",
+                "type_line": "Legendary Creature — Goblin Shaman",
+                "oracle_text": "Protection from red\nIf a red source would deal damage to a player, it deals that much damage plus 1 to that player instead.",
+                "power": "2",
+                "toughness": "2",
+                "artist": "Matt Cavotta"
+              }
+            ],
+            "legalities": {
+              "standard": "not_legal",
+              "future": "not_legal",
+              "frontier": "not_legal",
+              "modern": "legal",
+              "legacy": "legal",
+              "pauper": "not_legal",
+              "vintage": "legal",
+              "penny": "legal",
+              "commander": "legal",
+              "duel": "legal",
+              "oldschool": "not_legal"
+            },
+            "games": [
+              "mtgo",
+              "paper"
+            ],
+            "reserved": false,
+            "foil": true,
+            "nonfoil": true,
+            "oversized": false,
+            "promo": false,
+            "reprint": false,
+            "variation": false,
+            "set": "chk",
+            "set_name": "Champions of Kamigawa",
+            "set_type": "expansion",
+            "set_uri": "https://api.scryfall.com/sets/6183d21f-a0af-4118-ba58-aca1d8719c01",
+            "set_search_uri": "https://api.scryfall.com/cards/search?order=set&q=e%3Achk&unique=prints",
+            "scryfall_set_uri": "https://scryfall.com/sets/chk?utm_source=api",
+            "rulings_uri": "https://api.scryfall.com/cards/6ee6cd34-c117-4d7e-97d1-8f8464bfaac8/rulings",
+            "prints_search_uri": "https://api.scryfall.com/cards/search?order=released&q=oracleid%3A47795817-73e5-4af6-bd1e-d69b193e8e9e&unique=prints",
+            "collector_number": "153",
+            "digital": false,
+            "rarity": "rare",
+            "illustration_id": "54705304-6aeb-4722-9a17-9006db12b939",
+            "card_back_id": "0aeebaf5-8c7d-4636-9e82-8c27447861f7",
+            "artist": "Matt Cavotta",
+            "border_color": "black",
+            "frame": "2003",
+            "full_art": false,
+            "textless": false,
+            "booster": true,
+            "story_spotlight": false,
+            "edhrec_rank": 9505,
+            "prices": {
+              "usd": "0.29",
+              "usd_foil": "2.08",
+              "eur": "0.17",
+              "tix": "0.01"
+            },
+            "related_uris": {
+              "gatherer": "https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=78694",
+              "tcgplayer_decks": "https://decks.tcgplayer.com/magic/deck/search?contains=Akki+Lavarunner+%2F%2F+Tok-Tok%2C+Volcano+Born&page=1&partner=Scryfall&utm_campaign=affiliate&utm_medium=scryfall&utm_source=scryfall",
+              "edhrec": "http://edhrec.com/route/?cc=Akki+Lavarunner",
+              "mtgtop8": "https://mtgtop8.com/search?MD_check=1&SB_check=1&cards=Akki+Lavarunner+%2F%2F+Tok-Tok%2C+Volcano+Born"
+            },
+            "purchase_uris": {
+              "tcgplayer": "https://shop.tcgplayer.com/product/productsearch?id=11938&partner=Scryfall&utm_campaign=affiliate&utm_medium=scryfall&utm_source=scryfall",
+              "cardmarket": "https://www.cardmarket.com/en/Magic/Products/Singles/Champions-of-Kamigawa/Akki-Lavarunner?referrer=scryfall&utm_campaign=card_prices&utm_medium=text&utm_source=scryfall",
+              "cardhoarder": "https://www.cardhoarder.com/cards/21237?affiliate_id=scryfall&ref=card-profile&utm_campaign=affiliate&utm_medium=card&utm_source=scryfall"
+            }
+          },
             {
               "all_parts": null, 
               "artist": "Daniel Ljunggren", 

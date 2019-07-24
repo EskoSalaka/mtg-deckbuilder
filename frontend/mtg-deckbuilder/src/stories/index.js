@@ -3,18 +3,25 @@ import React from "react"
 import { storiesOf } from "@storybook/react"
 import CardImageList from "../components/CardImageGrid"
 import mock_cards from "./mock_cards.js"
-import LegalityIndicator from "../components/LegalityIndicator"
-import CardLegalityGrid from "../components/CardLegalityGrid"
-import CardTextBox from "../components/CardTextBox"
+import LegalityIndicator from "../components/CardInfoBox/LegalityIndicator"
+import CardLegalityGrid from "../components/CardInfoBox/CardLegalityGrid"
+import CardTextBox from "../components/CardInfoBox/CardOracleTextBox"
 import baseTheme from "../components/baseTheme"
 import { MuiThemeProvider } from "@material-ui/core/styles"
 import "./mana.css"
+import CardTitleBox from "../components/CardInfoBox/CardTitleBox"
+import CardInfoBox from "../components/CardInfoBox/CardInfoBox"
 
 let cards = mock_cards()
-let c = cards[105]
+let c = cards[0]
 
 storiesOf("cardImageGrid", module).add("Full list", () => <CardImageList cards={cards} />)
 storiesOf("Card info window", module)
+  .add("Full box", () => (
+    <MuiThemeProvider muiTheme={baseTheme}>
+      <CardInfoBox card={c} />
+    </MuiThemeProvider>
+  ))
   .add("Negative legality indicator", () => (
     <LegalityIndicator format={"oldschool"} legality={c.legalities.oldschool} />
   ))
@@ -25,5 +32,10 @@ storiesOf("Card info window", module)
   .add("card Text", () => (
     <MuiThemeProvider muiTheme={baseTheme}>
       <CardTextBox card={c} />
+    </MuiThemeProvider>
+  ))
+  .add("card Title", () => (
+    <MuiThemeProvider muiTheme={baseTheme}>
+      <CardTitleBox cardName={c.name} cardManaCost={c.mana_cost} />
     </MuiThemeProvider>
   ))
