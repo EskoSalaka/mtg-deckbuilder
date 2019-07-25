@@ -5,16 +5,16 @@ import CardImageGridItem from "./CardImageGridItem"
 
 const styles = makeStyles({
   gridContainer: {
-    maxWidth: 1000
+    maxWidth: 1300
   }
 })
 
-export default function CardImageList(props) {
+export default function CardImageGrid({ cards }) {
   const classes = styles()
 
   return (
     <Grid container className={classes.gridContainer} spacing={1} justify="center">
-      {props.cards.map(c => (
+      {cards.map(c => (
         <CardImageGridItem card={c} />
       ))}
     </Grid>

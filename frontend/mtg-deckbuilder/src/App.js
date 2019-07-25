@@ -4,6 +4,8 @@ import MTGAppBar from "./components/MTGAppBar"
 import MTGFooter from "./components/MTGFooter"
 import { Container, withStyles, Divider } from "@material-ui/core"
 import CardImageGrid from "./components/CardImageGrid"
+import SetView from "./components/SetView"
+import { BrowserRouter as Router, Route, Link } from "react-router-dom"
 
 const styles = theme => ({
   root: {
@@ -12,7 +14,7 @@ const styles = theme => ({
   mainContainer: {
     flexDirection: "row",
     display: "flex",
-    maxWidth: "1600",
+    maxWidth: "2600",
     justifyContent: "center",
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2)
@@ -45,12 +47,14 @@ class App extends React.Component {
     const { classes } = this.props
     return (
       <div className={classes.root}>
-        <MTGAppBar />
-        <Container className={classes.mainContainer} justify="center">
-          <CardImageGrid cards={this.state.cards} />
-        </Container>
-        <Divider className={classes.divider} />
-        <MTGFooter />
+        <Router>
+          <MTGAppBar />
+          <Container className={classes.mainContainer} justify="center">
+            <Route path="/cards/:code" component={SetView} />
+          </Container>
+          <Divider className={classes.divider} />
+          <MTGFooter />
+        </Router>
       </div>
     )
   }

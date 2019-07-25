@@ -9,7 +9,7 @@ const styles = makeStyles({
   }
 })
 
-export default function CardImagePlaceholder({ width }) {
+export default function CardImagePlaceholder() {
   const classes = styles()
 
   return (

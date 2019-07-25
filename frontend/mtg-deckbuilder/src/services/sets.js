@@ -8,11 +8,13 @@ const getAll = async () => {
 
 const get = async code => {
   const response = await axios.get(`${baseURL}${code}/`)
+
   return response.data
 }
 
 const getCards = async code => {
   const response = await axios.get(`${baseURL}${code}/cards/`)
+
   return response.data
 }
 

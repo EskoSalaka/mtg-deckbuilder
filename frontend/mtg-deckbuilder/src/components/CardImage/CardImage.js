@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { makeStyles } from "@material-ui/styles"
-import FlipButton from "../FlipButton"
+import FlipButton from "./FlipButton"
 import LazyLoad from "react-lazyload"
 import CardImagePlaceholder from "./CardImagePlaceholder"
 
@@ -14,14 +14,14 @@ const styles = makeStyles({
     width: "100%",
     height: "100%",
     borderRadius: "4.75% / 3.5%",
-    transform: "scaleX(-1)"
+    transform: "scaleX(-1) scaleY(-1)"
   },
   topDiv: {
     position: "relative"
   }
 })
 
-export default function CardImage({ card, placeholderWidth, placeholderHeight }) {
+export default function CardImage({ card }) {
   const classes = styles()
 
   const [isTurned, setTurned] = useState(false)
@@ -68,7 +68,7 @@ export default function CardImage({ card, placeholderWidth, placeholderHeight })
   return (
     <div className={classes.topDiv} onMouseEnter={handleMouseEnter} onMouseLeave={HandleMouseLeave}>
       <FlipButton onClickHandler={onFlipButtonClicked} isVisible={flipButtonVisible} />
-      <LazyLoad offset={-500} placeholder={<CardImagePlaceholder width={"100%"} height={"100%"} />}>
+      <LazyLoad placeholder={<CardImagePlaceholder />}>
         {isFlipped ? (
           <img
             className={classes.fCardImage}

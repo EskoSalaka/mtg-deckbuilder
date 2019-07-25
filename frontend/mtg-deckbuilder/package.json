@@ -19,6 +19,7 @@
     "react-image-lightbox": "^5.1.0",
     "react-lazyload": "^2.6.2",
     "react-redux": "^7.1.0",
+    "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "react-sortable-hoc": "^1.9.1",
     "react-virtualized": "^9.21.1",
