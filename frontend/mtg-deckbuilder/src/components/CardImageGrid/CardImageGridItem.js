@@ -1,6 +1,6 @@
 import React from "react"
 import { Grid, Link } from "@material-ui/core"
-import CardImage from "./CardImage/CardImage"
+import CardImage from "../CardImage/"
 
 export default function CardImageGridItem({ card }) {
   return (
