@@ -5,71 +5,43 @@ import Table from "@material-ui/core/Table"
 import Paper from "@material-ui/core/Paper"
 import CardRow from "./CardRow"
 import CardImagePopover from "./CardImagePopover"
-import { CardHeader } from "@material-ui/core"
+import HeaderRow from "./HeaderRow"
 
 const styles = makeStyles({
-  root: {},
-  table: {},
-  headerCell: {
-    head: {
-      backgroundColor: "black",
-      color: "white"
-    },
-    body: {
-      fontSize: 18
-    }
-  }
+  root: { maxWidth: 1200 },
+  table: { width: "fit-content" }
 })
 
 export default function CardTable({ cards }) {
   const classes = styles()
 
-  const [cardImageToPopover, setCardToPopover] = useState(cards[3].image_uris.normal)
-  const [showCardImagePopover, setShowCardImagePopover] = useState(false)
-  const [cardImagePopoverPosition, setCardImagePopoverPosition] = useState({ top: 200, left: 200 })
-  const [cardImagePopoverX, setCardImagePopoverX] = useState("200px")
-  const [cardImagePopoverY, setCardImagePopoverY] = useState("200px")
+  const [cardImageToPopover, setCardImageToPopover] = useState("")
 
-  function handleClick(e) {
-    e.preventDefault()
-  }
+  const [cardImagePopoverPosition, setCardImagePopoverPosition] = useState({
+    top: "200px",
+    left: "200px"
+  })
 
   function handleMouseMove(e) {
-    setCardImagePopoverY(80)
-    setCardImagePopoverX(60)
-  }
+    console.log(e.target)
 
-  function handleMouseLeave(e) {
     e.preventDefault()
-    setShowCardImagePopover(false)
-    setCardToPopover(null)
+    e.stopPropagation()
 
-    setCardImagePopoverPosition({ top: 0, left: 0 })
+    setCardImageToPopover(e.target.parentNode.dataset.card)
+    setCardImagePopoverPosition({ top: e.pageY - 50 + "px", left: e.pageX + 50 + "px" })
   }
 
   return (
-    <Paper className={classes.root}>
-      <div
-        display={"block"}
-        style={{
-          display: "block",
-          position: "absolute",
-          left: cardImagePopoverX,
-          top: cardImagePopoverY
-        }}
-      >
-        <img
-          width="200px"
-          height="300px"
-          src="https://img.scryfall.com/cards/large/front/8/3/83f43730-1c1f-4150-8771-d901c54bedc4.jpg?1563799521"
-        />
-      </div>
-
+    <Paper className={classes.root} onMouseMove={e => handleMouseMove(e)}>
+      {cardImageToPopover && (
+        <CardImagePopover cardImg={cardImageToPopover} anchorPosition={cardImagePopoverPosition} />
+      )}
       <Table className={classes.table} size="small">
-        <CardHeader />
-        <TableBody onMouseLeave={handleMouseLeave} onMouseMove={handleMouseMove}>
+        <HeaderRow />
+        <TableBody>
           {cards.map(card => (
-            <CardRow card={card} />
+            <CardRow data-cad={card} key={card.api_key} card={card} />
           ))}
         </TableBody>
       </Table>

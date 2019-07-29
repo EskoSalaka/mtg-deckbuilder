@@ -14,7 +14,7 @@ import CardInfoBox from "../components/CardInfoBox/CardInfoBox"
 import CardImage from "../components/CardImage/CardImage"
 import CardTable from "../components/CardTable/CardTable"
 
-let cards = mock_cards()
+let cards = mock_cards().slice(1, 100)
 let c = cards[0]
 
 storiesOf("Card image grid", module).add("Full list", () => (
@@ -22,7 +22,11 @@ storiesOf("Card image grid", module).add("Full list", () => (
     <CardImageList cards={cards} />
   </MuiThemeProvider>
 ))
-storiesOf("Card table", module).add("Full list", () => <CardTable cards={cards} />)
+storiesOf("Card table", module).add("Full list", () => (
+  <MuiThemeProvider muiTheme={baseTheme}>
+    <CardTable cards={cards} />
+  </MuiThemeProvider>
+))
 
 storiesOf("Card image", module).add("Image", () => <CardImage card={c} />)
 

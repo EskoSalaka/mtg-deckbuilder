@@ -4,5 +4,6 @@
   "prettier.printWidth": 100,
   "prettier.semi": false,
   "editor.formatOnSave": true,
-  "editor.snippetSuggestions": "top"
+  "editor.snippetSuggestions": "top",
+  "editor.minimap.enabled": false
 }

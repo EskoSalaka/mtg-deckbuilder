@@ -1,28 +1,52 @@
 import React from "react"
-import { withStyles } from "@material-ui/core/styles"
+
 import TableRow from "@material-ui/core/TableRow"
 import TableCell from "@material-ui/core/TableCell"
-import { TableHead } from "@material-ui/core"
+import { TableHead, Typography } from "@material-ui/core"
+import { makeStyles } from "@material-ui/styles"
 
-const HeaderCell = withStyles(theme => ({
-  head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
+const styles = makeStyles({
+  headCell: {
+    backgroundColor: "black",
+    color: "white",
     position: "sticky",
     top: 0,
-    fontSize: 12,
-    size: "small"
+    size: "small",
+    padding: "5px 6px 5px 11px",
+    zIndex: 1000000000
+  },
+  headText: {
+    fontSize: 16
   }
-}))(TableCell)
+})
 
-export default function CardTableHeader() {
+export default function HeaderRow() {
+  const classes = styles()
+
   return (
     <TableHead>
       <TableRow>
-        <HeaderCell>Name</HeaderCell>
-        <HeaderCell>Type</HeaderCell>
-        <HeaderCell>P/T</HeaderCell>
-        <HeaderCell>Cost</HeaderCell>
+        <TableCell className={classes.headCell}>
+          <Typography className={classes.headText}>Set</Typography>
+        </TableCell>
+        <TableCell className={classes.headCell}>
+          <Typography className={classes.headText}>Name</Typography>
+        </TableCell>
+        <TableCell className={classes.headCell}>
+          <Typography className={classes.headText}>Type</Typography>
+        </TableCell>
+        <TableCell className={classes.headCell}>
+          <Typography className={classes.headText}>P/T</Typography>
+        </TableCell>
+        <TableCell className={classes.headCell}>
+          <Typography className={classes.headText}>Cost</Typography>
+        </TableCell>
+        <TableCell className={classes.headCell}>
+          <Typography className={classes.headText}>R</Typography>
+        </TableCell>
+        <TableCell className={classes.headCell}>
+          <Typography className={classes.headText}>No</Typography>
+        </TableCell>
       </TableRow>
     </TableHead>
   )
