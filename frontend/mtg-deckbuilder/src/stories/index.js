@@ -13,8 +13,21 @@ import CardTitleBox from "../components/CardInfoBox/CardTitleBox"
 import CardInfoBox from "../components/CardInfoBox/CardInfoBox"
 import CardImage from "../components/CardImage/CardImage"
 import CardTable from "../components/CardTable/CardTable"
+import SetTitle from "../components/SetView/SetTitle"
 
 let cards = mock_cards().slice(1, 100)
+let set = {
+  card_count: 344,
+  code: "m20",
+  digital: false,
+  foil_only: false,
+  id: "4a787360-9767-4f44-80b1-2405dc5e39c7",
+  mtgo_code: "m20",
+  name: "Core Set 2020",
+  released_at: "2019-07-12",
+  scryfall_uri: "https://scryfall.com/sets/m20",
+  set_type: "core"
+}
 let c = cards[0]
 
 storiesOf("Card image grid", module).add("Full list", () => (
@@ -53,3 +66,9 @@ storiesOf("Card info window", module)
       <CardTitleBox cardName={c.name} cardManaCost={c.mana_cost} />
     </MuiThemeProvider>
   ))
+
+storiesOf("Set title", module).add("Set", () => (
+  <MuiThemeProvider muiTheme={baseTheme}>
+    <SetTitle set={set} />
+  </MuiThemeProvider>
+))

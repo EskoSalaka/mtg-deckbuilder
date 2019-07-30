@@ -55,9 +55,8 @@ const styles = makeStyles({
     lineHeight: 1.7,
     pointerEvents: "none"
   },
-  cell: { padding: "3px 6px 3px 11px", textDecoration: "none" },
+  cell: { padding: "3px 6px 3px 11px", textDecoration: "none", borderBottom: "2px solid #bfbfbf" },
   row: {
-    borderBottom: "2px solid #bfbfbf",
     "&:nth-of-type(odd)": {
       backgroundColor: "#e8e8e8;"
     },
@@ -67,7 +66,7 @@ const styles = makeStyles({
   }
 })
 
-export default function CardRow({ card, handleMouseMove, handleMouseLeave }) {
+export default function CardRow({ card, handleMouseMove }) {
   const classes = styles()
 
   const frontFace =
@@ -93,7 +92,6 @@ export default function CardRow({ card, handleMouseMove, handleMouseLeave }) {
       className={classes.row}
       data-card={frontFace}
       onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
     >
       <TableCell
         key="set"

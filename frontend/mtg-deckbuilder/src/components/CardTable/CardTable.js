@@ -23,8 +23,6 @@ export default function CardTable({ cards }) {
   })
 
   function handleMouseMove(e) {
-    console.log(e.target)
-
     e.preventDefault()
     e.stopPropagation()
 

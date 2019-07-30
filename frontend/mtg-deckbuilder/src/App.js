@@ -2,9 +2,11 @@ import React from "react"
 import cardsService from "./services/cards"
 import MTGAppBar from "./components/MTGAppBar"
 import MTGFooter from "./components/MTGFooter"
+import CardTable from "./components/CardTable/CardTable"
 import { Container, withStyles, Divider } from "@material-ui/core"
 import SetView from "./components/SetView"
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom"
+import mock_cards from "./stories/mock_cards"
 
 const styles = theme => ({
   rootContainer: {
@@ -35,26 +37,28 @@ class App extends React.Component {
   }
 
   async componentDidMount() {
-    console.log("Dm")
-    let cards = await cardsService.getAll()
-    cards = cards.slice(20)
-    this.setState({ cards })
+    let cards = mock_cards().slice(1, 100)
+    let c = cards
+
+    this.setState({ cards: c })
+    console.log("====================================")
+    console.log(this.state.cards)
+    console.log("====================================")
   }
 
   render() {
     const { classes } = this.props
+    console.log("====================================")
+    console.log(this.state.cards)
+    console.log("====================================")
     return (
       <div className={classes.root}>
-        <Router>
-          <MTGAppBar />
-          <Container className={classes.mainContainer} justify="center">
-            <Switch>
-              <Route path="/cards/:code" component={SetView} />
-            </Switch>
-          </Container>
-          <Divider className={classes.divider} />
-          <MTGFooter />
-        </Router>
+        <MTGAppBar />
+        <Container className={classes.mainContainer} justify="center">
+          {this.state.cards ? <CardTable cards={this.state.cards} /> : null}
+        </Container>
+        <Divider className={classes.divider} />
+        <MTGFooter />
       </div>
     )
   }
