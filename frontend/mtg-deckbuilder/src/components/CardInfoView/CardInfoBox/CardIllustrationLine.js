@@ -3,21 +3,20 @@ import { makeStyles } from "@material-ui/styles"
 import { Box, Typography } from "@material-ui/core"
 
 const styles = makeStyles({
-  typeLineText: { fontSize: 16, fontStyle: "bold" },
   containerBox: {
     paddingTop: 8,
-    paddingBottom: 8
+    paddingBottom: 8,
+    alignContent: "space-between"
   }
 })
 
-export default function CardPTBox({ cardPower, cardToughness }) {
+export default function CardIllustrationLine({ card }) {
   const classes = styles()
 
   return (
     <Box className={classes.containerBox}>
-      <Typography className={classes.typeLineText}>
-        {cardPower}/{cardToughness}
-      </Typography>
+      <Typography>{`illustr. by ${card.artist}`}</Typography>
+      <Typography variant="subtitle">{`#${card.collector_number}`}</Typography>
     </Box>
   )
 }

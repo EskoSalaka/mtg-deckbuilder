@@ -1,20 +1,21 @@
 import React from "react"
 import { makeStyles } from "@material-ui/styles"
 import { Box, Typography } from "@material-ui/core"
-import ManaCost from "../ManaCost"
+import ManaCost from "../../ManaCost"
 
 const styles = makeStyles({
   titleText: { fontSize: 18, paddingRight: 12 },
-  manaCostText: { fontSize: 14 },
+  manaCostText: { fontSize: 16 },
 
   containerBox: {
     display: "flex",
     paddingBottom: 8,
-    paddingTop: 8
+    paddingTop: 8,
+    justifyContent: "space-between"
   }
 })
 
-export default function CardTitleBox({ cardName, cardManaCost }) {
+export default function CardTitle({ cardName, cardManaCost }) {
   const classes = styles()
 
   return (

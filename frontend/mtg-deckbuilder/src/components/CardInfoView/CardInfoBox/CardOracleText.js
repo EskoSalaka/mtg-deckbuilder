@@ -3,11 +3,9 @@ import { makeStyles } from "@material-ui/styles"
 import { Box, Typography } from "@material-ui/core"
 
 const styles = makeStyles({
-  firstLine: { fontStyle: "italic", fontSize: 15, fontFamily: "georgia" },
+  firstLine: { fontSize: 16 },
   bottomLines: {
-    fontStyle: "italic",
-    fontSize: 15,
-    fontFamily: "georgia",
+    fontSize: 16,
     paddingTop: 8
   },
   containerBox: {
@@ -16,13 +14,13 @@ const styles = makeStyles({
   }
 })
 
-export default function CardTextBox({ cardFlavorText }) {
+export default function CardOracleText({ cardOracleText }) {
   const classes = styles()
 
   return (
     <Box className={classes.containerBox}>
-      {cardFlavorText
-        ? cardFlavorText.split("\n").map((line, key) => {
+      {cardOracleText
+        ? cardOracleText.split("\n").map((line, key) => {
             return (
               <Typography key={key} className={key === 0 ? classes.firstLine : classes.bottomLines}>
                 {line}

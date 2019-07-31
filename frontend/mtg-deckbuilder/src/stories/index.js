@@ -3,14 +3,11 @@ import React from "react"
 import { storiesOf } from "@storybook/react"
 import CardImageList from "../components/CardImageGrid"
 import mock_cards from "./mock_cards.js"
-import LegalityIndicator from "../components/CardInfoBox/LegalityIndicator"
-import CardLegalityGrid from "../components/CardInfoBox/CardLegalityGrid"
-import CardTextBox from "../components/CardInfoBox/CardOracleTextBox"
 import baseTheme from "../components/baseTheme"
 import { MuiThemeProvider } from "@material-ui/core/styles"
 import "./mana.css"
-import CardTitleBox from "../components/CardInfoBox/CardTitleBox"
-import CardInfoBox from "../components/CardInfoBox/CardInfoBox"
+
+import CardInfoView from "../components/CardInfoView/CardInfoView"
 import CardImage from "../components/CardImage/CardImage"
 import CardTable from "../components/CardTable/CardTable"
 import SetTitle from "../components/SetView/SetTitle"
@@ -43,29 +40,11 @@ storiesOf("Card table", module).add("Full list", () => (
 
 storiesOf("Card image", module).add("Image", () => <CardImage card={c} />)
 
-storiesOf("Card info window", module)
-  .add("Full box", () => (
-    <MuiThemeProvider muiTheme={baseTheme}>
-      <CardInfoBox card={c} />
-    </MuiThemeProvider>
-  ))
-  .add("Negative legality indicator", () => (
-    <LegalityIndicator format={"oldschool"} legality={c.legalities.oldschool} />
-  ))
-  .add("Positive legality indicator", () => (
-    <LegalityIndicator format={"Commander"} legality={c.legalities.commander} />
-  ))
-  .add("Full legality grid for a card", () => <CardLegalityGrid card={c} />)
-  .add("card Text", () => (
-    <MuiThemeProvider muiTheme={baseTheme}>
-      <CardTextBox card={c} />
-    </MuiThemeProvider>
-  ))
-  .add("card Title", () => (
-    <MuiThemeProvider muiTheme={baseTheme}>
-      <CardTitleBox cardName={c.name} cardManaCost={c.mana_cost} />
-    </MuiThemeProvider>
-  ))
+storiesOf("Card info window", module).add("Full box", () => (
+  <MuiThemeProvider muiTheme={baseTheme}>
+    <CardInfoView card={c} />
+  </MuiThemeProvider>
+))
 
 storiesOf("Set title", module).add("Set", () => (
   <MuiThemeProvider muiTheme={baseTheme}>

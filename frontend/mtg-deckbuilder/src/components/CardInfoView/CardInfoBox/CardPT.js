@@ -3,20 +3,20 @@ import { makeStyles } from "@material-ui/styles"
 import { Box, Typography } from "@material-ui/core"
 
 const styles = makeStyles({
-  typeLineText: { fontSize: 16 },
   containerBox: {
-    display: "flex",
-    paddingBottom: 8,
-    paddingTop: 8
+    paddingTop: 8,
+    paddingBottom: 8
   }
 })
 
-export default function CardTypeBox({ cardTypeLine }) {
+export default function CardPT({ cardPower, cardToughness }) {
   const classes = styles()
 
   return (
     <Box className={classes.containerBox}>
-      <Typography className={classes.typeLineText}>{cardTypeLine}</Typography>
+      <Typography>
+        {cardPower}/{cardToughness}
+      </Typography>
     </Box>
   )
 }
