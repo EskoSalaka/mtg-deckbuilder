@@ -18,7 +18,7 @@ export default function CardTypeLine({ cardTypeLine, card }) {
 
   return (
     <Box className={classes.containerBox}>
-      <Typography className={classes.typeLineText}>{card.type_line}</Typography>
+      <Typography className={classes.typeLineText}>{cardTypeLine}</Typography>
       <Box component="a" href={`../${card.set}`}>
         <SetIcon width={""} height={"22"} colorStyle={"rare"} setCode={card.set} />
       </Box>

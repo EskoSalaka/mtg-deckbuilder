@@ -8,33 +8,23 @@ import SetView from "./components/SetView"
 import CardInfoView from "./components/CardInfoView"
 
 const styles = theme => ({
-  rootContainer: {
-    backgroundColor: "#e6e3e3"
-  },
-  content: {
+  root: {
+    backgroundColor: "#e6e3e3",
     display: "flex",
-
+    flexDirection: "column",
+    minHeight: "100vh"
+  },
+  main: {
+    backgroundColor: "#e6e3e3",
+    display: "flex",
+    flexGrow: 1,
     justifyContent: "center",
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2)
-  },
-  divider: {
-    height: "2px"
-  },
-  footer: {
-    marginTop: "10px",
-    backgroundColor: "white"
   }
 })
 
 class App extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      cards: []
-    }
-  }
-
   async componentDidMount() {
     console.log("====================================")
     console.log("Mount")
@@ -45,16 +35,16 @@ class App extends React.Component {
     const { classes } = this.props
 
     return (
-      <div className={classes.rootContainer}>
+      <div className={classes.root}>
         <MTGAppBar />
-        <Grid container className={classes.mainContainer} justify="center">
+        <Container component="main" className={classes.main} maxWidth="lg">
           <Router>
             <Switch>
               <Route path="/cards/:code/:collector_number" component={CardInfoView} />
               <Route path="/cards/:code" component={SetView} />
             </Switch>
           </Router>
-        </Grid>
+        </Container>
         <Divider className={classes.divider} />
         <MTGFooter />
       </div>
