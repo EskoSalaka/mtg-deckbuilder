@@ -11,4 +11,10 @@ const get = async id => {
   return response.data
 }
 
-export default { get, getAll }
+const getBySet = async (setCode, collector_number) => {
+  const response = await axios.get(`${baseURL}${setCode}/${collector_number}/`)
+
+  return response.data
+}
+
+export default { get, getBySet, getAll }

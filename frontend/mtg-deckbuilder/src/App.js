@@ -1,12 +1,11 @@
 import React from "react"
-import cardsService from "./services/cards"
 import MTGAppBar from "./components/MTGAppBar"
 import MTGFooter from "./components/MTGFooter"
-import CardTable from "./components/CardTable/CardTable"
-import { Container, withStyles, Divider } from "@material-ui/core"
-import SetView from "./components/SetView"
+import { Container, withStyles, Divider, Grid } from "@material-ui/core"
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom"
-import mock_cards from "./stories/mock_cards"
+
+import SetView from "./components/SetView"
+import CardInfoView from "./components/CardInfoView"
 
 const styles = theme => ({
   rootContainer: {
@@ -14,7 +13,7 @@ const styles = theme => ({
   },
   content: {
     display: "flex",
-    maxWidth: "2600",
+
     justifyContent: "center",
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2)
@@ -37,26 +36,25 @@ class App extends React.Component {
   }
 
   async componentDidMount() {
-    let cards = mock_cards().slice(1, 100)
-    let c = cards
-
-    this.setState({ cards: c })
     console.log("====================================")
-    console.log(this.state.cards)
+    console.log("Mount")
     console.log("====================================")
   }
 
   render() {
     const { classes } = this.props
-    console.log("====================================")
-    console.log(this.state.cards)
-    console.log("====================================")
+
     return (
-      <div className={classes.root}>
+      <div className={classes.rootContainer}>
         <MTGAppBar />
-        <Container className={classes.mainContainer} justify="center">
-          {this.state.cards ? <CardTable cards={this.state.cards} /> : null}
-        </Container>
+        <Grid container className={classes.mainContainer} justify="center">
+          <Router>
+            <Switch>
+              <Route path="/cards/:code/:collector_number" component={CardInfoView} />
+              <Route path="/cards/:code" component={SetView} />
+            </Switch>
+          </Router>
+        </Grid>
         <Divider className={classes.divider} />
         <MTGFooter />
       </div>

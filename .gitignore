@@ -50,3 +50,6 @@ backend/migrations/__pycache__/env.cpython-37.pyc
 *.pyc
 backend/migrations/__pycache__/env.cpython-37.pyc
 *.xml
+backend/app/__pycache__/routes.cpython-37.pyc
+backend/app/__pycache__/routes.cpython-37.pyc
+backend/app/__pycache__/routes.cpython-37.pyc

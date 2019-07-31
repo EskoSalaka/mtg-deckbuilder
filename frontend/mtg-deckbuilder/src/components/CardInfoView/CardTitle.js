@@ -1,10 +1,12 @@
 import React from "react"
 import { makeStyles } from "@material-ui/styles"
 import { Box, Typography } from "@material-ui/core"
-import SetIcon from "../../SetIcon"
+import ManaCost from "../ManaCost"
 
 const styles = makeStyles({
-  typeLineText: { fontSize: 16 },
+  titleText: { fontSize: 18, paddingRight: 12 },
+  manaCostText: { fontSize: 16 },
+
   containerBox: {
     display: "flex",
     paddingBottom: 8,
@@ -13,15 +15,15 @@ const styles = makeStyles({
   }
 })
 
-export default function CardTypeLine({ cardTypeLine, card }) {
+export default function CardTitle({ cardName, cardManaCost }) {
   const classes = styles()
 
   return (
     <Box className={classes.containerBox}>
-      <Typography className={classes.typeLineText}>{card.type_line}</Typography>
-      <Box component="a" href={`sets/${card.set}`}>
-        <SetIcon width={""} height={"22"} colorStyle={"rare"} setCode={card.set} />
-      </Box>
+      <Typography className={classes.titleText}>{cardName} </Typography>
+      <Typography className={classes.manaCostText}>
+        <ManaCost manaCost={cardManaCost} />
+      </Typography>
     </Box>
   )
 }

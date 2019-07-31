@@ -1,7 +1,7 @@
 import React from "react"
 import { makeStyles } from "@material-ui/styles"
 import { Container, Typography, Box } from "@material-ui/core"
-import SetIcon from "../../SetIcon"
+import SetIcon from "../SetIcon"
 
 const styles = makeStyles({
   topContainer: {

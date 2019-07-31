@@ -19,6 +19,9 @@ const styles = makeStyles({
 
 export default function SetTitle({ setCode, colorStyle, width, height }) {
   const classes = styles()
+  console.log("====================================")
+  console.log(process.env)
+  console.log("====================================")
 
   return (
     <img
@@ -31,7 +34,7 @@ export default function SetTitle({ setCode, colorStyle, width, height }) {
           ? classes.rare
           : classes.mythic
       }
-      src={`./set_icons/${setCode}.svg`}
+      src={`${process.env.PUBLIC_URL}/set_icons/${setCode}.svg`}
       alt="ico"
       width={width}
       height={height}

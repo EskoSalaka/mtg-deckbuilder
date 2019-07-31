@@ -9,7 +9,8 @@ const useStyles = makeStyles(theme => ({
     background: "#3d3d3d"
   },
   ftext: {
-    marginTop: 10,
+    marginTop: 14,
+    fontSize: 10,
     color: "#969696"
   }
 }))
@@ -19,10 +20,10 @@ export default function MTGDBFooter() {
 
   return (
     <footer className={classes.footer}>
-      <Container maxWidth="lg">
+      <Container maxWidth="sm">
         <Typography
           className={classes.ftext}
-          variant="subtitle1"
+          variant="subtitle"
           align="left"
           color="textSecondary"
           component="p"
@@ -33,7 +34,7 @@ export default function MTGDBFooter() {
         </Typography>
         <Typography
           className={classes.ftext}
-          variant="subtitle1"
+          variant="subtitle"
           align="left"
           color="textSecondary"
           component="p"
@@ -43,7 +44,7 @@ export default function MTGDBFooter() {
         </Typography>
         <Typography
           className={classes.ftext}
-          variant="subtitle1"
+          variant="subtitle"
           align="left"
           color="textSecondary"
           component="p"

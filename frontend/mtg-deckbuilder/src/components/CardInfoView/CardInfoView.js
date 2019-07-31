@@ -1,8 +1,8 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { makeStyles } from "@material-ui/styles"
-import { Box, Typography, Grid } from "@material-ui/core"
-import CardInfoBox from "./CardInfoBox"
-import CardImage from "../CardImage"
+import FullCardInfo from "./FullCardInfo"
+
+import cardService from "../../services/cards"
 
 const styles = makeStyles({
   rootContainer: {
@@ -13,17 +13,35 @@ const styles = makeStyles({
   infoBox: { maxWidth: "400px", minWidth: "350px", paddingTop: "20px", padding: "10px" }
 })
 
-export default function CardIllustrationLine({ card }) {
+export default function CardInfoView({ match }) {
+  console.log("====================================")
+  console.log("Card")
+  console.log(match)
+  console.log("====================================")
   const classes = styles()
 
-  return (
-    <Grid className={classes.containerBox} spacing={0} container>
-      <Grid item className={classes.infoBox}>
-        <CardInfoBox card={card} />
-      </Grid>
-      <Grid item className={classes.imageBox}>
-        <CardImage card={card} />
-      </Grid>
-    </Grid>
-  )
+  const [card, setCard] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  const fetchCard = async () => {
+    let response = await cardService.getBySet(match.params.code, match.params.collector_number)
+    console.log("====================================")
+    console.log(response)
+    console.log("====================================")
+
+    setCard(response.data)
+    setLoading(false)
+    console.log("====================================")
+    console.log(card)
+    console.log("====================================")
+  }
+
+  useEffect(() => {
+    console.log("====================================")
+    console.log("card mounting")
+    console.log("====================================")
+    fetchCard()
+  }, [])
+
+  return !loading && <FullCardInfo card={card} />
 }

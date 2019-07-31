@@ -5,7 +5,7 @@ import CardImageGridItem from "./CardImageGridItem"
 
 const styles = makeStyles({
   gridContainer: {
-    maxWidth: 1300
+    maxWidth: "1000px"
   }
 })
 

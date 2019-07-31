@@ -97,7 +97,7 @@ export default function CardRow({ card, handleMouseMove }) {
         key="set"
         component="a"
         className={classes.cell}
-        href={"cards/" + card.set + "/" + card.collector_number}
+        href={`/cards/${card.set}/${card.collector_number}`}
       >
         <Typography className={classes.cellText}>{card.set.toUpperCase()}</Typography>
       </TableCell>
@@ -105,7 +105,7 @@ export default function CardRow({ card, handleMouseMove }) {
         key="name"
         component="a"
         className={classes.cell}
-        href={"cards/" + card.set + "/" + card.collector_number}
+        href={`/cards/${card.set}/${card.collector_number}`}
       >
         <Typography className={classes.cellText}>{card.name}</Typography>
       </TableCell>
@@ -113,7 +113,7 @@ export default function CardRow({ card, handleMouseMove }) {
         key="type"
         component="a"
         className={classes.cell}
-        href={"cards/" + card.set + "/" + card.collector_number}
+        href={`/cards/${card.set}/${card.collector_number}`}
       >
         <Typography className={classes.cellText}>
           {card.type_line.replace("Legendary", "Lgd.")}
@@ -123,7 +123,7 @@ export default function CardRow({ card, handleMouseMove }) {
         key="p/t"
         className={classes.cell}
         component="a"
-        href={"cards/" + card.set + "/" + card.collector_number}
+        href={`/cards/${card.set}/${card.collector_number}`}
       >
         <Typography className={classes.ptCellText}>{pt}</Typography>
       </TableCell>
