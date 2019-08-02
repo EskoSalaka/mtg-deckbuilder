@@ -19,9 +19,6 @@ const styles = makeStyles({
 
 export default function SetTitle({ setCode, colorStyle, width, height }) {
   const classes = styles()
-  console.log("====================================")
-  console.log(process.env)
-  console.log("====================================")
 
   return (
     <img
