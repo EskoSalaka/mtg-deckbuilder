@@ -1,7 +1,7 @@
 import React from "react"
 import styles from "./styles"
 
-export default function SetTitle({ typeline }) {
+export default function SetTitle({ typeLine }) {
   const classes = styles()
   const basicTypes = [
     "creature",
@@ -15,11 +15,11 @@ export default function SetTitle({ typeline }) {
 
   return (
     <>
-      {typeline
+      {typeLine
         .split(" ")
         .map((type, i) =>
           basicTypes.includes(type.toLowerCase()) ? (
-            <i key={type + i} className={`${classes.typeLine.toLowerCase()} ms ms-${type}`} />
+            <i key={type + i} className={`${classes.typeLine} ms ms-${type.toLowerCase()}`} />
           ) : null
         )}
     </>

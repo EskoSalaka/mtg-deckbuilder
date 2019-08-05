@@ -6,6 +6,17 @@ export default function baseTheme() {
     typography: {
       useNextVariants: true,
       fontFamily: "roboto"
+    },
+    overrides: {
+      MuiTableCell: {
+        root: {
+          paddingTop: 4,
+          paddingBottom: 4,
+          "&:last-child": {
+            paddingRight: 0
+          }
+        }
+      }
     }
   })
 }

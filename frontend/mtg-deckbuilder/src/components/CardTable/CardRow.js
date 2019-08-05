@@ -55,7 +55,7 @@ const styles = makeStyles({
     lineHeight: 1.7,
     pointerEvents: "none"
   },
-  cell: { padding: "3px 6px 3px 11px", textDecoration: "none", borderBottom: "2px solid #bfbfbf" },
+  cell: { padding: "3px 6px 3px 11px", textDecoration: "none", borderBottom: "1px solid #bfbfbf" },
   row: {
     "&:nth-of-type(odd)": {
       backgroundColor: "#e8e8e8;"
