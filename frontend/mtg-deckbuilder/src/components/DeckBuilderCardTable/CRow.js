@@ -7,7 +7,7 @@ import TableRow from "@material-ui/core/TableRow"
 import TableCell from "@material-ui/core/TableCell"
 import { Typography } from "@material-ui/core"
 
-export default function CRow({ card, num }) {
+export default function CRow({ card, handleClick }) {
   const classes = styles()
   //const { order, orderBy, onRequestSort } = props
 
@@ -22,15 +22,9 @@ export default function CRow({ card, num }) {
       : card.power && card.power + "/" + card.toughness
 
   return (
-    <TableRow
-      className={classes.row}
-      key={card.api_key}
-      hover
-      selected
-      onClick={e => console.log(card.id)}
-    >
+    <TableRow className={classes.row} key={card.api_key} hover selected onClick={handleClick}>
       <TableCell key="num" className={classes.cell}>
-        <Typography className={classes.cellText}>{num}</Typography>
+        <Typography className={classes.cellText}>{card.count}</Typography>
       </TableCell>
       <TableCell key="name" className={classes.cell}>
         <Typography className={classes.cellText}>{card.name}</Typography>

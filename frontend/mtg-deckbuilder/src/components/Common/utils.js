@@ -1,7 +1,9 @@
 import React from "react"
 import { firstBy } from "thenby"
 
-function sortedCards(cards, order, orderBy) {
+var _ = require("lodash")
+
+function cardSort(cards, order, orderBy) {
   if (orderBy === "name") {
     return cards
       .slice(0)
@@ -45,4 +47,16 @@ function sortedCards(cards, order, orderBy) {
   }
 }
 
-export default sortedCards
+function byCount(cards) {
+  return Object.entries(_.groupBy(cards, "id")).map(cc => {
+    let c = cc[1][0]
+    c.count = cc[1].length
+    return c
+  })
+}
+
+function includesCard(cards, card) {
+  return _.includes(cards.map(c => c.id), card.id)
+}
+
+export { cardSort, byCount, includesCard }

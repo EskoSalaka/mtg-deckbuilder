@@ -11,33 +11,33 @@ const styles = makeStyles({
     fontSize: 16,
     /* backgroundColor: "black",
     color: "white", */
-    position: "sticky",
+
     top: 0,
     size: "small",
     padding: "3px 0px 3px 2px",
     paddingRight: "0px",
-    zIndex: 1000000000
+    zIndex: 100000000000
   },
   firstHeaderCell: {
     fontSize: 16,
     /* backgroundColor: "black",
     color: "white", */
-    position: "sticky",
+
     top: 0,
     size: "small",
     padding: "5px 8px 3px 12px",
-    zIndex: 1000000000
+    zIndex: 100000000000
   },
   lastHeaderCell: {
     fontSize: 16,
     /* backgroundColor: "black",
     color: "white", */
-    position: "sticky",
+
     top: 0,
     size: "small",
     padding: "3px 0px 3px 12px",
     paddingRight: "0px",
-    zIndex: 1000000000
+    zIndex: 10000000000000
   },
   cell: {
     padding: "3px 6px 3px 2px",
