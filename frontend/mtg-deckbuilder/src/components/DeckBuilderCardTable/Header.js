@@ -4,13 +4,16 @@ import TableRow from "@material-ui/core/TableRow"
 import TableCell from "@material-ui/core/TableCell"
 import { TableHead, TableSortLabel } from "@material-ui/core"
 
-export default function Header({ order, orderBy, onRequestSort }) {
+export default function Header({ order, orderBy, onSort }) {
   const classes = styles()
 
-  const headerRows = [
-    { id: "card", numeric: false, label: "Card" },
-    { id: "type", numeric: false, label: "Type" },
+  const createSortHandler = property => e => {
+    onSort(e, property)
+  }
 
+  const headerRows = [
+    { id: "name", numeric: false, label: "Card" },
+    { id: "type", numeric: false, label: "Type" },
     { id: "cost", numeric: false, label: "Cost" }
   ]
 
@@ -21,16 +24,28 @@ export default function Header({ order, orderBy, onRequestSort }) {
           {" "}
         </TableCell>
         {headerRows.map(row => (
-          <TableCell className={classes.headerCell} key={row.id} align="left">
-            <TableSortLabel active={false} direction={"asc"}>
+          <TableCell
+            className={classes.headerCell}
+            key={row.id}
+            align="left"
+            sortDirection={orderBy === row.id ? order : false}
+          >
+            <TableSortLabel
+              active={orderBy === row.id}
+              direction={order}
+              onClick={createSortHandler(row.id)}
+            >
               {row.label}
             </TableSortLabel>
           </TableCell>
         ))}
-        <TableCell className={classes.lastHeaderCell} key={"pt"} align="left">
-          <TableSortLabel active={false} direction={"asc"}>
-            {"PT"}
-          </TableSortLabel>
+        <TableCell
+          className={classes.lastHeaderCell}
+          key={"pt"}
+          align="left"
+          sortDirection={orderBy === "pt" ? order : false}
+        >
+          {"PT"}
         </TableCell>
       </TableRow>
     </TableHead>

@@ -22,7 +22,13 @@ export default function CRow({ card, num }) {
       : card.power && card.power + "/" + card.toughness
 
   return (
-    <TableRow className={classes.row} key={card.api_key} hover selected>
+    <TableRow
+      className={classes.row}
+      key={card.api_key}
+      hover
+      selected
+      onClick={e => console.log(card.id)}
+    >
       <TableCell key="num" className={classes.cell}>
         <Typography className={classes.cellText}>{num}</Typography>
       </TableCell>
@@ -34,7 +40,7 @@ export default function CRow({ card, num }) {
           <Type typeLine={card.type_line} />
         </Typography>
       </TableCell>
-      <TableCell key="manacost" className={classes.cell}>
+      <TableCell key="cost" className={classes.cell}>
         <Typography className={classes.cellText}>
           <ManaCost manaCost={manaCost} />
         </Typography>

@@ -9,8 +9,8 @@ const styles = makeStyles({
 
   headerCell: {
     fontSize: 16,
-    backgroundColor: "black",
-    color: "white",
+    /* backgroundColor: "black",
+    color: "white", */
     position: "sticky",
     top: 0,
     size: "small",
@@ -20,8 +20,8 @@ const styles = makeStyles({
   },
   firstHeaderCell: {
     fontSize: 16,
-    backgroundColor: "black",
-    color: "white",
+    /* backgroundColor: "black",
+    color: "white", */
     position: "sticky",
     top: 0,
     size: "small",
@@ -30,8 +30,8 @@ const styles = makeStyles({
   },
   lastHeaderCell: {
     fontSize: 16,
-    backgroundColor: "black",
-    color: "white",
+    /* backgroundColor: "black",
+    color: "white", */
     position: "sticky",
     top: 0,
     size: "small",
