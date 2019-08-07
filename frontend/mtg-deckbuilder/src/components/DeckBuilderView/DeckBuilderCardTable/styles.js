@@ -1,10 +1,18 @@
 import { makeStyles } from "@material-ui/core"
 
 const styles = makeStyles({
-  paper: { maxWidth: 460, maxHeight: "800px", overflowY: "auto" },
+  paper: {
+    maxWidth: 480,
+    minWidth: 480,
+    maxHeight: 600,
+    overflowY: "auto",
+    overflowX: "hidden"
+  },
   table: {
     width: "100%",
-    maxHeight: "800px"
+    maxWidth: 600,
+    maxHeight: "600px",
+    padding: "10px"
   },
 
   headerCell: {
@@ -14,7 +22,7 @@ const styles = makeStyles({
 
     top: 0,
     size: "small",
-    padding: "3px 0px 3px 2px",
+    padding: "3px 0px 3px 4px",
     paddingRight: "0px",
     zIndex: 100000000000
   },
@@ -40,20 +48,18 @@ const styles = makeStyles({
     zIndex: 10000000000000
   },
   cell: {
-    padding: "3px 6px 3px 2px",
+    padding: "3px 6px 3px 4px",
     paddingRight: "0px",
     whiteSpace: "pre",
     textDecoration: "none",
     borderBottom: "1px solid #bfbfbf"
   },
   row: {
-    "&:nth-of-type(odd)": {
-      backgroundColor: "#e8e8e8;"
-    },
-    "&:nth-of-type(even)": {
-      backgroundColor: "transparent"
+    ":&selected": {
+      color: "black"
     }
   },
+  rowSelected: {},
   cellText: {
     fontSize: 14,
     whiteSpace: "pre",

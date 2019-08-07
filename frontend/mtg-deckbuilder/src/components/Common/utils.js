@@ -3,7 +3,7 @@ import { firstBy } from "thenby"
 
 var _ = require("lodash")
 
-function cardSort(cards, order, orderBy) {
+function sorted(cards, order, orderBy) {
   if (orderBy === "name") {
     return cards
       .slice(0)
@@ -55,8 +55,32 @@ function byCount(cards) {
   })
 }
 
-function includesCard(cards, card) {
+function includes(cards, card) {
   return _.includes(cards.map(c => c.id), card.id)
 }
 
-export { cardSort, byCount, includesCard }
+function decremented(cards, card) {
+  return cards
+    .map(c => {
+      if (c.id === card.id) c.count = c.count - 1
+      return c
+    })
+    .filter(c => {
+      return c.count !== 0 ? c : null
+    })
+}
+
+function incremented(cards, card) {
+  if (includes(cards, card)) {
+    return cards.map(c => {
+      if (c.id === card.id) c.count = c.count + 1
+      return c
+    })
+  } else {
+    const newCard = _.clone(card)
+    newCard.count = 1
+    return [...cards, newCard]
+  }
+}
+
+export { sorted, byCount, includes, incremented, decremented }

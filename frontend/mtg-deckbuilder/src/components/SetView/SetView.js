@@ -22,9 +22,6 @@ export default function SetView({ match }) {
   }
 
   useEffect(() => {
-    console.log("====================================")
-    console.log("Set mounting")
-    console.log("====================================")
     fetchSetCards()
     fetchSet()
   }, [])

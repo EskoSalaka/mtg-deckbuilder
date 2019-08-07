@@ -1,15 +1,14 @@
 import React, { useState } from "react"
 import styles from "./styles"
-import Type from "../Common/Type"
-import ManaCost from "../ManaCost"
+import Type from "../../Common/Type"
+import ManaCost from "../../ManaCost"
 
 import TableRow from "@material-ui/core/TableRow"
 import TableCell from "@material-ui/core/TableCell"
 import { Typography } from "@material-ui/core"
 
-export default function CRow({ card, handleClick }) {
+export default function CRow({ card, isSelected, handleClick, handleDoubleClick }) {
   const classes = styles()
-  //const { order, orderBy, onRequestSort } = props
 
   const manaCost =
     card.layout === "transform" || card.layout === "double_faced_token"
@@ -22,7 +21,14 @@ export default function CRow({ card, handleClick }) {
       : card.power && card.power + "/" + card.toughness
 
   return (
-    <TableRow className={classes.row} key={card.api_key} hover selected onClick={handleClick}>
+    <TableRow
+      className={classes.row}
+      key={card.api_key}
+      hover
+      selected={isSelected}
+      onClick={e => handleClick(e, card)}
+      onDoubleClick={e => handleDoubleClick(e, card)}
+    >
       <TableCell key="num" className={classes.cell}>
         <Typography className={classes.cellText}>{card.count}</Typography>
       </TableCell>
