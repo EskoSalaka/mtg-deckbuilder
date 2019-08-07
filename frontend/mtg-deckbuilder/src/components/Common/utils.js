@@ -3,6 +3,12 @@ import { firstBy } from "thenby"
 
 var _ = require("lodash")
 
+function frontFaceAttr(card, attr) {
+  return card.layout === "transform" || card.layout === "double_faced_token"
+    ? card.card_faces[0][attr]
+    : card[attr]
+}
+
 function sorted(cards, order, orderBy) {
   if (orderBy === "name") {
     return cards
@@ -44,6 +50,8 @@ function sorted(cards, order, orderBy) {
           return 0
         })
     )
+  } else {
+    return cards.slice(0)
   }
 }
 
@@ -83,4 +91,4 @@ function incremented(cards, card) {
   }
 }
 
-export { sorted, byCount, includes, incremented, decremented }
+export { frontFaceAttr, sorted, byCount, includes, incremented, decremented }

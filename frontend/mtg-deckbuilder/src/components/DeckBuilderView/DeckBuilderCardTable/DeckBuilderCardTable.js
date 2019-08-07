@@ -12,7 +12,6 @@ export default function DeckBuilderCardTable({ cards, handleTransfer }) {
   const [order, setOrder] = useState("desc")
   const [orderBy, setOrderBy] = useState("none")
   const [selected, setSelected] = useState([])
-  const [cardsRef, setCardsRef] = useState(cards)
 
   function isSelected(card) {
     return selected.indexOf(card.id) !== -1
@@ -21,14 +20,7 @@ export default function DeckBuilderCardTable({ cards, handleTransfer }) {
   function handleSort(e, property) {
     setOrder(orderBy === property && order === "desc" ? "asc" : "desc")
     setOrderBy(property)
-    setCardsRef(
-      sorted(cardsRef, orderBy === property && order === "desc" ? "asc" : "desc", property)
-    )
   }
-
-  useEffect(() => {
-    setCardsRef(cards)
-  }, [cards])
 
   function handleClick(e, card) {
     if (e.type === "click") {
@@ -52,7 +44,7 @@ export default function DeckBuilderCardTable({ cards, handleTransfer }) {
       <Table className={classes.table} size="small">
         <Header order={order ? order : "none"} orderBy={orderBy} onSort={handleSort} />
         <TableBody>
-          {cardsRef.map(card => (
+          {sorted(cards, order, orderBy).map(card => (
             <CRow
               key={card.id}
               card={card}
