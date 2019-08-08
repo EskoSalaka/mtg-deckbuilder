@@ -91,4 +91,171 @@ function incremented(cards, card) {
   }
 }
 
-export { frontFaceAttr, sorted, byCount, includes, incremented, decremented }
+function typeStats(cards) {
+  return [
+    {
+      name: "Creatures",
+      value: _.sum(cards.map(c => (_.includes(c.type_line, "Creature") ? c.count : 0)))
+    },
+    {
+      name: "Lands",
+      value: _.sum(cards.map(c => (_.includes(c.type_line, "Land") ? c.count : 0)))
+    },
+    {
+      name: "Planeswalkers",
+      value: _.sum(cards.map(c => (_.includes(c.type_line, "Planeswalker") ? c.count : 0)))
+    },
+    {
+      name: "Instants",
+      value: _.sum(cards.map(c => (_.includes(c.type_line, "Instant") ? c.count : 0)))
+    },
+    {
+      name: "Sorceries",
+      value: _.sum(cards.map(c => (_.includes(c.type_line, "Sorcery") ? c.count : 0)))
+    },
+    {
+      name: "Artifacts",
+      value: _.sum(cards.map(c => (_.includes(c.type_line, "Artifact") ? c.count : 0)))
+    }
+  ]
+}
+
+function simpleTypeStats(cards) {
+  return [
+    {
+      name: "Creatures",
+      value: _.sum(cards.map(c => (_.includes(c.type_line, "Creature") ? c.count : 0)))
+    },
+    {
+      name: "Lands",
+      value: _.sum(cards.map(c => (_.includes(c.type_line, "Land") ? c.count : 0)))
+    },
+    {
+      name: "Other",
+      value: _.sum(
+        cards.map(c =>
+          !_.includes(c.type_line, "Creature") && !_.includes(c.type_line, "Land") ? c.count : 0
+        )
+      )
+    }
+  ]
+}
+
+function colorStats(cards) {
+  const nonLands = cards.map(c => (!_.includes(c.type_line, "Land") ? c : false))
+
+  return [
+    {
+      name: "White",
+      value: _.sum(nonLands.map(c => (_.includes(c.color_identity, "W") ? c.count : 0)))
+    },
+    {
+      name: "Blue",
+      value: _.sum(nonLands.map(c => (_.includes(c.color_identity, "U") ? c.count : 0)))
+    },
+    {
+      name: "Black",
+      value: _.sum(nonLands.map(c => (_.includes(c.color_identity, "B") ? c.count : 0)))
+    },
+    {
+      name: "Red",
+      value: _.sum(nonLands.map(c => (_.includes(c.color_identity, "R") ? c.count : 0)))
+    },
+    {
+      name: "Green",
+      value: _.sum(nonLands.map(c => (_.includes(c.color_identity, "G") ? c.count : 0)))
+    },
+    {
+      name: "Colorless",
+      value: _.sum(
+        nonLands.map(c =>
+          !Array.isArray(!c.color_identity) || !c.color_identity.length ? c.count : 0
+        )
+      )
+    }
+  ]
+}
+
+function manaSymbols(cards) {
+  const nonLands = cards.map(c => (!_.includes(c.type_line, "Land") ? c : false))
+
+  var costs = cards.map(c => frontFaceAttr(c, "mana_cost").repeat(c.count))
+  costs = costs.join()
+  console.log(costs)
+
+  return [
+    {
+      name: "W",
+      value: costs.split("W").length - 1
+    },
+    {
+      name: "U",
+      value: costs.split("U").length - 1
+    },
+    {
+      name: "B",
+      value: costs.split("B").length - 1
+    },
+    {
+      name: "R",
+      value: costs.split("R").length - 1
+    },
+    {
+      name: "G",
+      value: costs.split("G").length - 1
+    }
+  ]
+}
+
+function manaCosts(cards) {
+  const nonLands = cards.map(c => (!_.includes(c.type_line, "Land") ? c : false))
+
+  return [
+    {
+      name: "<=1",
+      value: _.sum(nonLands.map(c => (c.cmc && c.cmc <= 1 ? c.count : 0)))
+    },
+    {
+      name: "2",
+      value: _.sum(nonLands.map(c => (c.cmc && c.cmc === 2 ? c.count : 0)))
+    },
+    {
+      name: "3",
+      value: _.sum(nonLands.map(c => (c.cmc && c.cmc === 3 ? c.count : 0)))
+    },
+    {
+      name: "4",
+      value: _.sum(nonLands.map(c => (c.cmc && c.cmc === 4 ? c.count : 0)))
+    },
+    {
+      name: "5",
+      value: _.sum(nonLands.map(c => (c.cmc && c.cmc === 5 ? c.count : 0)))
+    },
+    {
+      name: "6+",
+      value: _.sum(nonLands.map(c => (c.cmc && c.cmc > 5 ? c.count : 0)))
+    }
+  ]
+}
+
+function avgManaCost(cards) {
+  const nonLands = cards.map(c => (!_.includes(c.type_line, "Land") ? c : false))
+  const cs = nonLands.map(c => (c.cmc ? c.cmc * c.count : null))
+
+  return cs.length !== 0 ? _.sum(cs) / cs.length : 0
+}
+
+export {
+  frontFaceAttr,
+  sorted,
+  byCount,
+  includes,
+  incremented,
+  decremented,
+  typeStats,
+  colorStats,
+  manaSymbols,
+  manaCosts,
+  simpleTypeStats,
+  avgManaCost
+}

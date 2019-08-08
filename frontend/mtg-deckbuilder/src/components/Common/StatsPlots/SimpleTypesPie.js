@@ -1,23 +1,23 @@
 import React from "react"
 import { PieChart, Pie, Cell, Legend } from "recharts"
-import { typeStats } from "../utils"
+import { simpleTypeStats } from "../utils"
 
-const COLORS = ["#3b8200", "#949400", "#e6d817", "#5360ed", "#d64747", "#c2bcab"]
+const COLORS = ["#3b8200", "#949400", "#fa9039"]
 
-export default function ColorsPie({ cards }) {
-  const data = typeStats(cards)
+export default function SimpleTypesPie({ cards }) {
+  const simpleData = simpleTypeStats(cards)
 
   return (
-    <PieChart width={370} height={250}>
+    <PieChart width={350} height={250}>
       <Pie
-        data={data}
+        data={simpleData}
         labelLine={false}
         outerRadius={90}
-        margin={{ top: 10, right: 1, bottom: 10, left: 10 }}
+        margin={{ top: 5, right: 5, bottom: 5, left: 5 }}
         labelLine
         label
       >
-        {data.map((entry, index) => (
+        {simpleData.map((entry, index) => (
           <Cell fill={COLORS[index % COLORS.length]} />
         ))}
       </Pie>

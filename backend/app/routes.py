@@ -93,12 +93,14 @@ def set(code):
     sets_schema = SetSchema()
     return jsonify(sets_schema.dump(mset).data)
 
+
 @routes_blueprint.route('/api/cards/<set_code>/<collector_number>/')
 def card_by_set(set_code, collector_number):
     card = Card.query.filter_by(set=set_code, collector_number=collector_number).first_or_404()
     cards_schema = CardSchema()
     res = cards_schema.dump(card)
     return jsonify(data=res.data)
+
 
 @routes_blueprint.route('/api/sets/<code>/cards/')
 def set_cards(code):
@@ -108,7 +110,6 @@ def set_cards(code):
     res = cards_schema.dump(cards)
     return jsonify(total_items=len(cards),
                    data=res.data)
-
 
 
 @routes_blueprint.route('/api/sets/<code>/booster/')

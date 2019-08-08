@@ -1,18 +1,33 @@
 import React from "react"
 
 import { storiesOf } from "@storybook/react"
-import CardImageList from "../components/CardImageGrid"
 import mock_cards from "./mock_cards.js"
-import baseTheme from "../components/baseTheme"
-import { MuiThemeProvider } from "@material-ui/core/styles"
+
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
 import "./mana.css"
+import { cardSort, byCount } from "../components/Common/utils"
+import DeckBuilderView from "../components/DeckBuilderView/DeckBuilderView"
+import { ThemeProvider } from "@material-ui/styles"
+import { CssBaseline } from "@material-ui/core"
+import baseTheme from "../components/baseTheme.js"
+import ColorsPie from "../components/Common/StatsPlots/ColorsPie"
+import TypesPie from "../components/Common/StatsPlots/TypesPie"
+import SimpleTypesPie from "../components/Common/StatsPlots/SimpleTypesPie"
+import ManaCostsBar from "../components/Common/StatsPlots/ManaCostsBar"
+import FullStatsBox from "../components/Common/StatsPlots/FullStatsBox"
 
-import CardInfoView from "../components/CardInfoView/CardInfoView"
-import CardImage from "../components/CardImage/CardImage"
-import CardTable from "../components/CardTable/CardTable"
-import SetTitle from "../components/SetView/SetTitle"
+let c1 = mock_cards().slice(1, 100)
+let c2 = mock_cards().slice(1, 50)
+let c3 = mock_cards().slice(1, 20)
+let c4 = mock_cards().slice(1, 10)
 
-let cards = mock_cards().slice(1, 100)
+let cards = byCount(
+  c1
+    .concat(c2)
+    .concat(c3)
+    .concat(c4)
+)
+
 let set = {
   card_count: 344,
   code: "m20",
@@ -26,28 +41,35 @@ let set = {
   set_type: "core"
 }
 let c = cards[0]
-
-storiesOf("Card image grid", module).add("Full list", () => (
-  <MuiThemeProvider muiTheme={baseTheme}>
-    <CardImageList cards={cards} />
-  </MuiThemeProvider>
-))
-storiesOf("Card table", module).add("Full list", () => (
-  <MuiThemeProvider muiTheme={baseTheme}>
-    <CardTable cards={cards} />
+storiesOf("Deckbuilder card table", module).add("One", () => (
+  <MuiThemeProvider theme={baseTheme()}>
+    <DeckBuilderView cards={cards} />
   </MuiThemeProvider>
 ))
 
-storiesOf("Card image", module).add("Image", () => <CardImage card={c} />)
-
-storiesOf("Card info window", module).add("Full box", () => (
-  <MuiThemeProvider muiTheme={baseTheme}>
-    <CardInfoView card={c} />
-  </MuiThemeProvider>
-))
-
-storiesOf("Set title", module).add("Set", () => (
-  <MuiThemeProvider muiTheme={baseTheme}>
-    <SetTitle set={set} />
-  </MuiThemeProvider>
-))
+storiesOf("Stats", module)
+  .add("Full", () => (
+    <MuiThemeProvider theme={baseTheme()}>
+      <FullStatsBox cards={cards} />
+    </MuiThemeProvider>
+  ))
+  .add("By color", () => (
+    <MuiThemeProvider theme={baseTheme()}>
+      <ColorsPie cards={cards} />
+    </MuiThemeProvider>
+  ))
+  .add("By type", () => (
+    <MuiThemeProvider theme={baseTheme()}>
+      <TypesPie cards={cards} />
+    </MuiThemeProvider>
+  ))
+  .add("By simple type", () => (
+    <MuiThemeProvider theme={baseTheme()}>
+      <SimpleTypesPie cards={cards} />
+    </MuiThemeProvider>
+  ))
+  .add("By manacosts", () => (
+    <MuiThemeProvider theme={baseTheme()}>
+      <ManaCostsBar cards={cards} />
+    </MuiThemeProvider>
+  ))
