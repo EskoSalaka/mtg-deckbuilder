@@ -8,12 +8,12 @@ export default function SimpleTypesPie({ cards }) {
   const simpleData = simpleTypeStats(cards)
 
   return (
-    <PieChart width={350} height={250}>
+    <PieChart width={300} height={210}>
       <Pie
         data={simpleData}
         labelLine={false}
-        outerRadius={90}
-        margin={{ top: 5, right: 5, bottom: 5, left: 5 }}
+        outerRadius={70}
+        margin={{ top: 10, right: 10, bottom: 0, left: 10 }}
         labelLine
         label
       >

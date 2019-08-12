@@ -167,11 +167,7 @@ function colorStats(cards) {
     },
     {
       name: "Colorless",
-      value: _.sum(
-        nonLands.map(c =>
-          !Array.isArray(!c.color_identity) || !c.color_identity.length ? c.count : 0
-        )
-      )
+      value: _.sum(cards.map(c => (!c.color_identity.length ? c.count : 0)))
     }
   ]
 }
@@ -181,7 +177,6 @@ function manaSymbols(cards) {
 
   var costs = cards.map(c => frontFaceAttr(c, "mana_cost").repeat(c.count))
   costs = costs.join()
-  console.log(costs)
 
   return [
     {
@@ -212,7 +207,7 @@ function manaCosts(cards) {
 
   return [
     {
-      name: "<=1",
+      name: "<1",
       value: _.sum(nonLands.map(c => (c.cmc && c.cmc <= 1 ? c.count : 0)))
     },
     {
@@ -232,7 +227,7 @@ function manaCosts(cards) {
       value: _.sum(nonLands.map(c => (c.cmc && c.cmc === 5 ? c.count : 0)))
     },
     {
-      name: "6+",
+      name: "6>",
       value: _.sum(nonLands.map(c => (c.cmc && c.cmc > 5 ? c.count : 0)))
     }
   ]

@@ -8,6 +8,7 @@ const RADIAN = Math.PI / 180
 
 export default function ColorsPie({ cards }) {
   const colorData = colorStats(cards)
+
   const manaSymbolsData = manaSymbols(cards)
   const sum = colorData.map(d => d.value).reduce((a, b) => a + b, 0)
 
@@ -38,7 +39,7 @@ export default function ColorsPie({ cards }) {
   }
 
   return (
-    <PieChart width={260} height={250}>
+    <PieChart width={210} height={210}>
       <Pie
         data={colorData}
         dataKey="value"
@@ -46,14 +47,14 @@ export default function ColorsPie({ cards }) {
         labelLine={false}
         margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
         label={renderCustomizedLabel}
-        outerRadius={70}
+        outerRadius={50}
         fill="#8884d8"
       >
         {colorData.map((entry, index) => (
           <Cell fill={COLORS[index % COLORS.length]} />
         ))}
       </Pie>
-      <Pie data={manaSymbolsData} innerRadius={80} outerRadius={90} fill="#82ca9d" label>
+      <Pie data={manaSymbolsData} innerRadius={60} outerRadius={70} fill="#82ca9d" label>
         {manaSymbolsData.map((entry, index) => (
           <Cell fill={COLORS[index % COLORS.length]} />
         ))}

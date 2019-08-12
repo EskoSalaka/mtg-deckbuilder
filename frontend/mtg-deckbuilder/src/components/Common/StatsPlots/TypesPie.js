@@ -8,12 +8,12 @@ export default function ColorsPie({ cards }) {
   const data = typeStats(cards)
 
   return (
-    <PieChart width={370} height={250}>
+    <PieChart width={350} height={200}>
       <Pie
         data={data}
         labelLine={false}
-        outerRadius={90}
-        margin={{ top: 10, right: 1, bottom: 10, left: 10 }}
+        outerRadius={70}
+        margin={{ top: 10, right: 1, bottom: 0, left: 10 }}
         labelLine
         label
       >

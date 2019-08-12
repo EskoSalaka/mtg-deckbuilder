@@ -5,18 +5,9 @@ export default function baseTheme() {
   return createMuiTheme({
     typography: {
       useNextVariants: true,
-      fontFamily: "roboto"
+      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
     },
-    overrides: {
-      MuiTableCell: {
-        root: {
-          paddingTop: 4,
-          paddingBottom: 4,
-          "&:last-child": {
-            paddingRight: 0
-          }
-        }
-      }
-    }
+
+    overrides: {}
   })
 }

@@ -7,6 +7,7 @@ import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
 import "./mana.css"
 import { cardSort, byCount } from "../components/Common/utils"
 import DeckBuilderView from "../components/DeckBuilderView/DeckBuilderView"
+import AddBasicLandsBox from "../components/DeckBuilderView/AddBasicLandsBox"
 import { ThemeProvider } from "@material-ui/styles"
 import { CssBaseline } from "@material-ui/core"
 import baseTheme from "../components/baseTheme.js"
@@ -41,11 +42,17 @@ let set = {
   set_type: "core"
 }
 let c = cards[0]
-storiesOf("Deckbuilder card table", module).add("One", () => (
-  <MuiThemeProvider theme={baseTheme()}>
-    <DeckBuilderView cards={cards} />
-  </MuiThemeProvider>
-))
+storiesOf("Deckbuilder card table", module)
+  .add("One", () => (
+    <MuiThemeProvider theme={baseTheme()}>
+      <DeckBuilderView cards={cards} />
+    </MuiThemeProvider>
+  ))
+  .add("Basic lands", () => (
+    <MuiThemeProvider theme={baseTheme()}>
+      <AddBasicLandsBox cards={cards} />
+    </MuiThemeProvider>
+  ))
 
 storiesOf("Stats", module)
   .add("Full", () => (
