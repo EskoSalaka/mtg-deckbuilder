@@ -4,7 +4,12 @@ import {
   ExpansionPanelSummary,
   ExpansionPanel,
   ExpansionPanelDetails,
-  Typography
+  Typography,
+  AppBar,
+  Toolbar,
+  Button,
+  Drawer,
+  Box
 } from "@material-ui/core"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import styles from "./styles"
@@ -17,6 +22,11 @@ export default function DeckBuilderView({ cards }) {
 
   const [deck, setDeck] = useState([])
   const [sideboard, setSideboard] = useState(cards)
+  const [showStats, setShowStats] = useState(false)
+
+  function toggleStatsDrawer(s) {
+    setShowStats(s)
+  }
 
   function sbToDeck(card) {
     setDeck(incremented(deck, card))
@@ -29,29 +39,30 @@ export default function DeckBuilderView({ cards }) {
   }
 
   return (
-    <Grid spacing={5} container justify="center">
-      <Grid item>
-        <ExpansionPanel>
-          <ExpansionPanelSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            <Typography>Show deck statistics</Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <FullStatsBox cards={deck} />
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-      </Grid>
-      <Grid spacing={5} container justify="center">
-        <Grid item>
-          <DeckBuildeCardTable cards={sideboard} handleTransfer={sbToDeck} />
+    <div>
+      <AppBar position="static" color="default" className={classes.deckbuilderAppbar}>
+        <Toolbar className={classes.deckBuilderToolbar}>
+          <Button color="green" edge="end" onClick={toggleStatsDrawer}>
+            Show stats
+          </Button>
+          <Button color="green" edge="end">
+            Done
+          </Button>
+        </Toolbar>
+      </AppBar>
+      <Box>
+        <Grid spacing={5} container justify="center">
+          <Grid item>
+            <DeckBuildeCardTable cards={sideboard} handleTransfer={sbToDeck} />
+          </Grid>
+          <Grid item>
+            <DeckBuildeCardTable cards={deck} handleTransfer={deckToSb} />
+          </Grid>
         </Grid>
-        <Grid item>
-          <DeckBuildeCardTable cards={deck} handleTransfer={deckToSb} />
-        </Grid>
-      </Grid>
-    </Grid>
+        <Drawer anchor="top" open={showStats} onClose={e => toggleStatsDrawer(false)}>
+          <FullStatsBox cards={deck} />
+        </Drawer>
+      </Box>
+    </div>
   )
 }

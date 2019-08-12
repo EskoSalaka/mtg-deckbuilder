@@ -2,6 +2,7 @@ import React from "react"
 import { PieChart, Pie, Sector, Cell } from "recharts"
 
 import { colorStats, manaSymbols } from "../utils"
+import { Typography } from "@material-ui/core"
 
 const COLORS = ["#e3dd96", "#0e67ab", "#525252", "#d32029", "#00733d", "#c2bcab"]
 const RADIAN = Math.PI / 180
@@ -39,26 +40,31 @@ export default function ColorsPie({ cards }) {
   }
 
   return (
-    <PieChart width={210} height={210}>
-      <Pie
-        data={colorData}
-        dataKey="value"
-        nameKey="name"
-        labelLine={false}
-        margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
-        label={renderCustomizedLabel}
-        outerRadius={50}
-        fill="#8884d8"
-      >
-        {colorData.map((entry, index) => (
-          <Cell fill={COLORS[index % COLORS.length]} />
-        ))}
-      </Pie>
-      <Pie data={manaSymbolsData} innerRadius={60} outerRadius={70} fill="#82ca9d" label>
-        {manaSymbolsData.map((entry, index) => (
-          <Cell fill={COLORS[index % COLORS.length]} />
-        ))}
-      </Pie>
-    </PieChart>
+    <div>
+      <Typography align="center" variant="h6">
+        Manasymbols & Colors
+      </Typography>
+      <PieChart width={210} height={210}>
+        <Pie
+          data={colorData}
+          dataKey="value"
+          nameKey="name"
+          labelLine={false}
+          margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
+          label={renderCustomizedLabel}
+          outerRadius={50}
+          fill="#8884d8"
+        >
+          {colorData.map((entry, index) => (
+            <Cell fill={COLORS[index % COLORS.length]} />
+          ))}
+        </Pie>
+        <Pie data={manaSymbolsData} innerRadius={60} outerRadius={70} fill="#82ca9d" label>
+          {manaSymbolsData.map((entry, index) => (
+            <Cell fill={COLORS[index % COLORS.length]} />
+          ))}
+        </Pie>
+      </PieChart>
+    </div>
   )
 }

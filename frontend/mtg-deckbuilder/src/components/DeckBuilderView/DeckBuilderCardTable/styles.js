@@ -3,14 +3,14 @@ import { makeStyles } from "@material-ui/core"
 const styles = makeStyles({
   paper: {
     maxWidth: 480,
-    minWidth: 480,
+    minWidth: 420,
     maxHeight: 600,
     overflowY: "auto",
     overflowX: "hidden"
   },
   table: {
     width: "100%",
-    maxWidth: 600,
+    maxWidth: 450,
     maxHeight: "600px",
     padding: "10px"
   },
@@ -66,7 +66,7 @@ const styles = makeStyles({
     userSelect: "none",
     textOverflow: "ellipsis",
     overflow: "hidden",
-    maxWidth: "200px",
+    maxWidth: "180px",
     lineHeight: 1.7,
     pointerEvents: "none",
     texDecoration: "none"
@@ -78,7 +78,7 @@ const styles = makeStyles({
     userSelect: "none",
     textOverflow: "ellipsis",
     overflow: "hidden",
-    maxWidth: "200px",
+    maxWidth: "150px",
     lineHeight: 1.7,
     pointerEvents: "none",
     texDecoration: "none"

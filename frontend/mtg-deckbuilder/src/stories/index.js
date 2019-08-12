@@ -16,6 +16,8 @@ import TypesPie from "../components/Common/StatsPlots/TypesPie"
 import SimpleTypesPie from "../components/Common/StatsPlots/SimpleTypesPie"
 import ManaCostsBar from "../components/Common/StatsPlots/ManaCostsBar"
 import FullStatsBox from "../components/Common/StatsPlots/FullStatsBox"
+import DeckSection from "../components/DeckView/DeckSection"
+import DeckContents from "../components/DeckView/DeckContents"
 
 let c1 = mock_cards().slice(1, 100)
 let c2 = mock_cards().slice(1, 50)
@@ -42,6 +44,19 @@ let set = {
   set_type: "core"
 }
 let c = cards[0]
+
+storiesOf("Deck view", module)
+  .add("Full", () => (
+    <MuiThemeProvider theme={baseTheme()}>
+      <DeckContents deck={cards} />
+    </MuiThemeProvider>
+  ))
+  .add("One col", () => (
+    <MuiThemeProvider theme={baseTheme()}>
+      <DeckSection cards={cards.slice(1, 10)} sectionName={"Commons"} />
+    </MuiThemeProvider>
+  ))
+
 storiesOf("Deckbuilder card table", module)
   .add("One", () => (
     <MuiThemeProvider theme={baseTheme()}>

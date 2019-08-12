@@ -6,14 +6,12 @@ import { Paper, Grid, ExpansionPanel } from "@material-ui/core"
 
 export default function FullStatsBox({ cards }) {
   return (
-    <ExpansionPanel>
-      <Paper>
-        <Grid container>
-          <ColorsPie cards={cards} />
-          <SimpleTypesPie cards={cards} />
-          <ManaCostsBar cards={cards} />
-        </Grid>
-      </Paper>
-    </ExpansionPanel>
+    <Paper>
+      <Grid container>
+        <ColorsPie cards={cards} />
+        <SimpleTypesPie cards={cards} />
+        <ManaCostsBar cards={cards} />
+      </Grid>
+    </Paper>
   )
 }

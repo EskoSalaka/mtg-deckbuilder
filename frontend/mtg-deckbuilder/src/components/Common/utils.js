@@ -233,11 +233,49 @@ function manaCosts(cards) {
   ]
 }
 
+function groupBy(cards, identifier) {
+  return {
+    Creatures: cards.filter(c => _.includes(frontFaceAttr(c, "type_line"), "Creature")),
+    Lands: cards.filter(c => {
+      const typeLine = frontFaceAttr(c, "type_line")
+      return _.includes(typeLine, "Land") && !_.includes(typeLine, "Creature") ? c : null
+    }),
+    Enchantments: cards.filter(c => {
+      const typeLine = frontFaceAttr(c, "type_line")
+      return _.includes(typeLine, "Enchantent") && !_.includes(typeLine, "Creature") ? c : null
+    }),
+    Instants: cards.filter(c => {
+      const typeLine = frontFaceAttr(c, "type_line")
+      return _.includes(typeLine, "Instant") ? c : null
+    }),
+    Sorceries: cards.filter(c => {
+      const typeLine = frontFaceAttr(c, "type_line")
+      return _.includes(typeLine, "Sorcery") ? c : null
+    }),
+    Planeswalkers: cards.filter(c => {
+      const typeLine = frontFaceAttr(c, "type_line")
+      return _.includes(typeLine, "Planeswalker") ? c : null
+    }),
+    Artifacts: cards.filter(c => {
+      const typeLine = frontFaceAttr(c, "type_line")
+      return _.includes(typeLine, "Artifact") &&
+        !_.includes(typeLine, "Creature") &&
+        !_.includes(typeLine, "Land")
+        ? c
+        : null
+    })
+  }
+}
+
 function avgManaCost(cards) {
   const nonLands = cards.map(c => (!_.includes(c.type_line, "Land") ? c : false))
   const cs = nonLands.map(c => (c.cmc ? c.cmc * c.count : null))
 
   return cs.length !== 0 ? _.sum(cs) / cs.length : 0
+}
+
+function count(cards) {
+  return cards.length !== 0 ? _.sum(cards.map(c => c.count)) : 0
 }
 
 export {
@@ -252,5 +290,7 @@ export {
   manaSymbols,
   manaCosts,
   simpleTypeStats,
-  avgManaCost
+  avgManaCost,
+  count,
+  groupBy
 }
