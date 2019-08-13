@@ -5,9 +5,9 @@ import Table from "@material-ui/core/Table"
 import Paper from "@material-ui/core/Paper"
 import CRow from "./CRow"
 import Header from "./Header"
-import { sorted, byCount, includes, enhanched, incremented, decremented } from "../../Common/utils"
+import { sorted } from "../../Common/utils"
 
-export default function DeckBuilderCardTable({ cards, handleTransfer }) {
+export default function DeckBuilderCardTable({ cards, handleTransfer, handleMouseOverRow }) {
   const classes = styles()
   const [order, setOrder] = useState("desc")
   const [orderBy, setOrderBy] = useState("none")
@@ -51,6 +51,7 @@ export default function DeckBuilderCardTable({ cards, handleTransfer }) {
               isSelected={isSelected(card)}
               handleClick={handleClick}
               handleDoubleClick={handleDoubleClick}
+              handleMouseOver={handleMouseOverRow}
             />
           ))}
         </TableBody>

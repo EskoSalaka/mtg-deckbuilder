@@ -13,11 +13,11 @@ export default function SimpleTypesPie({ cards }) {
       <Typography align="center" variant="h6">
         Types
       </Typography>
-      <PieChart width={300} height={210} title="Chart of PU x UV">
+      <PieChart width={350} height={250} title="Chart of PU x UV">
         <Pie
           data={simpleData}
           labelLine={false}
-          outerRadius={70}
+          outerRadius={90}
           margin={{ top: 10, right: 10, bottom: 0, left: 10 }}
           labelLine
           label

@@ -44,7 +44,7 @@ export default function ColorsPie({ cards }) {
       <Typography align="center" variant="h6">
         Manasymbols & Colors
       </Typography>
-      <PieChart width={210} height={210}>
+      <PieChart width={250} height={250}>
         <Pie
           data={colorData}
           dataKey="value"
@@ -52,14 +52,14 @@ export default function ColorsPie({ cards }) {
           labelLine={false}
           margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
           label={renderCustomizedLabel}
-          outerRadius={50}
+          outerRadius={60}
           fill="#8884d8"
         >
           {colorData.map((entry, index) => (
             <Cell fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
-        <Pie data={manaSymbolsData} innerRadius={60} outerRadius={70} fill="#82ca9d" label>
+        <Pie data={manaSymbolsData} innerRadius={70} outerRadius={90} fill="#82ca9d" label>
           {manaSymbolsData.map((entry, index) => (
             <Cell fill={COLORS[index % COLORS.length]} />
           ))}

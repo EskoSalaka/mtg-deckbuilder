@@ -1,35 +1,25 @@
-import React, { useState, useEffect } from "react"
-import {
-  Grid,
-  ExpansionPanelSummary,
-  ExpansionPanel,
-  ExpansionPanelDetails,
-  Typography,
-  AppBar,
-  Toolbar,
-  Button,
-  Drawer,
-  Box,
-  Link
-} from "@material-ui/core"
+import React from "react"
+import { Grid, Typography, Link } from "@material-ui/core"
 import styles from "./styles"
 import { count } from "../Common/utils"
 
-export default function DeckSection({ cards, sectionName, handleOnMouseMove }) {
+export default function DeckSection({ cards, sectionName, handleMouseOver }) {
   const classes = styles()
   const cardCount = cards ? count(cards) : 0
 
   return (
-    <Grid container direction="column">
+    <Grid container direction="column" alignItems="flex-start">
       <Typography
         variant="h6"
         className={classes.sectionTitle}
       >{`${sectionName} (${cardCount})`}</Typography>
       {cards
         ? cards.map(c => (
-            <Link href={"kaka"} color="inherit" onMouseMove={handleOnMouseMove}>
-              <Typography variant="body2">{`${c.count} ${c.name}`}</Typography>
-            </Link>
+            <Grid item>
+              <Typography variant="body2" onMouseOver={e => handleMouseOver(e, c)}>
+                <Link href={"kaka"} color="inherit">{`${c.count} ${c.name}`}</Link>
+              </Typography>
+            </Grid>
           ))
         : null}
     </Grid>

@@ -14,7 +14,7 @@ export default function ManaCostsBar({ cards }) {
       </Typography>
       <BarChart
         width={300}
-        height={200}
+        height={220}
         data={manaCostsData}
         margin={{ top: 15, right: 10, bottom: 0, left: 0 }}
       >

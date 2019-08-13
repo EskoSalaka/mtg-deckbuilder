@@ -16,7 +16,6 @@ export default function CardTable({ cards }) {
   const classes = styles()
 
   const [cardImageToPopover, setCardImageToPopover] = useState("")
-
   const [cardImagePopoverPosition, setCardImagePopoverPosition] = useState({
     top: "200px",
     left: "200px"

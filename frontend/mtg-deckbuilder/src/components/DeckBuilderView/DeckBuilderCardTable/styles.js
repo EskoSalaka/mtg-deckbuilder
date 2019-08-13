@@ -2,16 +2,18 @@ import { makeStyles } from "@material-ui/core"
 
 const styles = makeStyles({
   paper: {
-    maxWidth: 480,
+    maxWidth: 420,
     minWidth: 420,
     maxHeight: 600,
+    minHeight: 600,
     overflowY: "auto",
     overflowX: "hidden"
   },
   table: {
     width: "100%",
-    maxWidth: 450,
-    maxHeight: "600px",
+    maxWidth: 420,
+    maxHeight: 600,
+    minHeight: 600,
     padding: "10px"
   },
 

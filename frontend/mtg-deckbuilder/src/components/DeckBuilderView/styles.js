@@ -1,9 +1,12 @@
 import { makeStyles } from "@material-ui/core"
 
 const styles = makeStyles({
+  topPaper: { padding: 0, maxWidth: 1300 },
   basicLandsPaper: { maxWidth: 100, padding: 10 },
   deckbuilderAppbar: { background: "floralwhite" },
-  deckBuilderToolbar: { justifyContent: "right" }
+  deckBuilderToolbar: { justifyContent: "right" },
+  contentsGrid: { padding: 30 },
+  cardImageBox: { maxWidth: 250, minWidth: 250 }
 })
 
 export default styles

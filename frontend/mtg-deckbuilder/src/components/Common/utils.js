@@ -233,7 +233,7 @@ function manaCosts(cards) {
   ]
 }
 
-function groupBy(cards, identifier) {
+function group(cards, identifier) {
   return {
     Creatures: cards.filter(c => _.includes(frontFaceAttr(c, "type_line"), "Creature")),
     Lands: cards.filter(c => {
@@ -292,5 +292,5 @@ export {
   simpleTypeStats,
   avgManaCost,
   count,
-  groupBy
+  group
 }

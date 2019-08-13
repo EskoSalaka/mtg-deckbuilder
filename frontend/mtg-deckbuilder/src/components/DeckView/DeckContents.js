@@ -9,30 +9,66 @@ import {
   Toolbar,
   Button,
   Drawer,
-  Box
+  Box,
+  Paper,
+  Divider
 } from "@material-ui/core"
 import styles from "./styles"
-import { groupBy } from "../Common/utils"
+import { group } from "../Common/utils"
 import DeckSection from "./DeckSection"
+import SideboardSection from "./SideboardSection"
+import CardImage from "../CardImage"
+import DeckTitle from "./DeckTitle"
 
 export default function DeckContents({ deck }) {
   const classes = styles()
-  const groups = groupBy(deck)
+
+  const [groupBy, setGroupBy] = useState("type")
+  const [cardToShow, setCardToShow] = useState(deck.cards[0])
+
+  const groups = group(deck.cards, groupBy)
   const groupNames = Object.keys(groups).sort((g1, g2) => groups[g1].length <= groups[g2].length)
-  console.log(groups)
+
+  function handleMouseOver(e, card) {
+    e.preventDefault()
+    setCardToShow(card)
+  }
 
   return (
-    <Grid container direction="row" spacing={2}>
-      {groupNames.map(groupName => {
-        return groups[groupName].length ? (
-          <Grid item xs={6}>
-            <DeckSection cards={groups[groupName]} sectionName={groupName} />
+    <Paper className={classes.deckListPaper}>
+      <DeckTitle deck={deck} />
+      <Divider className={classes.divider} />
+      <Grid container direction="row" spacing={2}>
+        <Grid item xs={8}>
+          <Grid container direction="row" spacing={2}>
+            {groupNames.map(groupName => {
+              return groups[groupName].length ? (
+                <Grid item xs={4} ms={4} lg={4}>
+                  <DeckSection
+                    cards={groups[groupName]}
+                    sectionName={groupName}
+                    handleMouseOver={handleMouseOver}
+                  />
+                </Grid>
+              ) : null
+            })}
           </Grid>
-        ) : null
-      })}
-      <Grid item xs={6}>
-        <DeckSection cards={deck.sideboard} sectionName={"Sideaboard"} />
+        </Grid>
+        <Grid item xs>
+          {cardToShow ? (
+            <Box className={classes.cardImageBox}>
+              <CardImage card={cardToShow} />
+            </Box>
+          ) : null}
+        </Grid>
       </Grid>
-    </Grid>
+      <Divider className={classes.divider} />
+
+      <SideboardSection
+        cards={deck.sideboard}
+        sectionName={"Sideaboard"}
+        handleMouseOver={handleMouseOver}
+      />
+    </Paper>
   )
 }

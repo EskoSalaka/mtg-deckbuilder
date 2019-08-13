@@ -45,14 +45,24 @@ let set = {
 }
 let c = cards[0]
 
+let d = {
+  title: "Unnamed deck",
+  created_at: "2019-07-12 12:11",
+  cards: cards.slice(30, 100),
+  sideboard: cards.slice(1, 10),
+  user: "Esko"
+}
+
 storiesOf("Deck view", module)
   .add("Full", () => (
     <MuiThemeProvider theme={baseTheme()}>
-      <DeckContents deck={cards} />
+      <CssBaseline />
+      <DeckContents deck={d} />
     </MuiThemeProvider>
   ))
   .add("One col", () => (
     <MuiThemeProvider theme={baseTheme()}>
+      <CssBaseline />
       <DeckSection cards={cards.slice(1, 10)} sectionName={"Commons"} />
     </MuiThemeProvider>
   ))
@@ -60,11 +70,13 @@ storiesOf("Deck view", module)
 storiesOf("Deckbuilder card table", module)
   .add("One", () => (
     <MuiThemeProvider theme={baseTheme()}>
+      <CssBaseline />
       <DeckBuilderView cards={cards} />
     </MuiThemeProvider>
   ))
   .add("Basic lands", () => (
     <MuiThemeProvider theme={baseTheme()}>
+      <CssBaseline />
       <AddBasicLandsBox cards={cards} />
     </MuiThemeProvider>
   ))
