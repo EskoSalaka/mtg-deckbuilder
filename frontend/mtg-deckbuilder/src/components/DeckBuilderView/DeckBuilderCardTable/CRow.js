@@ -11,7 +11,7 @@ import { Typography } from "@material-ui/core"
 export default function CRow({
   card,
   isSelected,
-  handleClick,
+  handleMouseDown,
   handleDoubleClick,
   handleMouseOver
 }) {
@@ -21,12 +21,11 @@ export default function CRow({
     <TableRow
       className={classes.row}
       id={card.id}
-      data-card={card.id}
       hover
       selected={isSelected}
-      onClick={e => handleClick(e, card)}
+      onClick={e => handleMouseDown(e, card)}
       onDoubleClick={e => handleDoubleClick(e, card)}
-      onMouseEnter={handleMouseOver}
+      onMouseMove={e => handleMouseOver(e, card)}
     >
       <TableCell key="num" className={classes.cell}>
         <Typography className={classes.cellText}>{card.count}</Typography>

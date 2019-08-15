@@ -5,7 +5,7 @@ const styles = makeStyles({
     maxWidth: 420,
     minWidth: 420,
     maxHeight: 600,
-    minHeight: 600,
+
     overflowY: "auto",
     overflowX: "hidden"
   },
@@ -13,14 +13,14 @@ const styles = makeStyles({
     width: "100%",
     maxWidth: 420,
     maxHeight: 600,
-    minHeight: 600,
+
     padding: "10px"
   },
 
   headerCell: {
     fontSize: 16,
-    /* backgroundColor: "black",
-    color: "white", */
+
+    background: "#bdbdbd",
 
     top: 0,
     size: "small",
@@ -30,8 +30,7 @@ const styles = makeStyles({
   },
   firstHeaderCell: {
     fontSize: 16,
-    /* backgroundColor: "black",
-    color: "white", */
+    background: "#bdbdbd",
 
     top: 0,
     size: "small",
@@ -40,8 +39,7 @@ const styles = makeStyles({
   },
   lastHeaderCell: {
     fontSize: 16,
-    /* backgroundColor: "black",
-    color: "white", */
+    background: "#bdbdbd",
 
     top: 0,
     size: "small",

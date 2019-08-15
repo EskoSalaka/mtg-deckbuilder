@@ -70,7 +70,7 @@ function includes(cards, card) {
 function decremented(cards, card) {
   return cards
     .map(c => {
-      if (c.id === card.id) c.count = c.count - 1
+      if (c.id === card.id) c.count--
       return c
     })
     .filter(c => {
@@ -81,7 +81,7 @@ function decremented(cards, card) {
 function incremented(cards, card) {
   if (includes(cards, card)) {
     return cards.map(c => {
-      if (c.id === card.id) c.count = c.count + 1
+      if (c.id === card.id) c.count++
       return c
     })
   } else {
@@ -89,6 +89,26 @@ function incremented(cards, card) {
     newCard.count = 1
     return [...cards, newCard]
   }
+}
+
+function incrementedMany(cards, cardsToIncr) {
+  let incrementedCards = _.clone(cards)
+
+  for (var i = 0; i < cardsToIncr.length; i++) {
+    incrementedCards = incremented(incrementedCards, cardsToIncr[i])
+  }
+
+  return incrementedCards
+}
+
+function decrementedMany(cards, cardsToDecr) {
+  let decementedCards = _.clone(cards)
+
+  for (var i = 0; i < cardsToDecr.length; i++) {
+    decementedCards = decremented(decementedCards, cardsToDecr[i])
+  }
+
+  return decementedCards
 }
 
 function typeStats(cards) {
@@ -285,6 +305,8 @@ export {
   includes,
   incremented,
   decremented,
+  incrementedMany,
+  decrementedMany,
   typeStats,
   colorStats,
   manaSymbols,
