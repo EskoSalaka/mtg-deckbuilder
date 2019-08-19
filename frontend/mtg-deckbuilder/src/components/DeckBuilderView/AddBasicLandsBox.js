@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Grid, Paper, TextField } from "@material-ui/core"
+import { Grid, Paper, TextField, Box } from "@material-ui/core"
 import styles from "./styles"
 
 export default function AddBasicLandsBox({ cards }) {
@@ -21,8 +21,8 @@ export default function AddBasicLandsBox({ cards }) {
   }
 
   return (
-    <Paper className={classes.basicLandsPaper}>
-      <Grid container className={classes.name} direction="column">
+    <Box border={1} borderRadius="borderRadius">
+      <Grid container className={classes.basicLandsGrid} direction="column">
         <TextField
           id="plains"
           label="plains"
@@ -86,6 +86,6 @@ export default function AddBasicLandsBox({ cards }) {
           margin="dense"
         />
       </Grid>
-    </Paper>
+    </Box>
   )
 }

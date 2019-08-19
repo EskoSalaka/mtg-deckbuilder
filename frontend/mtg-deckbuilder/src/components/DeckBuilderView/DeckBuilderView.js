@@ -20,6 +20,7 @@ import DeckBuildeCardTable from "./DeckBuilderCardTable"
 import { incrementedMany, decrementedMany, count } from "../Common/utils"
 import FullStatsBox from "../Common/StatsPlots/FullStatsBox"
 import CardImage from "../CardImage"
+import AddBasicLandsBox from "./AddBasicLandsBox"
 
 export default function DeckBuilderView({ cards }) {
   const classes = styles()
@@ -104,11 +105,12 @@ export default function DeckBuilderView({ cards }) {
               />
             </Grid>
             <Grid container item xs>
-              {cardToShow ? (
-                <Box className={classes.cardImageBox} ml="auto">
-                  <CardImage card={cardToShow} />
-                </Box>
-              ) : null}
+              <Box className={classes.cardImageBox} ml="auto">
+                <CardImage card={cardToShow} />
+              </Box>
+              <Box ml="auto">
+                <AddBasicLandsBox />
+              </Box>
             </Grid>
           </Grid>
           <Drawer anchor="top" open={showStats} onClose={e => toggleStatsDrawer(false)}>

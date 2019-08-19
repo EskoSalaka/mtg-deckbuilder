@@ -1,8 +1,10 @@
 from marshmallow import fields
 from sqlalchemy.orm import relationship
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 
-from backend.app import db, ma
-from backend.app.database import Base
+from . import login_manager, db, ma
+
 
 SCRYFALL_CARD_FIELDS = ('id', 'name', 'layout', 'scryfall_uri', 'cmc', 'type_line',
                         'oracle_text', 'mana_cost', 'power', 'toughness', 'loyalty', 'life_modifier',
@@ -19,11 +21,36 @@ SCRYFALL_SET_FIELDS = ('id', 'code', 'mtgo_code', 'name', 'scryfall_uri',
                        'released_at', 'set_type', 'card_count', 'digital', 'foil_only')
 
 
+@login_manager.user_loader
+def load_user(id):
+    return User.query.get(int(id))
+
+
+#################################################################################################
+# Assocs
+#################################################################################################
+
 card_color_association_table = db.Table('card_color_association',
                                         db.Model.metadata,
                                         db.Column('card_api_id', db.Integer, db.ForeignKey('card.api_id')),
                                         db.Column('color_api_id', db.Integer, db.ForeignKey('color.api_id')))
 
+deck_card_association_table = db.Table('deck_card_association_table',
+                                       db.Model.metadata,
+                                       db.Column('deck_api_id', db.Integer, db.ForeignKey('deck.api_id')),
+                                       db.Column('card_api_id', db.Integer, db.ForeignKey('card.api_id'))
+)
+
+sideboard_card_association_table = db.Table('sideboard_card_association_table',
+                                            db.Model.metadata,
+                                            db.Column('deck_api_id', db.Integer, db.ForeignKey('deck.api_id')),
+                                            db.Column('card_api_id', db.Integer, db.ForeignKey('card.api_id'))
+)
+
+
+#################################################################################################
+# Models
+#################################################################################################
 
 class Set(db.Model):
     __tablename__ = 'set'
@@ -54,6 +81,8 @@ class Card(db.Model):
 
     api_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     set_id = db.Column(db.Integer, db.ForeignKey('set.api_id'), nullable=False)
+    decks = relationship("Deck", secondary=deck_card_association_table, back_populates="cards")
+    sideboards = relationship("Deck", secondary=deck_card_association_table, back_populates="sideboard")
 
     id = db.Column(db.String(37), unique=True)
     name = db.Column(db.String(200), unique=False)
@@ -131,6 +160,23 @@ class Card(db.Model):
         return '<Card %r [%r]>' % (self.name, self.set)
 
 
+class Deck(db.Model):
+    __tablename__ = 'deck'
+
+    api_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(200), unique=False, nullable=False)
+    created_at = db.Column(db.String(30), unique=False)
+
+    cards = db.relationship('Card', secondary=deck_card_association_table, back_populates="decks")
+    sideboard = db.relationship('Card', secondary=sideboard_card_association_table, back_populates="sideboards")
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.api_id'))
+    user = relationship("User", back_populates="decks")
+
+    def __repr__(self):
+        return '<Deck %r [%r]>' % (self.name, self.created_at)
+
+
 class Color(db.Model):
     __tablename__ = 'color'
 
@@ -144,6 +190,26 @@ class Color(db.Model):
         return self.value
 
 
+class User(UserMixin, db.Model):
+    __tablename__ = "user"
+
+    api_id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(30), unique=True, index=True)
+    password = db.Column(db.String(300))
+    email = db.Column(db.String(50), unique=True, index=True)
+
+    decks = relationship("Deck", back_populates="user")
+
+    def set_password(self, pw):
+        self.password = generate_password_hash(pw)
+
+    def check_password(self, pw):
+        return check_password_hash(self.password, pw)
+
+
+#################################################################################################
+# Schemas
+#################################################################################################
 class ColorSchema(ma.Schema):
     value = fields.String()
 

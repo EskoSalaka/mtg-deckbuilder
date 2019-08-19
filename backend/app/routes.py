@@ -1,10 +1,13 @@
 from flask import Blueprint, url_for
 from flask.json import jsonify
 from flask import request
+
 from sqlalchemy import or_
 from random import sample, randint
 
-from backend.app.models import CardSchema, Card, SetSchema, Set, Color, ColorSchema
+from backend.app import db
+from .forms import SignupForm
+from .models import CardSchema, Card, SetSchema, Set, Color, ColorSchema, User
 
 routes_blueprint = Blueprint('routes', __name__,)
 
@@ -157,4 +160,23 @@ def set_booster(code):
 
     return jsonify(total_items=len(booster_pack),
                    data=res.data)
+
+
+@routes_blueprint.route('/api/signup', methods=['POST'])
+def signup():
+    form = SignupForm(request.form)
+    username = request.form.get('username')
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    if form.validate():
+        new_user = User(username=form.username.data, email=form.email.data)
+        new_user.set_password(form.password.data)
+        db.session.add(new_user)
+        db.session.commit()
+        return jsonify(message=f"Registration for user {username} successful"), 200
+
+    else:
+        print(form.errors.items())
+        return jsonify(error=400, message=form.errors), 400
 

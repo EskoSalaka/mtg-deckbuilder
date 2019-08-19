@@ -1288,3 +1288,8 @@ frontend/mtg-deckbuilder/storybook-static/vendors~main.12f29cc95d84fdaa25a5.bund
 frontend/mtg-deckbuilder/storybook-static/vendors~main.css
 frontend/mtg-deckbuilder/storybook-static/vendors~main.css.map
 frontend/mtg-deckbuilder/storybook-static/vendors~main.d31e0d3ccd2fe033f555.bundle.js
+backend/app/__init__.py
+backend/app/__pycache__/__init__.cpython-37.pyc
+backend/app/__pycache__/routes.cpython-37.pyc
+backend/app/__pycache__/models.cpython-37.pyc
+backend/app/__pycache__/config.cpython-37.pyc
