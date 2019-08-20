@@ -1,9 +1,11 @@
+import datetime
+
+import jwt
 from marshmallow import fields
 from sqlalchemy.orm import relationship
-from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from . import login_manager, db, ma
+from . import db, ma, app
 
 
 SCRYFALL_CARD_FIELDS = ('id', 'name', 'layout', 'scryfall_uri', 'cmc', 'type_line',
@@ -19,11 +21,6 @@ SCRYFALL_CARD_FIELDS = ('id', 'name', 'layout', 'scryfall_uri', 'cmc', 'type_lin
 
 SCRYFALL_SET_FIELDS = ('id', 'code', 'mtgo_code', 'name', 'scryfall_uri',
                        'released_at', 'set_type', 'card_count', 'digital', 'foil_only')
-
-
-@login_manager.user_loader
-def load_user(id):
-    return User.query.get(int(id))
 
 
 #################################################################################################
@@ -190,7 +187,7 @@ class Color(db.Model):
         return self.value
 
 
-class User(UserMixin, db.Model):
+class User(db.Model):
     __tablename__ = "user"
 
     api_id = db.Column(db.Integer, primary_key=True)
@@ -205,6 +202,66 @@ class User(UserMixin, db.Model):
 
     def check_password(self, pw):
         return check_password_hash(self.password, pw)
+
+    def encode_auth_token(self):
+        try:
+            payload = {'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1, seconds=0),
+                       'iat': datetime.datetime.utcnow(),
+                       'user_id': self.api_id}
+
+            return jwt.encode(payload,
+                              app.config.get('SECRET_KEY'),
+                              algorithm='HS256')
+
+        except Exception as e:
+            return e
+
+    @staticmethod
+    def decode_auth_token(auth_token):
+        try:
+            payload = jwt.decode(auth_token, app.config.get('SECRET_KEY'))
+
+            if BlacklistToken.check_blacklist(auth_token):
+                return 'Token blacklisted. Please log in again.'
+            else:
+                return payload['user_id']
+
+        except jwt.ExpiredSignatureError:
+            return 'Signature expired. Please log in again.'
+
+        except jwt.InvalidTokenError:
+            return 'Invalid token. Please log in again.'
+
+    @staticmethod
+    def from_token(auth_token):
+        resp = User.decode_auth_token(auth_token)
+
+        if not isinstance(resp, str):
+            return User.query.filter_by(api_id=resp).first()
+        else:
+            return None
+
+
+class BlacklistToken(db.Model):
+    __tablename__ = 'blacklist_token'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    token = db.Column(db.String(500), unique=True, nullable=False)
+    blacklisted_on = db.Column(db.DateTime, nullable=False)
+
+    @staticmethod
+    def check_blacklist(auth_token):
+        if BlacklistToken.query.filter_by(token=str(auth_token)).first():
+            return True
+        else:
+            return False
+
+    def __init__(self, token):
+        self.token = token
+        self.blacklisted_on = datetime.datetime.now()
+
+    def __repr__(self):
+        return '<id: token: {}'.format(self.token)
 
 
 #################################################################################################

@@ -6,8 +6,8 @@ from sqlalchemy import or_
 from random import sample, randint
 
 from backend.app import db
-from .forms import SignupForm
-from .models import CardSchema, Card, SetSchema, Set, Color, ColorSchema, User
+from .forms import SignupForm, LoginForm
+from .models import CardSchema, Card, SetSchema, Set, Color, ColorSchema, User, BlacklistToken
 
 routes_blueprint = Blueprint('routes', __name__,)
 
@@ -117,66 +117,138 @@ def set_cards(code):
 
 @routes_blueprint.route('/api/sets/<code>/booster/')
 def set_booster(code):
-    mset = Set.query.filter_by(code=code).first_or_404()
-    cards = mset.cards
-    args = request.args
+    try:
+        mset = Set.query.filter_by(code=code).first_or_404()
+        cards = mset.cards
+        args = request.args
 
-    commons_num = int(args.get('commons', 11))
-    uncommons_num = int(args.get('uncommons', 3))
-    rares_num = int(args.get('rares', 1))
-    basic_land = args.get('basic_land', 'false')
+        commons_num = int(args.get('commons', 11))
+        uncommons_num = int(args.get('uncommons', 3))
+        rares_num = int(args.get('rares', 1))
+        basic_land = args.get('basic_land', 'false')
 
-    commons = [card for card in cards if card.rarity == 'common' and 'Basic Land' not in card.type_line]
-    uncommons = [card for card in cards if card.rarity == 'uncommon']
-    rares = [card for card in cards if card.rarity == 'rare']
-    mythics = [card for card in cards if card.rarity == 'mythic']
-    basic_lands = [card for card in cards if 'Basic Land' in card.type_line]
+        commons = [card for card in cards if card.rarity == 'common' and 'Basic Land' not in card.type_line]
+        uncommons = [card for card in cards if card.rarity == 'uncommon']
+        rares = [card for card in cards if card.rarity == 'rare']
+        mythics = [card for card in cards if card.rarity == 'mythic']
+        basic_lands = [card for card in cards if 'Basic Land' in card.type_line]
 
-    mythics_num = [1 for _ in range(rares_num) if randint(0, 8) == 0] if len(mythics) else 0
-    mythics_num = sum(mythics_num)
-    rares_num -= mythics_num
+        mythics_num = [1 for _ in range(rares_num) if randint(0, 8) == 0] if len(mythics) else 0
+        mythics_num = sum(mythics_num)
+        rares_num -= mythics_num
 
-    if len(commons) < commons_num or \
-       len(uncommons) < uncommons_num or \
-       len(rares) < rares_num or \
-       len(mythics) < mythics_num:
-        return jsonify(error=405,
-                       text="Could not generate a sample with the given arguments or "
-                            "the set is not suitable for generating booster-like samples"), 405
+        if len(commons) < commons_num or \
+           len(uncommons) < uncommons_num or \
+           len(rares) < rares_num or \
+           len(mythics) < mythics_num:
+            return jsonify(error=405,
+                           message="Could not generate a sample with the given arguments or "
+                                   "the set is not suitable for generating booster-like samples"), 405
 
-    booster_pack = []
+        booster_pack = []
 
-    if basic_land == 'true' and len(basic_land) > 0:
-        commons_num -= 1
-        booster_pack.extend(sample(basic_lands, 1))
+        if basic_land == 'true' and len(basic_land) > 0:
+            commons_num -= 1
+            booster_pack.extend(sample(basic_lands, 1))
 
-    booster_pack.extend(sample(commons, commons_num))
-    booster_pack.extend(sample(uncommons, uncommons_num))
-    booster_pack.extend(sample(rares, rares_num))
-    booster_pack.extend(sample(mythics, mythics_num))
+        booster_pack.extend(sample(commons, commons_num))
+        booster_pack.extend(sample(uncommons, uncommons_num))
+        booster_pack.extend(sample(rares, rares_num))
+        booster_pack.extend(sample(mythics, mythics_num))
 
-    cards_schema = CardSchema(many=True)
-    res = cards_schema.dump(booster_pack)
+        cards_schema = CardSchema(many=True)
+        res = cards_schema.dump(booster_pack)
 
-    return jsonify(total_items=len(booster_pack),
-                   data=res.data)
+        return jsonify(total_items=len(booster_pack),
+                       data=res.data)
+
+    except Exception as e:
+        print(e)
+        return jsonify(error=500, message="Internal server error." + str(e)), 500
 
 
 @routes_blueprint.route('/api/signup', methods=['POST'])
 def signup():
     form = SignupForm(request.form)
-    username = request.form.get('username')
-    email = request.form.get('email')
-    password = request.form.get('password')
 
     if form.validate():
-        new_user = User(username=form.username.data, email=form.email.data)
-        new_user.set_password(form.password.data)
-        db.session.add(new_user)
-        db.session.commit()
-        return jsonify(message=f"Registration for user {username} successful"), 200
+        try:
+            new_user = User(username=form.username.data, email=form.email.data)
+            new_user.set_password(form.password.data)
+            db.session.add(new_user)
+            db.session.commit()
+
+            return jsonify(message="Registration successful"), 200
+
+        except Exception as e:
+            print(e)
+            return jsonify(error=500, message="Internal server error"), 500
 
     else:
-        print(form.errors.items())
-        return jsonify(error=400, message=form.errors), 400
+        return jsonify(error=400, message=list(form.errors.items())[0][1][0]), 400
+
+
+@routes_blueprint.route('/api/login', methods=['POST'])
+def login():
+    form = LoginForm(request.form)
+
+    if form.validate():
+        try:
+            user = User.query.filter_by(email=form.email.data).first()
+            auth_token = user.encode_auth_token()
+
+            return jsonify(message="Login successful", auth_token=auth_token.decode()), 200
+
+        except Exception as e:
+            print(e)
+            return jsonify(error=500, message="Internal server error"), 500
+
+    else:
+        return jsonify(error=400, message=list(form.errors.items())[0][1][0]), 400
+
+
+@routes_blueprint.route('/api/logout', methods=['POST'])
+def logout():
+    auth_header = request.headers.get('Authorization')
+
+    if auth_header:
+        auth_token = auth_header.split(" ")[1]
+
+        resp = User.decode_auth_token(auth_token)
+
+        if not isinstance(resp, str):
+            blacklist_token = BlacklistToken(token=auth_token)
+
+            try:
+                db.session.add(blacklist_token)
+                db.session.commit()
+
+                return jsonify(message="Logout successful"), 200
+            except Exception as e:
+                print(e)
+                return jsonify(message=str(e)), 200
+        else:
+            return jsonify(error=401, message="Invalid or expired auth token"), 401
+
+    else:
+        return jsonify(error=403, message="Missing token"), 403
+
+
+@routes_blueprint.route('/api/verify_auth', methods=['POST'])
+def verify_auth():
+    auth_header = request.headers.get('Authorization')
+
+    if auth_header:
+        auth_token = auth_header.split(" ")[1]
+
+        resp = User.decode_auth_token(auth_token)
+
+        if not isinstance(resp, str):
+            return jsonify(message="Authenticated"), 200
+        else:
+            return jsonify(message="Invalid or expired token"), 401
+
+    else:
+        return jsonify(error=401, message="Missing token"), 403
+
 

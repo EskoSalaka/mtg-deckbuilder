@@ -18,9 +18,38 @@ class Unique(object):
             raise ValidationError(self.message)
 
 
-class EmailPasswordForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
+class Exists(object):
+    def __init__(self, model, field, message):
+        self.model = model
+        self.field = field
+        self.message = message
+
+    def __call__(self, form, field):
+        check = self.model.query.filter(self.field == field.data).first()
+        if not check:
+            raise ValidationError(self.message)
+
+
+class PasswordHash(object):
+    def __init__(self, user_model, message):
+        self.user_model = user_model
+        self.message = message
+
+    def __call__(self, form, field):
+        user = self.user_model.query.filter_by(email=form.email.data).first()
+
+        if not user or not user.check_password(form.password.data):
+            raise ValidationError(self.message)
+
+
+class LoginForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(message="Email is required"),
+                                             Email(),
+                                             Exists(User,
+                                                    User.email,
+                                                    message='Incorrect email or password')])
+    password = PasswordField('Password', validators=[DataRequired(message="Password is required"),
+                                                     PasswordHash(User, message='Incorrect email or password')])
 
 
 class SignupForm(FlaskForm):
