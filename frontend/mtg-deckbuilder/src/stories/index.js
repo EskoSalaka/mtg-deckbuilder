@@ -18,6 +18,8 @@ import ManaCostsBar from "../components/Common/StatsPlots/ManaCostsBar"
 import FullStatsBox from "../components/Common/StatsPlots/FullStatsBox"
 import DeckSection from "../components/DeckView/DeckSection"
 import DeckContents from "../components/DeckView/DeckContents"
+import LoginView from "../components/LoginView/LoginView"
+import SignupView from "../components/SignupView/SignupView"
 
 let c1 = mock_cards().slice(1, 100)
 let c2 = mock_cards().slice(1, 50)
@@ -105,5 +107,17 @@ storiesOf("Stats", module)
   .add("By manacosts", () => (
     <MuiThemeProvider theme={baseTheme()}>
       <ManaCostsBar cards={cards} />
+    </MuiThemeProvider>
+  ))
+
+storiesOf("Auth", module)
+  .add("Login", () => (
+    <MuiThemeProvider theme={baseTheme()}>
+      <LoginView />
+    </MuiThemeProvider>
+  ))
+  .add("Sign up", () => (
+    <MuiThemeProvider theme={baseTheme()}>
+      <SignupView />
     </MuiThemeProvider>
   ))
