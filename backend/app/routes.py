@@ -1,6 +1,7 @@
 from flask import Blueprint, url_for
 from flask.json import jsonify
 from flask import request
+from flask_cors import cross_origin
 
 from sqlalchemy import or_
 from random import sample, randint
@@ -164,7 +165,7 @@ def set_booster(code):
 
     except Exception as e:
         print(e)
-        return jsonify(error=500, message="Internal server error." + str(e)), 500
+        return jsonify(error=500, status="Fail", message="Internal server error." + str(e)), 500
 
 
 @routes_blueprint.route('/api/signup', methods=['POST'])
@@ -178,11 +179,11 @@ def signup():
             db.session.add(new_user)
             db.session.commit()
 
-            return jsonify(message="Registration successful"), 200
+            return jsonify(status="Success", message="Registration successful"), 200
 
         except Exception as e:
             print(e)
-            return jsonify(error=500, message="Internal server error"), 500
+            return jsonify(error=500, status="Fail", message="Internal server error"), 500
 
     else:
         return jsonify(error=400, message=list(form.errors.items())[0][1][0]), 400
@@ -197,14 +198,14 @@ def login():
             user = User.query.filter_by(email=form.email.data).first()
             auth_token = user.encode_auth_token()
 
-            return jsonify(message="Login successful", auth_token=auth_token.decode()), 200
+            return jsonify(status="Success", message="Login successful", auth_token=auth_token.decode()), 200
 
         except Exception as e:
             print(e)
-            return jsonify(error=500, message="Internal server error"), 500
+            return jsonify(error=500, status="Fail", message="Internal server error"), 500
 
     else:
-        return jsonify(error=400, message=list(form.errors.items())[0][1][0]), 400
+        return jsonify(error=400, status="Fail", message=list(form.errors.items())[0][1][0]), 400
 
 
 @routes_blueprint.route('/api/logout', methods=['POST'])
@@ -223,18 +224,18 @@ def logout():
                 db.session.add(blacklist_token)
                 db.session.commit()
 
-                return jsonify(message="Logout successful"), 200
+                return jsonify(status="Success", message="Logout successful"), 200
             except Exception as e:
                 print(e)
-                return jsonify(message=str(e)), 200
+                return jsonify(status="Success", message=str(e)), 200
         else:
-            return jsonify(error=401, message="Invalid or expired auth token"), 401
+            return jsonify(error=401, status="Fail", message="Invalid or expired auth token"), 401
 
     else:
-        return jsonify(error=403, message="Missing token"), 403
+        return jsonify(error=403, status="Fail", message="Missing token"), 403
 
 
-@routes_blueprint.route('/api/verify_auth', methods=['POST'])
+@routes_blueprint.route('/api/verify_auth', methods=['GET'])
 def verify_auth():
     auth_header = request.headers.get('Authorization')
 
@@ -244,11 +245,11 @@ def verify_auth():
         resp = User.decode_auth_token(auth_token)
 
         if not isinstance(resp, str):
-            return jsonify(message="Authenticated"), 200
+            return jsonify(status="Success", message="Authenticated"), 200
         else:
-            return jsonify(message="Invalid or expired token"), 401
+            return jsonify(error=401, status="Fail", message="Invalid or expired token"), 401
 
     else:
-        return jsonify(error=401, message="Missing token"), 403
+        return jsonify(error=401, status="Fail", message="Missing token"), 403
 
 

@@ -16,7 +16,8 @@ const styles = makeStyles({
   avatar: {
     marginBottom: 8,
     backgroundColor: "red"
-  }
+  },
+  errorText: { paddingLeft: 6, paddingRight: 6 }
 })
 
 export default styles

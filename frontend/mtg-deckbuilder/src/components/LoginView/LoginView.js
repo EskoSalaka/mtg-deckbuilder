@@ -7,17 +7,44 @@ import {
   Checkbox,
   Button,
   Paper,
-  Avatar
+  Avatar,
+  Box,
+  IconButton
 } from "@material-ui/core"
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined"
+import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined"
 import styles from "./styles"
+import authService from "../../services/auth"
 
 export default function LoginView({ match }) {
   const classes = styles()
-  console.log("====================================")
-  console.log("Set")
-  console.log(match)
-  console.log("====================================")
+
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [errorMessage, setErrorMessage] = useState("")
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    console.log(email, password)
+    let resp = await authService.login(email, password)
+    console.log("====================================")
+    console.log(resp)
+    console.log("====================================")
+
+    if (resp.status === "Fail") setErrorMessage(resp.message)
+
+    let resp2 = await authService.verify_auth()
+    console.log("====================================")
+    console.log(resp2)
+    console.log("====================================")
+  }
+
+  function handleOnChange(e) {
+    e.preventDefault()
+    e.target.id === "email" ? setEmail(e.target.value) : setPassword(e.target.value)
+
+    console.log(email, password)
+  }
 
   useEffect(() => {}, [])
 
@@ -29,7 +56,16 @@ export default function LoginView({ match }) {
       <Typography component="h1" variant="h5">
         Log in
       </Typography>
-      <form className={classes.loginForm} noValidate>
+      {errorMessage ? (
+        <Box p={1} borderRadius={16} bgcolor="error.main" display="flex" alignItems="center">
+          <Typography className={classes.errorText}>{errorMessage}</Typography>
+          <IconButton size="small" onClick={e => setErrorMessage("")}>
+            <CloseOutlinedIcon />
+          </IconButton>
+        </Box>
+      ) : null}
+
+      <form className={classes.loginForm} noValidate onSubmit={handleSubmit}>
         <TextField
           variant="outlined"
           margin="normal"
@@ -40,6 +76,7 @@ export default function LoginView({ match }) {
           name="email"
           autoComplete="email"
           autoFocus
+          onChange={handleOnChange}
         />
         <TextField
           variant="outlined"
@@ -51,6 +88,7 @@ export default function LoginView({ match }) {
           type="password"
           id="password"
           autoComplete="current-password"
+          onChange={handleOnChange}
         />
         <FormControlLabel
           control={<Checkbox value="remember" color="primary" />}
