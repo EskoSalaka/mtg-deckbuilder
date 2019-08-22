@@ -171,6 +171,7 @@ def set_booster(code):
 @routes_blueprint.route('/api/signup', methods=['POST'])
 def signup():
     form = SignupForm(request.form)
+    print(request.form)
 
     if form.validate():
         try:
@@ -186,7 +187,8 @@ def signup():
             return jsonify(error=500, status="Fail", message="Internal server error"), 500
 
     else:
-        return jsonify(error=400, message=list(form.errors.items())[0][1][0]), 400
+        print(form.errors)
+        return jsonify(error=400, status="Fail", message=list(form.errors.items())[0][1][0]), 400
 
 
 @routes_blueprint.route('/api/login', methods=['POST'])

@@ -12,6 +12,10 @@ function getAuthToken() {
   return localStorage.getItem("auth_token")
 }
 
+function isLoggedIn_f() {
+  return getAuthToken() ? true : false
+}
+
 async function login(email, password) {
   try {
     const response = await axios({
@@ -68,4 +72,23 @@ async function logout() {
   }
 }
 
-export default { login, logout, verify_auth }
+async function signup(username, email, password) {
+  try {
+    const response = await axios({
+      method: "post",
+      url: `${baseURL}/signup`,
+      data: formUrlEncoded({ username: username, email: email, password: password }),
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      }
+    })
+
+    setAuthToken(response.data.auth_token)
+
+    return response.data
+  } catch (error) {
+    return error.response.data
+  }
+}
+
+export default { login, logout, signup, verify_auth, isLoggedIn_f }

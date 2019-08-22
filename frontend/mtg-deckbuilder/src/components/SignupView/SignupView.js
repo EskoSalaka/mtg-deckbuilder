@@ -1,17 +1,42 @@
 import React, { useState, useEffect } from "react"
-import setService from "../../services/sets"
-import { Typography, TextField, Button, Paper, Grid, Link, Avatar } from "@material-ui/core"
+import authService from "../../services/auth"
+import {
+  Typography,
+  TextField,
+  Button,
+  Paper,
+  Grid,
+  Link,
+  Avatar,
+  Box,
+  IconButton
+} from "@material-ui/core"
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined"
+import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined"
 import styles from "./styles"
 
 export default function LoginView({ match }) {
   const classes = styles()
-  console.log("====================================")
-  console.log("Set")
-  console.log(match)
-  console.log("====================================")
 
-  useEffect(() => {}, [])
+  const [values, setValues] = useState({
+    username: "",
+    email: "",
+    password: ""
+  })
+  const [errorMessage, setErrorMessage] = useState("")
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    let resp = await authService.signup(values.username, values.email, values.password)
+
+    if (resp.status === "Fail") setErrorMessage(resp.message)
+  }
+
+  function handleOnChange(e) {
+    e.preventDefault()
+    setValues({ ...values, [e.target.id]: e.target.value })
+    console.log(values)
+  }
 
   return (
     <Paper className={classes.signupPaper}>
@@ -21,7 +46,20 @@ export default function LoginView({ match }) {
       <Typography component="h1" variant="h5">
         Sign up
       </Typography>
-      <form className={classes.signupForm} noValidate>
+      {errorMessage && (
+        <Box p={1} mt={1} borderRadius={16} bgcolor="error.main" display="flex" alignItems="center">
+          <Typography className={classes.errorText}>{errorMessage}</Typography>
+          <IconButton size="small" onClick={e => setErrorMessage("")}>
+            <CloseOutlinedIcon />
+          </IconButton>
+        </Box>
+      )}
+      <form
+        className={classes.signupForm}
+        noValidate
+        onSubmit={handleSubmit}
+        onChange={handleOnChange}
+      >
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField

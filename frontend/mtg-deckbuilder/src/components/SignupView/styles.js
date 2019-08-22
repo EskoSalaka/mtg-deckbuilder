@@ -4,7 +4,7 @@ const styles = makeStyles({
   signupPaper: {
     marginTop: 24,
     padding: 16,
-    maxWidth: 600,
+    maxWidth: 400,
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
