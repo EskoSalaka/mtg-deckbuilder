@@ -1,14 +1,17 @@
+from itertools import groupby, count
+
 from flask import Blueprint, url_for
 from flask.json import jsonify
 from flask import request
-from flask_cors import cross_origin
 
 from sqlalchemy import or_
 from random import sample, randint
 
 from backend.app import db
+from backend.app.decorators import authorize
 from .forms import SignupForm, LoginForm
-from .models import CardSchema, Card, SetSchema, Set, Color, ColorSchema, User, BlacklistToken
+from .models import CardSchema, Card, SetSchema, Set, Color, ColorSchema, User, BlacklistToken, Deck, \
+    DeckCardAssociation, SideboardCardAssociation
 
 routes_blueprint = Blueprint('routes', __name__,)
 
@@ -116,7 +119,7 @@ def set_cards(code):
                    data=res.data)
 
 
-@routes_blueprint.route('/api/sets/<code>/booster/')
+@routes_blueprint.route('/api/sets/<code>/booster')
 def set_booster(code):
     try:
         mset = Set.query.filter_by(code=code).first_or_404()
@@ -168,10 +171,121 @@ def set_booster(code):
         return jsonify(error=500, status="Fail", message="Internal server error." + str(e)), 500
 
 
+@routes_blueprint.route('/api/decks/<api_id>', methods=['GET'])
+def deck(api_id):
+    deck = Deck.query.filter_by(api_id=api_id).first_or_404()
+    cards_schema = CardSchema(many=True)
+
+    return jsonify(name=deck.name,
+                   user=deck.user.username,
+                   created_at=deck.created_at.strftime('%Y-%m-%d %H:%M'),
+                   cards=cards_schema.dump(deck.get_cards()).data,
+                   sideboard=cards_schema.dump(deck.get_sideboard()).data
+                   )
+
+
+@routes_blueprint.route('/api/decks/<api_id>', methods=['PUT'])
+@authorize
+def edit_deck(user, api_id):
+    deck = Deck.query.filter_by(api_id=api_id).first_or_404()
+
+    if deck.user.api_id != user.api_id:
+        return jsonify(error=403, status="Fail", message="Forbidden"), 403
+
+    try:
+        json_data = request.json
+        card_ids = json_data['cards']
+        sideboard_ids = json_data['sideboard']
+        deck.name = json_data['name']
+
+        deck.cards = []
+        deck.sideboard = []
+
+        for card_id, card_ids in groupby(card_ids, lambda _: _):
+            deck_assoc = DeckCardAssociation(count=len(list(card_ids)))
+            deck_assoc.card = Card.query.filter_by(id=card_id).first()
+            deck_assoc.deck = deck
+            deck.cards.append(deck_assoc)
+
+        for card_id, card_ids in groupby(sideboard_ids, lambda _: _):
+            sb_assoc = SideboardCardAssociation(count=len(list(card_ids)))
+            sb_assoc.card = Card.query.filter_by(id=card_id).first()
+            sb_assoc.sideboard = deck
+            deck.sideboard.append(sb_assoc)
+
+        db.session.commit()
+        return jsonify(status="Success", message="Deck successfully edited"), 200
+
+    except KeyError as e:
+        print("error", str(e))
+        return jsonify(error=422, status="Fail", message=f"The data is missing parameter: {str(e)}"), 422
+    except Exception as e:
+        print("error", str(e))
+        return jsonify(error=500, status="Fail", message="Internal server error"), 500
+
+
+@routes_blueprint.route('/api/decks/<api_id>', methods=['DELETE'])
+@authorize
+def delete_deck(user, api_id):
+    deck = Deck.query.filter_by(api_id=api_id).first_or_404()
+
+    if deck.user.api_id != user.api_id:
+        return jsonify(error=403, status="Fail", message="Forbidden"), 403
+
+    try:
+        db.session.delete(deck)
+        db.session.commit()
+
+        return jsonify(status="Success", message="Deck successfully deleted"), 200
+
+    except KeyError as e:
+        print("error", str(e))
+        return jsonify(error=422, status="Fail", message=f"The data is missing parameter: {str(e)}"), 422
+    except Exception as e:
+        print("error", str(e))
+        return jsonify(error=500, status="Fail", message="Internal server error"), 500
+
+
+@routes_blueprint.route('/api/decks/create', methods=['POST'])
+@authorize
+def create_deck(user):
+    try:
+        json_data = request.json
+        card_ids = json_data['cards']
+        sideboard_ids = json_data['sideboard']
+        name = json_data['name']
+
+        new_deck = Deck(name=name)
+        user.decks.append(new_deck)
+
+        for card_id, card_ids in groupby(card_ids, lambda _: _):
+            deck_assoc = DeckCardAssociation(count=len(list(card_ids)))
+            deck_assoc.card = Card.query.filter_by(id=card_id).first()
+            deck_assoc.deck = new_deck
+            new_deck.cards.append(deck_assoc)
+
+        for card_id, card_ids in groupby(sideboard_ids, lambda _: _):
+            sb_assoc = SideboardCardAssociation(count=len(list(card_ids)))
+            sb_assoc.card = Card.query.filter_by(id=card_id).first()
+            sb_assoc.sideboard = new_deck
+            new_deck.sideboard.append(sb_assoc)
+
+        db.session.add(new_deck)
+        db.session.commit()
+
+        return jsonify(status="Success", message="New deck successfully created"), 200
+
+    except KeyError as e:
+        print("error", str(e))
+        return jsonify(error=422, status="Fail", message=f"The data is missing parameter: {str(e)}"), 422
+    except Exception as e:
+        print("error", str(e))
+        return jsonify(error=500, status="Fail", message="Internal server error"), 500
+
+
 @routes_blueprint.route('/api/signup', methods=['POST'])
 def signup():
     form = SignupForm(request.form)
-    print(request.form)
 
     if form.validate():
         try:

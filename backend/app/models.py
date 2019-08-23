@@ -27,22 +27,32 @@ SCRYFALL_SET_FIELDS = ('id', 'code', 'mtgo_code', 'name', 'scryfall_uri',
 # Assocs
 #################################################################################################
 
+class DeckCardAssociation(db.Model):
+    __tablename__ = 'deck_card_association'
+    deck_api_id = db.Column(db.Integer, db.ForeignKey('deck.api_id'), primary_key=True)
+    card_api_id = db.Column(db.Integer, db.ForeignKey('card.api_id'), primary_key=True)
+
+    count = db.Column(db.Integer, default=1)
+
+    card = relationship("Card", back_populates="decks")
+    deck = relationship("Deck", back_populates="cards")
+
+
 card_color_association_table = db.Table('card_color_association',
                                         db.Model.metadata,
                                         db.Column('card_api_id', db.Integer, db.ForeignKey('card.api_id')),
                                         db.Column('color_api_id', db.Integer, db.ForeignKey('color.api_id')))
 
-deck_card_association_table = db.Table('deck_card_association_table',
-                                       db.Model.metadata,
-                                       db.Column('deck_api_id', db.Integer, db.ForeignKey('deck.api_id')),
-                                       db.Column('card_api_id', db.Integer, db.ForeignKey('card.api_id'))
-)
 
-sideboard_card_association_table = db.Table('sideboard_card_association_table',
-                                            db.Model.metadata,
-                                            db.Column('deck_api_id', db.Integer, db.ForeignKey('deck.api_id')),
-                                            db.Column('card_api_id', db.Integer, db.ForeignKey('card.api_id'))
-)
+class SideboardCardAssociation(db.Model):
+    __tablename__ = 'sideboard_card_association'
+    deck_api_id = db.Column(db.Integer, db.ForeignKey('deck.api_id'), primary_key=True)
+    card_api_id = db.Column(db.Integer, db.ForeignKey('card.api_id'), primary_key=True)
+
+    count = db.Column(db.Integer, )
+
+    card = relationship("Card", back_populates="sideboards")
+    sideboard = relationship("Deck", back_populates="sideboard")
 
 
 #################################################################################################
@@ -78,8 +88,8 @@ class Card(db.Model):
 
     api_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     set_id = db.Column(db.Integer, db.ForeignKey('set.api_id'), nullable=False)
-    decks = relationship("Deck", secondary=deck_card_association_table, back_populates="cards")
-    sideboards = relationship("Deck", secondary=deck_card_association_table, back_populates="sideboard")
+    decks = relationship('DeckCardAssociation', back_populates="card")
+    sideboards = relationship('SideboardCardAssociation', back_populates="card")
 
     id = db.Column(db.String(37), unique=True)
     name = db.Column(db.String(200), unique=False)
@@ -161,17 +171,36 @@ class Deck(db.Model):
     __tablename__ = 'deck'
 
     api_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(200), unique=False, nullable=False)
-    created_at = db.Column(db.String(30), unique=False)
+    name = db.Column(db.String(200), unique=False, nullable=False, default="Unnamed deck")
+    created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow())
 
-    cards = db.relationship('Card', secondary=deck_card_association_table, back_populates="decks")
-    sideboard = db.relationship('Card', secondary=sideboard_card_association_table, back_populates="sideboards")
+    cards = relationship('DeckCardAssociation',
+                         back_populates="deck",
+                         cascade="save-update, merge, delete, delete-orphan")
+    sideboard = relationship('SideboardCardAssociation',
+                             back_populates="sideboard",
+                             cascade="save-update, merge, delete, delete-orphan")
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.api_id'))
     user = relationship("User", back_populates="decks")
 
+    def get_cards(self):
+        cards = []
+        for cardassoc in self.cards:
+            cards += cardassoc.count * [cardassoc.card]
+
+        return cards
+
+    def get_sideboard(self):
+        sideboard = []
+
+        for sbassoc in self.sideboard:
+            sideboard += sbassoc.count * [sbassoc.card]
+
+        return sideboard
+
     def __repr__(self):
-        return '<Deck %r [%r]>' % (self.name, self.created_at)
+        return '<Deck %r %r %r>' % (self.name, self.created_at.strftime('%Y-%m-%d %H:%M'), self.api_id)
 
 
 class Color(db.Model):
