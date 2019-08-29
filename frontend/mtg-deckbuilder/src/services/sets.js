@@ -1,9 +1,15 @@
 import axios from "axios"
-const baseURL = "/api/sets/"
+import { useState, useEffect } from "react"
+const baseURL = "http://localhost:5000/api/sets/"
 
-const getAll = async () => {
-  const response = await axios.get(baseURL)
-  return response.data.data
+async function getAll() {
+  try {
+    const response = await axios.get(baseURL)
+
+    return response.data.data
+  } catch (error) {
+    return error.response.data
+  }
 }
 
 const get = async code => {
@@ -23,4 +29,29 @@ const getStandardBooster = async code => {
   return response.data
 }
 
-export default { get, getAll, getCards, getStandardBooster }
+const useFetchSetData = options => {
+  const [data, setData] = useState(null)
+  const [error, setError] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    console.log("Sets")
+
+    const fetchData = async () => {
+      setIsLoading(true)
+
+      try {
+        const response = await axios.get(`${baseURL}${options}`)
+        setData(response.data)
+        setIsLoading(false)
+      } catch (error) {
+        setError(error)
+        setIsLoading(false)
+      }
+    }
+    fetchData()
+  }, [])
+  return { data, error, isLoading }
+}
+
+export default { get, getAll, getCards, getStandardBooster, useFetchSetData }

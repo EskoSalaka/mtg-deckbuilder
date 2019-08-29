@@ -20,6 +20,7 @@ import DeckSection from "../components/DeckView/DeckSection"
 import DeckContents from "../components/DeckView/DeckContents"
 import LoginView from "../components/LoginView/LoginView"
 import SignupView from "../components/SignupView/SignupView"
+import CreateSealedView from "../components/CreateSealedView/CreateSealedView"
 
 let c1 = mock_cards().slice(1, 100)
 let c2 = mock_cards().slice(1, 50)
@@ -54,6 +55,13 @@ let d = {
   sideboard: cards.slice(1, 10),
   user: "Esko"
 }
+
+storiesOf("Create sealed", module).add("Full", () => (
+  <MuiThemeProvider theme={baseTheme()}>
+    <CssBaseline />
+    <CreateSealedView />
+  </MuiThemeProvider>
+))
 
 storiesOf("Deck view", module)
   .add("Full", () => (

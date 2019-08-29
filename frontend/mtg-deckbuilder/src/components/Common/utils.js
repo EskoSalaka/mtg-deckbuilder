@@ -1,7 +1,29 @@
-import React from "react"
 import { firstBy } from "thenby"
 
 var _ = require("lodash")
+
+function isSealedWorthy(set) {
+  const worthyTypes = [
+    "core",
+    "expansion",
+    "masters",
+    "cube",
+    "commander",
+    "draft_innovation",
+    "planechase"
+  ]
+
+  if (_.includes(worthyTypes, set.set_type) && set.card_count >= 100) return true
+  else return false
+}
+
+function getSealedWorthy(sets) {
+  return sets.filter(s => isSealedWorthy(s))
+}
+
+function groupSets(sets, indentifier) {
+  return _.groupBy(sets, indentifier)
+}
 
 function frontFaceAttr(card, attr) {
   return card.layout === "transform" || card.layout === "double_faced_token"
@@ -299,7 +321,10 @@ function count(cards) {
 }
 
 export {
+  isSealedWorthy,
+  getSealedWorthy,
   frontFaceAttr,
+  groupSets,
   sorted,
   byCount,
   includes,

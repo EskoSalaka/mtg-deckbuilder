@@ -75,31 +75,31 @@ def get_or_create(session, model, **kwargs):
         session.add(instance)
         return instance
 
-#
-# for mset in sets:
-#     sargs = dict([(attr, getattr(mset, attr)) for attr in SCRYFALL_SET_FIELDS])
-#     # print(sargs)
-#     sd = Set(**sargs)
-#     db.session.add(sd)
-#
-#     for card in mset.cards:
-#         cargs = dict([(attr, getattr(card, attr)) for attr in SCRYFALL_CARD_FIELDS])
-#
-#         # pprint(cargs)
-#         colors_arg = cargs['colors']
-#         del cargs['colors']
-#         # print(card, colors_arg)
-#
-#         cd = Card(**dict(cargs, set_ref=sd))
-#
-#         if colors_arg:
-#             for color in colors_arg:
-#                 cd.colors.append(get_or_create(db.session, Color, value=color))
-#
-#         db.session.add(cd)
-#     print(k)
-#     k += 1
-#
-# db.session.commit()
+
+for mset in sets:
+    sargs = dict([(attr, getattr(mset, attr)) for attr in SCRYFALL_SET_FIELDS])
+    # print(sargs)
+    sd = Set(**sargs)
+    db.session.add(sd)
+
+    for card in mset.cards:
+        cargs = dict([(attr, getattr(card, attr)) for attr in SCRYFALL_CARD_FIELDS])
+
+        # pprint(cargs)
+        colors_arg = cargs['colors']
+        del cargs['colors']
+        # print(card, colors_arg)
+
+        cd = Card(**dict(cargs, set_ref=sd))
+
+        if colors_arg:
+            for color in colors_arg:
+                cd.colors.append(get_or_create(db.session, Color, value=color))
+
+        db.session.add(cd)
+    print(k)
+    k += 1
+
+db.session.commit()
 
 

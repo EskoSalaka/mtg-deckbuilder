@@ -19,7 +19,7 @@ SCRYFALL_CARD_FIELDS = ('id', 'name', 'layout', 'scryfall_uri', 'cmc', 'type_lin
                         'border_color', 'timeshifted',
                         'colorshifted', 'futureshifted')
 
-SCRYFALL_SET_FIELDS = ('id', 'code', 'mtgo_code', 'name', 'scryfall_uri',
+SCRYFALL_SET_FIELDS = ('id', 'code', 'mtgo_code', 'name', 'scryfall_uri', 'block', 'block_code',
                        'released_at', 'set_type', 'card_count', 'digital', 'foil_only')
 
 
