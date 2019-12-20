@@ -3,59 +3,59 @@ import TableCell from "@material-ui/core/TableCell"
 import TableRow from "@material-ui/core/TableRow"
 import ManaCost from "../ManaCost"
 import { makeStyles } from "@material-ui/styles"
-import { Typography } from "@material-ui/core"
+import { Typography, Link } from "@material-ui/core"
+import history from "../../history"
 
 const styles = makeStyles({
   cellText: {
-    fontSize: 16,
+    fontSize: 14,
     whiteSpace: "nowrap",
     userSelect: "none",
+    color: "black",
     textOverflow: "ellipsis",
     overflow: "hidden",
     maxWidth: "300px",
-    lineHeight: 1.7,
-    pointerEvents: "none",
     texDecoration: "none"
   },
   commonCellText: {
-    fontSize: 16,
+    fontSize: 14,
     color: "black",
     userSelect: "none",
-    lineHeight: 1.7,
-    pointerEvents: "none"
+    textDecoration: "none"
   },
   uncommonCellText: {
-    fontSize: 16,
+    fontSize: 14,
     color: "#B5B3B3",
     userSelect: "none",
-    lineHeight: 1.7,
-    pointerEvents: "none"
+    textDecoration: "none"
   },
   rareCellText: {
-    fontSize: 16,
+    fontSize: 14,
     color: "#ECC700",
     userSelect: "none",
-    lineHeight: 1.7,
-    pointerEvents: "none"
+    textDecoration: "none"
   },
   mythicCellText: {
-    fontSize: 16,
+    fontSize: 14,
     userSelect: "none",
     color: "#ed3700",
-    lineHeight: 1.7,
-    pointerEvents: "none"
+    textDecoration: "none"
   },
 
   ptCellText: {
-    fontSize: 16,
+    fontSize: 14,
     whiteSpace: "nowrap",
     userSelect: "none",
     textOverflow: "ellipsis",
     fontStyle: "bold",
-    lineHeight: 1.7,
-    pointerEvents: "none"
+    textDecoration: "none"
   },
-  cell: { padding: "3px 6px 3px 11px", textDecoration: "none", borderBottom: "1px solid #bfbfbf" },
+  cell: {
+    cursor: "pointer",
+    padding: "3px 6px 3px 11px",
+    textDecoration: "none",
+    borderBottom: "1px solid #bfbfbf"
+  },
   row: {
     "&:nth-of-type(odd)": {
       backgroundColor: "#e8e8e8;"
@@ -66,7 +66,7 @@ const styles = makeStyles({
   }
 })
 
-export default function CardRow({ card, handleMouseMove }) {
+export default function CardRow({ card, handleMouseMove, handleMouseLeave }) {
   const classes = styles()
 
   const frontFace =
@@ -88,43 +88,28 @@ export default function CardRow({ card, handleMouseMove }) {
 
   return (
     <TableRow
-      key={card.api_key}
+      hover
+      key={card.id}
       className={classes.row}
-      data-card={frontFace}
-      onMouseMove={handleMouseMove}
+      onMouseMove={e => handleMouseMove(e, frontFace)}
+      onMouseOut={handleMouseLeave}
+      onClick={() => {
+        history.push(`/cards/${card.set}/${card.collector_number}`)
+        history.go()
+      }}
     >
-      <TableCell
-        key="set"
-        component="a"
-        className={classes.cell}
-        href={`/cards/${card.set}/${card.collector_number}`}
-      >
+      <TableCell key="set" className={classes.cell}>
         <Typography className={classes.cellText}>{card.set.toUpperCase()}</Typography>
       </TableCell>
-      <TableCell
-        key="name"
-        component="a"
-        className={classes.cell}
-        href={`/cards/${card.set}/${card.collector_number}`}
-      >
+      <TableCell key="name" className={classes.cell}>
         <Typography className={classes.cellText}>{card.name}</Typography>
       </TableCell>
-      <TableCell
-        key="type"
-        component="a"
-        className={classes.cell}
-        href={`/cards/${card.set}/${card.collector_number}`}
-      >
+      <TableCell key="type" className={classes.cell}>
         <Typography className={classes.cellText}>
           {card.type_line.replace("Legendary", "Lgd.")}
         </Typography>
       </TableCell>
-      <TableCell
-        key="p/t"
-        className={classes.cell}
-        component="a"
-        href={`/cards/${card.set}/${card.collector_number}`}
-      >
+      <TableCell key="p/t" className={classes.cell}>
         <Typography className={classes.ptCellText}>{pt}</Typography>
       </TableCell>
       <TableCell key="manacost" className={classes.cell}>

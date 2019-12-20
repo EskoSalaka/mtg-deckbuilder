@@ -14,7 +14,7 @@ export default function CardImagePopover({ cardImg, anchorPosition }) {
   return (
     <div className={classes.popover} style={{ left: anchorPosition.left, top: anchorPosition.top }}>
       <LazyLoad placeholder={<CardImagePlaceholder />}>
-        <img src={cardImg} alt={cardImg} width="280px" />
+        <img src={cardImg} alt={cardImg} width="250px" />
       </LazyLoad>
     </div>
   )

@@ -21,16 +21,23 @@ export default function CardTable({ cards }) {
     left: "200px"
   })
 
-  function handleMouseMove(e) {
+  function handleMouseMove(e, ff) {
     e.preventDefault()
     e.stopPropagation()
 
-    setCardImageToPopover(e.target.parentNode.dataset.card)
+    setCardImageToPopover(ff)
     setCardImagePopoverPosition({ top: e.pageY - 50 + "px", left: e.pageX + 50 + "px" })
   }
 
+  function handleMouseLeave(e) {
+    e.preventDefault()
+    e.stopPropagation()
+
+    setCardImageToPopover(null)
+  }
+
   return (
-    <Paper className={classes.root} onMouseMove={e => handleMouseMove(e)}>
+    <Paper className={classes.root}>
       {cardImageToPopover && (
         <CardImagePopover cardImg={cardImageToPopover} anchorPosition={cardImagePopoverPosition} />
       )}
@@ -38,7 +45,11 @@ export default function CardTable({ cards }) {
         <HeaderRow />
         <TableBody>
           {cards.map(card => (
-            <CardRow data-cad={card} key={card.api_key} card={card} />
+            <CardRow
+              card={card}
+              handleMouseMove={handleMouseMove}
+              handleMouseLeave={handleMouseLeave}
+            />
           ))}
         </TableBody>
       </Table>

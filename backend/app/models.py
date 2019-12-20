@@ -317,7 +317,7 @@ class CardSchema(ma.Schema):
 
 
 class SimpleListInput(ma.Schema):
-    items = fields.Nested(ColorSchema, only='value', many=True)
+    items = fields.Nested(ColorSchema, many=True)
 
 
 

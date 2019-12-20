@@ -9,11 +9,9 @@ const styles = makeStyles({
   headCell: {
     backgroundColor: "black",
     color: "white",
-    position: "sticky",
     top: 0,
     size: "small",
-    padding: "5px 6px 5px 11px",
-    zIndex: 1000000000
+    padding: "5px 6px 5px 11px"
   },
   headText: {
     fontSize: 16
@@ -25,7 +23,7 @@ export default function HeaderRow() {
 
   return (
     <TableHead>
-      <TableRow>
+      <TableRow key={"head"}>
         <TableCell className={classes.headCell}>
           <Typography className={classes.headText}>Set</Typography>
         </TableCell>

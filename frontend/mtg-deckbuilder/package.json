@@ -16,6 +16,7 @@
     "mana-font": "^1.4.1",
     "material-ui-icons": "^1.0.0-beta.36",
     "npm": "^6.9.2",
+    "query-string": "^6.8.3",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-image-lightbox": "^5.1.0",

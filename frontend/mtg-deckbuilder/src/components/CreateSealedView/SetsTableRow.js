@@ -32,12 +32,7 @@ export default function SetsTableRow({ set, handleAddButtonClick }) {
       </TableCell>
       <TableCell key="tools" className={classes.lastCell}>
         <Tooltip title="Add a booster" aria-label="Add a booster">
-          <IconButton
-            id={set.code}
-            color="primary"
-            size="small"
-            onClick={e => handleAddButtonClick(e)}
-          >
+          <IconButton id={set.code} color="primary" size="small" onClick={handleAddButtonClick}>
             <AddCircleIcon />
           </IconButton>
         </Tooltip>

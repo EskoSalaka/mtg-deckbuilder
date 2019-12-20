@@ -42,6 +42,7 @@ const useFetchSetData = options => {
 
       try {
         const response = await axios.get(`${baseURL}${options}`)
+
         setData(response.data)
         setIsLoading(false)
       } catch (error) {
@@ -50,7 +51,7 @@ const useFetchSetData = options => {
       }
     }
     fetchData()
-  }, [])
+  }, [options])
   return { data, error, isLoading }
 }
 

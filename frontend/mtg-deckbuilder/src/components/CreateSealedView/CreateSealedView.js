@@ -73,7 +73,7 @@ export default function CreateSealedView({ match }) {
 
   return (
     <div>
-      <AppBar position="static" color="default" className={classes.createSealedAppbar}>
+      <AppBar position="sticky" color="default" className={classes.createSealedAppbar}>
         <Toolbar className={classes.deckBuilderToolbar}>
           <TomeIconButton boosters={boosters} handleClick={handleOpenSelectedMenu} />
           <Button variant="contained" color="primary" edge="end">
