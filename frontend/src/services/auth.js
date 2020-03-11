@@ -154,7 +154,6 @@ const useIsLoggedIn = () => {
         })
 
         response.data.status === 'Success' ? setIsLoggedIn(true) : setIsLoggedIn(false)
-        console.log(isLoggedIn)
 
         setIsLoading(false)
       } catch (error) {
@@ -163,7 +162,7 @@ const useIsLoggedIn = () => {
       }
     }
     fetchData()
-  })
+  }, [])
   return [isLoggedIn, error, isLoading]
 }
 

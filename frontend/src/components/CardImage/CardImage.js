@@ -1,23 +1,23 @@
-import React, { useState } from "react"
-import { makeStyles } from "@material-ui/styles"
-import FlipButton from "./FlipButton"
-import LazyLoad from "react-lazyload"
-import CardImagePlaceholder from "./CardImagePlaceholder"
+import React, { useState } from 'react'
+import { makeStyles } from '@material-ui/styles'
+import FlipButton from './FlipButton'
+import LazyLoad from 'react-lazyload'
+import CardImagePlaceholder from './CardImagePlaceholder'
 
 const styles = makeStyles({
   cardImage: {
-    width: "100%",
-    height: "100%",
-    borderRadius: "4.75% / 3.5%"
+    width: '100%',
+    height: '100%',
+    borderRadius: '4.75% / 3.5%'
   },
   fCardImage: {
-    width: "100%",
-    height: "100%",
-    borderRadius: "4.75% / 3.5%",
-    transform: "scaleX(-1) scaleY(-1)"
+    width: '100%',
+    height: '100%',
+    borderRadius: '4.75% / 3.5%',
+    transform: 'scaleX(-1) scaleY(-1)'
   },
   topDiv: {
-    position: "relative"
+    position: 'relative'
   }
 })
 
@@ -30,9 +30,9 @@ export default function CardImage({ card }) {
 
   function onFlipButtonClicked(e) {
     e.preventDefault()
-    if (card.layout === "transform" || card.layout === "double_faced_token") {
+    if (card.layout === 'transform' || card.layout === 'double_faced_token') {
       setTurned(isTurned ? false : true)
-    } else if (card.layout === "flip") {
+    } else if (card.layout === 'flip') {
       setFlipped(isFlipped ? false : true)
     }
   }
@@ -40,9 +40,9 @@ export default function CardImage({ card }) {
   function handleMouseEnter(e) {
     e.preventDefault()
     if (
-      card.layout === "transform" ||
-      card.layout === "double_faced_token" ||
-      card.layout === "flip"
+      card.layout === 'transform' ||
+      card.layout === 'double_faced_token' ||
+      card.layout === 'flip'
     ) {
       setFlipButtonVisible(true)
     }
@@ -55,13 +55,20 @@ export default function CardImage({ card }) {
     }
   }
 
+  if (!card)
+    return (
+      <div className={classes.topDiv}>
+        <CardImagePlaceholder />
+      </div>
+    )
+
   const frontFace =
-    card.layout === "transform" || card.layout === "double_faced_token"
+    card.layout === 'transform' || card.layout === 'double_faced_token'
       ? card.card_faces[0].image_uris.normal
       : card.image_uris.normal
 
   const backFace =
-    card.layout === "transform" || card.layout === "double_faced_token"
+    card.layout === 'transform' || card.layout === 'double_faced_token'
       ? card.card_faces[1].image_uris.normal
       : null
 

@@ -1,17 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
-import {
-  Grid,
-  Typography,
-  AppBar,
-  Toolbar,
-  Button,
-  Drawer,
-  Box,
-  Paper,
-  Snackbar
-} from '@material-ui/core'
+import { Grid, Typography, AppBar, Toolbar, Button, Drawer, Box, Paper } from '@material-ui/core'
 
 import styles from './styles'
 import DeckBuildeCardTable from './DeckBuilderCardTable'
@@ -31,7 +21,7 @@ export default function DeckBuilderView() {
   const { deckID } = useParams()
 
   const [deckData, error, isLoading] = decksService.useGetDeck(deckID)
-  const [editDeck, response, editError, editIsLoading] = decksService.useEditDeck(deckID)
+  const [editDeck, editResponse, editError, editIsLoading] = decksService.useEditDeck(deckID)
 
   const [mainBoard, setMainBoard] = useState([])
   const [sideboard, setSideboard] = useState([])
@@ -47,6 +37,18 @@ export default function DeckBuilderView() {
     setSideboard(deckData ? byCount(deckData.sideboard) : [])
     setMainBoard(deckData ? byCount(deckData.mainboard) : [])
   }, [deckData])
+
+  useEffect(() => {
+    if (editResponse) {
+      setAlertOpen(true)
+      setAlertSeverity('success')
+      setAlertMessage(editResponse.message)
+    } else if (editError) {
+      setAlertOpen(true)
+      setAlertSeverity('success')
+      setAlertMessage(editError.message)
+    }
+  }, [editResponse, editError])
 
   const sbToDeck = useCallback(
     (cards) => {
@@ -76,8 +78,6 @@ export default function DeckBuilderView() {
   }
 
   const handleClose = (e, reason) => {
-    console.log(e, reason)
-
     if (reason === 'clickaway') {
       return
     }
@@ -86,17 +86,17 @@ export default function DeckBuilderView() {
   }
 
   if (isLoading) return <Loading />
-  console.log(response, editError, editIsLoading)
 
   return (
     <div>
       {editIsLoading && <Loading />}
       <AlertSnackbar
-        open={editError ? true : false}
-        severity={'error'}
-        message={'kaka'}
+        open={alertOpen}
+        severity={alertSeverity}
+        message={alertMessage}
         handleClose={handleClose}
       />
+
       <AppBar position='static' color='default' className={classes.deckbuilderAppbar}>
         <Toolbar className={classes.deckBuilderToolbar}>
           <Button
@@ -157,19 +157,15 @@ export default function DeckBuilderView() {
                 transferTrigger={dTransferTrigger}
               />
             </Grid>
-            <Grid container item xs>
-              <Box className={classes.cardImageBox} ml='auto'>
-                {cardToShow && <CardImage card={cardToShow} />}
-              </Box>
-              <Box ml='auto'>
-                <AddBasicLandsBox />
-              </Box>
-            </Grid>
           </Grid>
+
           <Drawer anchor='top' open={showStats} onClose={() => setShowStats(false)}>
             <FullStatsBox cards={mainBoard} direction={'row'} />
           </Drawer>
         </Paper>
+        <Box className={classes.cardImageBox} ml={5}>
+          {<CardImage card={cardToShow} />}
+        </Box>
       </Box>
     </div>
   )

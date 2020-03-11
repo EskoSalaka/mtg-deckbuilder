@@ -63,6 +63,38 @@ const useGetDeck = (id) => {
   return [deck, error, isLoading]
 }
 
+const useCreateDeck = () => {
+  const [boosters, sendBoosters] = useState(null)
+  const [response, setResponse] = useState(null)
+  const [error, setError] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (boosters) {
+        setIsLoading(true)
+        try {
+          const response = await axios({
+            method: 'post',
+            url: `${baseURL}/create`,
+            data: boosters,
+            headers: {
+              Authorization: `Bearer ${authService.getAuthToken()}`
+            }
+          })
+          setResponse(response.data)
+          setIsLoading(false)
+        } catch (error) {
+          setError(error)
+          setIsLoading(false)
+        }
+      }
+    }
+    fetchData()
+  }, [boosters])
+  return [sendBoosters, response, error, isLoading]
+}
+
 const useEditDeck = () => {
   const [deck, editDeck] = useState(null)
   const [response, setResponse] = useState(null)
@@ -70,8 +102,6 @@ const useEditDeck = () => {
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    console.log(deck)
-
     const fetchData = async () => {
       if (deck) {
         setIsLoading(true)
@@ -87,10 +117,8 @@ const useEditDeck = () => {
 
           setResponse(response.data)
           setIsLoading(false)
-          console.log(response)
         } catch (error) {
           setError(error)
-          console.log(error)
 
           setIsLoading(false)
         }
@@ -101,4 +129,4 @@ const useEditDeck = () => {
   return [editDeck, response, error, isLoading]
 }
 
-export default { get, getBySet, getAll, useGetDeck, create, useEditDeck }
+export default { get, getBySet, getAll, useGetDeck, create, useEditDeck, useCreateDeck }

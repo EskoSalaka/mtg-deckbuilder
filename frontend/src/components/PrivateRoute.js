@@ -1,8 +1,6 @@
 import React from 'react'
 import { Route, Redirect, useLocation } from 'react-router-dom'
 import auth from '../services/auth'
-
-import CircularProgress from '@material-ui/core/CircularProgress'
 import Loading from './Common/Loading'
 
 export default function PrivateRoute({ component: Component, ...rest }) {
@@ -15,9 +13,7 @@ export default function PrivateRoute({ component: Component, ...rest }) {
     <Route
       {...rest}
       render={(props) =>
-        isLoading ? (
-          <CircularProgress />
-        ) : isLoggedIn ? (
+        isLoggedIn ? (
           <Component {...props} />
         ) : (
           <Redirect
