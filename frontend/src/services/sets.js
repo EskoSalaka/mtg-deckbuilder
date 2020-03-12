@@ -50,7 +50,7 @@ const useFetchSetData = (options) => {
     }
     fetchData()
   }, [options])
-  return { data, error, isLoading }
+  return [data, error, isLoading]
 }
 
 export default { get, getAll, getCards, getStandardBooster, useFetchSetData }

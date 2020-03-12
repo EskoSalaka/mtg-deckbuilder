@@ -1,14 +1,25 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
-import { Grid, Typography, AppBar, Toolbar, Button, Drawer, Box, Paper } from '@material-ui/core'
+import {
+  Grid,
+  Typography,
+  AppBar,
+  Toolbar,
+  Button,
+  Drawer,
+  Box,
+  Paper,
+  Fab
+} from '@material-ui/core'
 
 import styles from './styles'
 import DeckBuildeCardTable from './DeckBuilderCardTable'
 import { incrementedMany, decrementedMany, count } from '../Common/utils'
 import FullStatsBox from '../Common/StatsPlots/FullStatsBox'
 import CardImage from '../CardImage'
-import AddBasicLandsBox from './AddBasicLandsBox'
+import DoneIcon from '@material-ui/icons/Done'
+import PieChartIcon from '@material-ui/icons/PieChart'
 
 import decksService from '../../services/decks'
 import { byCount } from '../Common/utils'
@@ -96,21 +107,25 @@ export default function DeckBuilderView() {
         message={alertMessage}
         handleClose={handleClose}
       />
+      <Fab
+        size='large'
+        color='primary'
+        aria-label='add'
+        className={classes.statsfab}
+        onClick={() => (showStats ? setShowStats(false) : setShowStats(true))}
+      >
+        <PieChartIcon />
+      </Fab>
 
-      <AppBar position='static' color='default' className={classes.deckbuilderAppbar}>
-        <Toolbar className={classes.deckBuilderToolbar}>
-          <Button
-            color='primary'
-            edge='end'
-            onClick={() => (showStats ? setShowStats(false) : setShowStats(true))}
-          >
-            Show stats
-          </Button>
-          <Button color='primary' edge='end' onClick={handleDoneButtonClick}>
-            Done
-          </Button>
-        </Toolbar>
-      </AppBar>
+      <Fab
+        size='large'
+        color='primary'
+        aria-label='add'
+        className={classes.donefab}
+        onClick={handleDoneButtonClick}
+      >
+        <DoneIcon />
+      </Fab>
       <Box display='flex' justifyContent='center' p='10px'>
         <Paper className={classes.topPaper}>
           <Grid

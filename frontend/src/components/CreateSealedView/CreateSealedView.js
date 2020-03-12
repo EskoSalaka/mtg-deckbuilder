@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import { Paper, AppBar, Toolbar, Button, Grid, Fab, Badge } from '@material-ui/core'
-import CircularProgress from '@material-ui/core/CircularProgress'
 
 import styles from './styles'
 import SetsTable from './SetsTable'
@@ -42,7 +41,7 @@ export default function CreateSealedView() {
       setAlertMessage(createResponse.message)
     } else if (createError) {
       setAlertOpen(true)
-      setAlertSeverity('success')
+      setAlertSeverity('error')
       setAlertMessage(createError.message)
     }
   }, [createResponse, createError])

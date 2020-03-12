@@ -112,8 +112,6 @@ const DeckBuilderCardTable = React.memo(({ cards, handleTransfer, setImage, tran
   return (
     <Paper className={classes.paper}>
       <Table
-        stickyHeader
-        aria-label='sticky table'
         tabIndex='1'
         className={classes.table}
         size='small'

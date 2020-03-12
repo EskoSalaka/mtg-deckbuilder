@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 
-import { withRouter } from 'react-router-dom'
+import { withRouter, useParams } from 'react-router-dom'
 
 import queryString from 'query-string'
 import setsService from '../../services/sets'
@@ -17,55 +17,27 @@ import {
 } from '@material-ui/core'
 import styles from './styles'
 import SetTitle from './SetTitle'
+import Loading from '../Common/Loading'
 
-function SetView({ match, location, history }) {
+function SetView() {
   const classes = styles()
-  const setCode = match.params.code
-  const searchparams = queryString.parse(location.search)
-  console.log('====================================')
-  console.log('Set')
-  console.log(match)
-  console.log(searchparams)
-  console.log(location)
-  console.log(history)
-  console.log('====================================')
+  const { code: setCode } = useParams()
 
-  const {
-    data: cardsData,
-    error: cardsError,
-    isLoading: isLoadingCards
-  } = setsService.useFetchSetData(`${setCode}/cards/`)
+  const [cardsData, cardsError, isLoadingCards] = setsService.useFetchSetData(`${setCode}/cards/`)
+  const [setdata, setError, isLoadingSet] = setsService.useFetchSetData(setCode)
 
-  const {
-    data: setdata,
-    error: setError,
-    isLoading: isLoadingSet
-  } = setsService.useFetchSetData(`${setCode}/`)
+  const [sortBy, setSortBy] = useState('Name')
+  const [show, setShow] = useState('checklist')
 
-  const [show, setShow] = useState(
-    ['checklist', 'images'].includes(searchparams.show)
-      ? searchparams.show
-      : 'images'
-  )
-  const [sortBy, setSortBy] = useState(
-    location.search.sortBy ? location.search.sortBy : 'Name'
-  )
-
-  console.log('====================================')
-  console.log('show', show)
-  console.log('====================================')
-
-  function handleChange(e) {
-    console.log('====================================')
-    console.log(e.target)
-    console.log('====================================')
+  const handleChange = useCallback((e) => {
     if (e.target.name === 'show') {
       setShow(e.target.value)
     }
-  }
+  })
 
   return (
     <div>
+      {(isLoadingCards || isLoadingSet) && <Loading />}
       {cardsData && setdata && (
         <>
           <AppBar position='sticky' color='default'>
@@ -93,27 +65,6 @@ function SetView({ match, location, history }) {
                   >
                     <MenuItem value={'checklist'}>Checklist</MenuItem>
                     <MenuItem value={'images'}>Images</MenuItem>
-                  </Select>
-                </FormControl>
-                <FormControl className={classes.formControl}>
-                  <InputLabel>Sort by</InputLabel>
-                  <Select
-                    MenuProps={{
-                      getContentAnchorEl: null,
-                      anchorOrigin: {
-                        vertical: 'bottom',
-                        horizontal: 'left'
-                      }
-                    }}
-                    value={10}
-                    inputProps={{
-                      name: 'sort',
-                      id: 'sort'
-                    }}
-                  >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
                   </Select>
                 </FormControl>
               </Toolbar>
