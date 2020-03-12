@@ -1,8 +1,7 @@
 import React, { useState, useCallback } from 'react'
 
-import { withRouter, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
-import queryString from 'query-string'
 import setsService from '../../services/sets'
 import CardImageGrid from '../CardImageGrid/CardImageGrid'
 import CardTable from '../CardTable'
@@ -19,14 +18,14 @@ import styles from './styles'
 import SetTitle from './SetTitle'
 import Loading from '../Common/Loading'
 
-function SetView() {
+export default function SetView() {
   const classes = styles()
   const { code: setCode } = useParams()
 
   const [cardsData, cardsError, isLoadingCards] = setsService.useFetchSetData(`${setCode}/cards/`)
   const [setdata, setError, isLoadingSet] = setsService.useFetchSetData(setCode)
 
-  const [sortBy, setSortBy] = useState('Name')
+  // #TODO const [sortBy, setSortBy] = useState('Name')
   const [show, setShow] = useState('checklist')
 
   const handleChange = useCallback((e) => {
@@ -82,5 +81,3 @@ function SetView() {
     </div>
   )
 }
-
-export default withRouter(SetView)

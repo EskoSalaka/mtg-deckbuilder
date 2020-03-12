@@ -29,6 +29,30 @@ const getStandardBooster = async (code) => {
   return response.data
 }
 
+const useFetchSets = () => {
+  const [sets, setSets] = useState(null)
+  const [error, setError] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true)
+
+      try {
+        const response = await axios.get(`${baseURL}`)
+
+        setSets(response.data)
+        setIsLoading(false)
+      } catch (error) {
+        setError(error)
+        setIsLoading(false)
+      }
+    }
+    fetchData()
+  }, [])
+  return [sets, error, isLoading]
+}
+
 const useFetchSetData = (options) => {
   const [data, setData] = useState(null)
   const [error, setError] = useState(null)
@@ -53,4 +77,4 @@ const useFetchSetData = (options) => {
   return [data, error, isLoading]
 }
 
-export default { get, getAll, getCards, getStandardBooster, useFetchSetData }
+export default { get, getAll, getCards, getStandardBooster, useFetchSetData, useFetchSets }

@@ -21,8 +21,8 @@ function CardTable({ cards }) {
     left: '200px'
   })
 
-  const handleMouseMove = useCallback((e, ff) => {
-    setCardImageToPopover(ff)
+  const handleMouseMove = useCallback((e, card) => {
+    setCardImageToPopover(card)
     setCardImagePopoverPosition({ top: e.pageY - 50 + 'px', left: e.pageX + 50 + 'px' })
   }, [])
 

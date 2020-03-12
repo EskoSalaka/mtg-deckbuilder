@@ -14,6 +14,7 @@ import LoginView from './components/LoginView'
 import CreateSealedView from './components/CreateSealedView'
 import DeckBuilderView from './components/DeckBuilderView'
 import DeckView from './components/DeckView'
+import SetsView from './components/SetsView'
 
 const styles = (theme) => ({
   root: {
@@ -34,6 +35,7 @@ class App extends React.Component {
         <div>
           <Router history={history}>
             <Switch>
+              <Route path='/sets' component={SetsView} />
               <Route path='/cards/:code/:collector_number' component={CardInfoView} />
               <Route path='/cards/:code' component={SetView} />
               <Route path='/login/' component={LoginView} />
