@@ -1,7 +1,7 @@
 import os
 
 class Config(object):
-    PORT = int(os.environ.get("PORT", 5000))
+    PORT = int(os.environ.get("PORT", 3000))
     SECRET_KEY = os.environ.get("SECRET_KEY")
     WTF_CSRF_CHECK_DEFAULT = False
     WTF_CSRF_ENABLED = False
@@ -9,5 +9,5 @@ class Config(object):
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     FLASK_APP = "mtg_api"
-
+    SERVER_NAME = f"localhost:{PORT}"
 
