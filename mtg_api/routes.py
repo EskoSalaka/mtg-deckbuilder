@@ -24,12 +24,6 @@ from .models import (
 
 routes_blueprint = Blueprint("routes", __name__ )
 
-
-@routes_blueprint.route("/")
-def index():
-    return "Hello!"
-
-
 @routes_blueprint.route("/api/cards/")
 def cards():
     page = request.args.get("page", 1, type=int)
