@@ -13,14 +13,12 @@ import SelectedBoostersMenu from './SelectedBoostersMenu'
 import Loading from '../Common/Loading'
 import AlertSnackbar from '../Common/AlertSnackbar'
 
-// <TomeIconButton boosters={boosters} handleClick={handleOpenSelectedMenu} />
-//<Button variant='contained' color='primary' edge='end' onClick={handleDone}></Button>
-
 export default function CreateSealedView() {
   const classes = styles()
 
-  const { data, error, isLoading } = setsService.useFetchSetData('')
+  const [setsData, setsError, setsIsLoading] = setsService.useFetchSets()
   const [sendBoosters, createResponse, createError, createIsLoading] = decksService.useCreateDeck()
+  console.log(setsData)
 
   const [anchorEl, setAnchorEl] = useState(null)
   const [menuAnchorEl, setMenuAnchorEl] = useState(null)
@@ -106,7 +104,7 @@ export default function CreateSealedView() {
 
   return (
     <div>
-      {(isLoading || createIsLoading) && <Loading />}
+      {(setsIsLoading || createIsLoading) && <Loading />}
       <AlertSnackbar
         open={alertOpen}
         severity={alertSeverity}
@@ -139,9 +137,12 @@ export default function CreateSealedView() {
       </Fab>
 
       <Grid container justify='center'>
-        {data && (
+        {setsData && (
           <Paper className={classes.paper}>
-            <SetsTable setsData={data.data} handleAddButtonClick={handleAddButtonClick}></SetsTable>
+            <SetsTable
+              setsData={setsData.data}
+              handleAddButtonClick={handleAddButtonClick}
+            ></SetsTable>
           </Paper>
         )}
         <BoostersSnackbar

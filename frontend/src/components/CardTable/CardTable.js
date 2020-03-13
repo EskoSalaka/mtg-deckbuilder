@@ -40,6 +40,7 @@ function CardTable({ cards }) {
         <TableBody>
           {cards.map((card) => (
             <CardRow
+              key={card.id}
               card={card}
               handleMouseMove={handleMouseMove}
               handleMouseLeave={handleMouseLeave}

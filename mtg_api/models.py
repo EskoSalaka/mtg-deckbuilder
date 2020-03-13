@@ -143,7 +143,7 @@ class Card(db.Model):
     __tablename__ = "card"
 
     api_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    set_id = db.Column(db.Integer, db.ForeignKey("set.api_id"), nullable=False)
+    set_id = db.Column(db.Integer, db.ForeignKey("set.api_id"))
     decks = relationship("DeckCardAssociation", back_populates="card")
     sideboards = relationship("SideboardCardAssociation", back_populates="card")
 
@@ -159,7 +159,7 @@ class Card(db.Model):
 
     power = db.Column(db.String(4), unique=False, nullable=True)
     toughness = db.Column(db.String(4), unique=False, nullable=True)
-    loyalty = db.Column(db.String(3), unique=False, nullable=True)
+    loyalty = db.Column(db.String(6), unique=False, nullable=True)
     life_modifier = db.Column(db.String(4), unique=False, nullable=True)
     hand_modifier = db.Column(db.String(3), unique=False, nullable=True)
 
@@ -273,7 +273,7 @@ class Color(db.Model):
     __tablename__ = "color"
 
     api_id = db.Column(db.Integer, primary_key=True)
-    value = db.Column(db.String(2), unique=True, nullable=False)
+    value = db.Column(db.String(500), unique=True, nullable=False)
 
     def __repr__(self):
         return self.value

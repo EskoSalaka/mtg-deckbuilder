@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 8f8d819d84cd
+Revision ID: 2b865de13333
 Revises: 
-Create Date: 2019-08-22 22:22:28.216925
+Create Date: 2020-03-12 13:21:05.433250
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '8f8d819d84cd'
+revision = '2b865de13333'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -27,7 +27,7 @@ def upgrade():
     )
     op.create_table('color',
     sa.Column('api_id', sa.Integer(), nullable=False),
-    sa.Column('value', sa.String(length=2), nullable=False),
+    sa.Column('value', sa.String(length=500), nullable=False),
     sa.PrimaryKeyConstraint('api_id'),
     sa.UniqueConstraint('value')
     )
@@ -65,7 +65,7 @@ def upgrade():
     op.create_index(op.f('ix_user_username'), 'user', ['username'], unique=True)
     op.create_table('card',
     sa.Column('api_id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('set_id', sa.Integer(), nullable=False),
+    sa.Column('set_id', sa.Integer(), nullable=True),
     sa.Column('id', sa.String(length=37), nullable=True),
     sa.Column('name', sa.String(length=200), nullable=True),
     sa.Column('layout', sa.String(length=50), nullable=True),
@@ -76,7 +76,7 @@ def upgrade():
     sa.Column('mana_cost', sa.String(length=50), nullable=True),
     sa.Column('power', sa.String(length=4), nullable=True),
     sa.Column('toughness', sa.String(length=4), nullable=True),
-    sa.Column('loyalty', sa.String(length=3), nullable=True),
+    sa.Column('loyalty', sa.String(length=6), nullable=True),
     sa.Column('life_modifier', sa.String(length=4), nullable=True),
     sa.Column('hand_modifier', sa.String(length=3), nullable=True),
     sa.Column('color_indicator', sa.PickleType(), nullable=True),

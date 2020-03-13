@@ -35,11 +35,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "storybook": "start-storybook -p 9001 -s public",
-    "build-storybook": "build-storybook -s public",
-    "deploy-storybook": "storybook-to-ghpages",
-    "postbuild": "mv build ../../backend/app/static"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"

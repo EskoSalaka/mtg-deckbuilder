@@ -10,15 +10,14 @@ import Loading from '../Common/Loading'
 export default function SetsView() {
   const classes = styles()
 
-  const [sets, setsError, isLoadingSets] = setsService.useFetchSets()
-  console.log(sets)
+  const [setsData, setsError, isLoadingSets] = setsService.useFetchSets()
 
   return (
     <div>
       {isLoadingSets && <Loading />}
-      {sets && (
+      {setsData && (
         <Container className={classes.mainContainer}>
-          <SetsTable sets={sets.data}></SetsTable>
+          <SetsTable sets={setsData.data}></SetsTable>
         </Container>
       )}
     </div>

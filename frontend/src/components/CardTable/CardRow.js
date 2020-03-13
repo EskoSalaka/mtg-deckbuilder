@@ -89,7 +89,6 @@ function CardRow({ card, handleMouseMove, handleMouseLeave }) {
   return (
     <TableRow
       hover
-      key={card.id}
       className={classes.row}
       onMouseMove={(e) => handleMouseMove(e, frontFace)}
       onMouseOut={handleMouseLeave}

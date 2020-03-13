@@ -1,6 +1,7 @@
 import os
 import datetime
 from itertools import groupby, count
+from pathlib import Path
 
 from flask import Blueprint, url_for, send_from_directory, render_template
 from flask.json import jsonify
@@ -26,7 +27,7 @@ from .models import (
     SideboardCardAssociation,
 )
 
-routes_blueprint = Blueprint("routes", __name__, )
+routes_blueprint = Blueprint("routes", __name__ )
 
 
 @routes_blueprint.route("/api/cards/")
@@ -309,7 +310,6 @@ def delete_deck(user, api_id):
 def create_deck(user):
     try:
         boosters = request.json
-        print(boosters)
         cards = []
 
         for booster in boosters:
@@ -333,12 +333,6 @@ def create_deck(user):
                 sb_assoc.sideboard = new_deck
 
         user.decks.append(new_deck)
-        print(new_deck)
-        print(user.decks)
-
-        print(new_deck.get_cards())
-        print(new_deck.get_sideboard())
-        print(len(new_deck.get_sideboard()))
 
         db.session.add(new_deck)
         db.session.commit()
@@ -464,7 +458,6 @@ def verify_auth():
         auth_token = auth_header.split(" ")[1]
 
         resp = User.decode_auth_token(auth_token)
-        print(resp)
 
         if not isinstance(resp, str):
             return jsonify(status="Success", message="Authenticated"), 200
@@ -514,14 +507,14 @@ def _create_sealed(set_code, commons_num, uncommons_num, rares_num, basic_land):
             for card in cards
             if card.rarity == "common" and "Basic Land" not in card.type_line
         ]
+
         uncommons = [card for card in cards if card.rarity == "uncommon"]
         rares = [card for card in cards if card.rarity == "rare"]
         mythics = [card for card in cards if card.rarity == "mythic"]
         basic_lands = [card for card in cards if "Basic Land" in card.type_line]
-
-        mythics_num = ([1 for _ in range(rares_num) if randint(0, 8) == 0] if len(mythics) else 0)
-        mythics_num = sum(mythics_num)
+        mythics_num = (sum([1 for _ in range(rares_num) if randint(0, 8) == 0]) if len(mythics) else 0)
         rares_num -= mythics_num
+
 
         if (
                 len(commons) < commons_num
@@ -552,7 +545,6 @@ def _create_sealed(set_code, commons_num, uncommons_num, rares_num, basic_land):
         return booster_pack
 
     except Exception as e:
-        print(e)
         return (
             jsonify(
                 error=500, status="Fail", message="Internal server error." + str(e)
