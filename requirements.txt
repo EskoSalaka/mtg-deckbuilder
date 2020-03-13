@@ -69,10 +69,8 @@ pytest==5.3.1
 python-dateutil==2.8.1
 python-dotenv==0.10.3
 python-editor==1.0.4
-pytz==2019.3
 pywin32
 pywin32-ctypes
-PyYAML==5.1.2
 pyzmq==18.1.1
 readme-renderer==24.0
 regex==2020.2.20
