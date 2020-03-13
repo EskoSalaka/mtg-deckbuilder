@@ -314,6 +314,7 @@ def create_deck(user):
                                            booster["basicLands"])
             cards.extend(booster_cards)
         new_deck = Deck()
+        print(new_deck.api_id)
 
         for card in cards:
             sb_assoc = db.session.query(SideboardCardAssociation).filter_by(deck_api_id=new_deck.api_id,
@@ -323,6 +324,7 @@ def create_deck(user):
                 sb_assoc.count = sb_assoc.count + 1
             else:
                 sb_assoc = SideboardCardAssociation(count=1)
+                db.session.add(sb_assoc)
                 sb_assoc.card = card
                 sb_assoc.sideboard = new_deck
 
