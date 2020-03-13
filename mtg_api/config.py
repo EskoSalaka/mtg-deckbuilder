@@ -6,6 +6,5 @@ class Config(object):
     WTF_CSRF_CHECK_DEFAULT = False
     WTF_CSRF_ENABLED = False
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
-
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
