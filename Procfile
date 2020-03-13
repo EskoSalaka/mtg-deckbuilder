@@ -1,1 +1,1 @@
-web: gunicorn mtg_api:app
+web: gunicorn run:app
