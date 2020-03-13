@@ -222,6 +222,23 @@ def deck(api_id):
     )
 
 
+@routes_blueprint.route("/api/user/decks", methods=["GET"])
+@authorize
+def decks_of_user(user):
+    cards_schema = CardSchema(many=True)
+    
+    decks = [{
+        "api_id": deck.api_id,
+        "name": deck.name,
+        "user": deck.user.username,
+        "created_at": deck.created_at.strftime("%Y-%m-%d %H:%M"),
+        "mainboard": cards_schema.dump(deck.get_mainboard()),
+        "sideboard": cards_schema.dump(deck.get_sideboard())}
+                    for deck in user.decks]
+
+    return jsonify({"decks": decks}), 200
+
+
 @routes_blueprint.route("/api/decks/<api_id>", methods=["PUT"])
 @authorize
 def edit_deck(user, api_id):

@@ -1,5 +1,6 @@
 import axios from 'axios'
-const baseURL = '/api/cards/'
+const baseURL = process.env.BASE_URL || '/api'
+//const baseURL = process.env.BASE_URL || 'https://mtg-deckbuilder-api.herokuapp.com/api'
 
 const getAll = async () => {
   const response = await axios.get(baseURL)
@@ -7,12 +8,12 @@ const getAll = async () => {
 }
 
 const get = async (id) => {
-  const response = await axios.get(`${baseURL}${id}/`)
+  const response = await axios.get(`${baseURL}/cards/${id}/`)
   return response.data
 }
 
 const getBySet = async (setCode, collector_number) => {
-  const response = await axios.get(`${baseURL}${setCode}/${collector_number}/`)
+  const response = await axios.get(`${baseURL}/cards/${setCode}/${collector_number}/`)
 
   return response.data
 }

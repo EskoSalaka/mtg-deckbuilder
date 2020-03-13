@@ -1,10 +1,11 @@
 import axios from 'axios'
 import { useState, useEffect } from 'react'
-const baseURL = 'http://localhost:3000/api/sets/'
+const baseURL = process.env.BASE_URL || '/api'
+//const baseURL = process.env.BASE_URL || 'https://mtg-deckbuilder-api.herokuapp.com/api'
 
 async function getAll() {
   try {
-    const response = await axios.get(baseURL)
+    const response = await axios.get(`${baseURL}/sets/`)
 
     return response.data.data
   } catch (error) {
@@ -13,19 +14,19 @@ async function getAll() {
 }
 
 const get = async (code) => {
-  const response = await axios.get(`${baseURL}${code}/`)
+  const response = await axios.get(`${baseURL}/sets/${code}/`)
 
   return response.data
 }
 
 const getCards = async (code) => {
-  const response = await axios.get(`${baseURL}${code}/cards/`)
+  const response = await axios.get(`${baseURL}/sets/${code}/cards/`)
 
   return response.data
 }
 
 const getStandardBooster = async (code) => {
-  const response = await axios.get(`${baseURL}${code}/booster/`)
+  const response = await axios.get(`${baseURL}/sets/${code}/booster/`)
   return response.data
 }
 
@@ -39,7 +40,7 @@ const useFetchSets = () => {
       setIsLoading(true)
 
       try {
-        const response = await axios.get(`${baseURL}`)
+        const response = await axios.get(`${baseURL}/sets/`)
 
         setSets(response.data)
         setIsLoading(false)
@@ -63,7 +64,7 @@ const useFetchSetData = (options) => {
       setIsLoading(true)
 
       try {
-        const response = await axios.get(`${baseURL}${options}`)
+        const response = await axios.get(`${baseURL}/sets/${options}`)
 
         setData(response.data)
         setIsLoading(false)

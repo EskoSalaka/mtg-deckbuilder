@@ -1,7 +1,8 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import authService from './auth'
-const baseURL = '/api/decks'
+const baseURL = process.env.BASE_URL || '/api'
+//const baseURL = process.env.BASE_URL || 'https://mtg-deckbuilder-api.herokuapp.com/api'
 
 const getAll = async () => {
   const response = await axios.get(baseURL)
@@ -9,12 +10,12 @@ const getAll = async () => {
 }
 
 const get = async (id) => {
-  const response = await axios.get(`${baseURL}${id}/`)
+  const response = await axios.get(`${baseURL}/decks/${id}/`)
   return response.data
 }
 
 const getBySet = async (setCode, collector_number) => {
-  const response = await axios.get(`${baseURL}${setCode}/${collector_number}/`)
+  const response = await axios.get(`${baseURL}/decks/${setCode}/${collector_number}/`)
 
   return response.data
 }
@@ -23,7 +24,7 @@ const create = async (boosters) => {
   try {
     const response = await axios({
       method: 'post',
-      url: `${baseURL}/create`,
+      url: `${baseURL}/decks/create`,
       data: boosters,
       headers: {
         Authorization: `Bearer ${authService.getAuthToken()}`
@@ -48,7 +49,7 @@ const useGetDeck = (id) => {
       try {
         const response = await axios({
           method: 'get',
-          url: `${baseURL}/${id}`
+          url: `${baseURL}/decks/${id}`
         })
 
         setDeck(response.data)
@@ -76,7 +77,7 @@ const useCreateDeck = () => {
         try {
           const response = await axios({
             method: 'post',
-            url: `${baseURL}/create`,
+            url: `${baseURL}/decks/create`,
             data: boosters,
             headers: {
               Authorization: `Bearer ${authService.getAuthToken()}`
@@ -108,7 +109,7 @@ const useEditDeck = () => {
         try {
           const response = await axios({
             method: 'put',
-            url: `${baseURL}/${deck.api_id}`,
+            url: `${baseURL}/decks/${deck.api_id}`,
             data: deck,
             headers: {
               Authorization: `Bearer ${authService.getAuthToken()}`
@@ -129,4 +130,41 @@ const useEditDeck = () => {
   return [editDeck, response, error, isLoading]
 }
 
-export default { get, getBySet, getAll, useGetDeck, create, useEditDeck, useCreateDeck }
+const useGetUserDecks = () => {
+  const [decks, setDecks] = useState(null)
+  const [error, setError] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios({
+          method: 'get',
+          url: `${baseURL}/user/decks`,
+          headers: {
+            Authorization: `Bearer ${authService.getAuthToken()}`
+          }
+        })
+
+        setDecks(response.data)
+        setIsLoading(false)
+      } catch (error) {
+        setError(error)
+        setIsLoading(false)
+      }
+    }
+    fetchData()
+  }, [])
+  return [decks, error, isLoading]
+}
+
+export default {
+  get,
+  getBySet,
+  getAll,
+  useGetDeck,
+  create,
+  useEditDeck,
+  useCreateDeck,
+  useGetUserDecks
+}

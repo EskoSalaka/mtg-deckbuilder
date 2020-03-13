@@ -38,8 +38,9 @@ export default function CreateSealedView() {
       setAlertSeverity('success')
       setAlertMessage(createResponse.message)
     } else if (createError) {
-      setAlertOpen(true)
       setAlertSeverity('error')
+      setAlertOpen(true)
+
       setAlertMessage(createError.message)
     }
   }, [createResponse, createError])

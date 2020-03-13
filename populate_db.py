@@ -30,7 +30,6 @@ print(colors)
 for mset in sets:
     if not db.session.query(Set).filter_by(id=mset.id).first():
         sargs = dict([(attr, getattr(mset, attr)) for attr in SCRYFALL_SET_FIELDS])
-        print(sargs)
         sd = Set(**sargs)
         db.session.add(sd)
 

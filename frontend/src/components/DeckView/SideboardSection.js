@@ -3,7 +3,7 @@ import { Grid, Typography, Link } from '@material-ui/core'
 import styles from './styles'
 import { count } from '../Common/utils'
 
-export default function SideboardSection({ cards, handleMouseOver, handleMouseLeave }) {
+export default function SideboardSection({ cards, handleMouseMove, handleMouseLeave }) {
   const classes = styles()
   const cardCount = cards ? count(cards) : 0
 
@@ -15,12 +15,12 @@ export default function SideboardSection({ cards, handleMouseOver, handleMouseLe
       <Grid container direction='row' alignItems='flex-start' justify='flex-start'>
         {cards
           ? cards.map((c) => (
-              <Grid item xs={3}>
+              <Grid item xs={4}>
                 <Typography variant='body2'>
                   <Link
                     href={`/cards/${c.set}/${c.collector_number}`}
                     color='inherit'
-                    onMouseOver={(e) => handleMouseOver(e, c)}
+                    onMouseMove={(e) => handleMouseMove(e, c)}
                     onMouseLeave={(e) => handleMouseLeave(e)}
                   >{`${c.count} ${c.name}`}</Link>
                 </Typography>
