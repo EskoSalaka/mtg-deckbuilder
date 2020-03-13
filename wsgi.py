@@ -1,12 +1,17 @@
-from mtg_api import app
+from flask import Flask
 import os
-print(os.environ.get("DATABASE_URL"))
+print(os.getenv("DATABASE_URL"))
 
+app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    return 'Hello, World!'
+    return 'Hello, World11111!'
 
-print(app.config)
-print(app)
-app.run()
+
+if __name__ == "__main__":
+    print(app.config)
+    print(app)
+    port = int(os.environ.get("PORT", 3000))
+    print(port)
+    app.run(host='0.0.0.0', port=port)
