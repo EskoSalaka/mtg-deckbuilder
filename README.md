@@ -50,10 +50,10 @@ Cards of a set as image list
 ![Cards2](/images/Cards2.png)
 
 Decks of a user
-![Userdecks](/images/User decks.png)
+![Userdecks](/images/Userdecks.png)
 
 Creating a new deck
-![Userdecks](/images/Create decks.png)
+![Userdecks](/images/Createdecks.png)
 
 Editing a deck
 ![Userdecks](/images/Edit1.png)
