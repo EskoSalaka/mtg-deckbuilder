@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseURL = process.env.BASE_URL || '/api'
+const baseURL = 'https://mtg-deckbuilder-api.herokuapp.com/api'
 
 const getAll = async () => {
   const response = await axios.get(baseURL)

@@ -45,7 +45,6 @@ function SetRow({ set }) {
 
   const handleClick = useCallback((e) => {
     history.push(`/cards/${set.code}`)
-    history.go()
   })
 
   return (

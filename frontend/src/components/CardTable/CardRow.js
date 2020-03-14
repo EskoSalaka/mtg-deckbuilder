@@ -94,7 +94,6 @@ function CardRow({ card, handleMouseMove, handleMouseLeave }) {
       onMouseOut={handleMouseLeave}
       onClick={() => {
         history.push(`/cards/${card.set}/${card.collector_number}`)
-        history.go()
       }}
     >
       <TableCell key='set' className={classes.cell}>
