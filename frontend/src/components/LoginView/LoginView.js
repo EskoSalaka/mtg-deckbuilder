@@ -37,6 +37,7 @@ export default function LoginView() {
     if (resp.status === 'Fail') setErrorMessage(resp.message)
     else {
       history.replace(from)
+      window.location.reload()
     }
   }
 

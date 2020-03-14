@@ -16,6 +16,7 @@ import DeckBuilderView from './components/DeckBuilderView'
 import DeckView from './components/DeckView'
 import SetsView from './components/SetsView'
 import UserDecksView from './components/UserDecksView'
+import HomeView from './components/HomeView'
 
 const styles = (theme) => ({
   root: {
@@ -32,24 +33,22 @@ class App extends React.Component {
 
     return (
       <div className={classes.root}>
-        <MTGAppBar />
-        <div>
-          <Router history={history}>
-            <Switch>
-              <Route path='/sets' component={SetsView} />
-              <Route exact path='/cards/:code/:collector_number' component={CardInfoView} />
-              <Route exact path='/cards/:code' component={SetView} />
-              <Route path='/login/' component={LoginView} />
-              <Route path='/signup/' component={SignUpView} />
+        <Router history={history}>
+          <MTGAppBar />
+          <Switch>
+            <Route exact path='/' component={HomeView} />
+            <Route exact path='/sets' component={SetsView} />
+            <Route exact path='/cards/:code/:collector_number' component={CardInfoView} />
+            <Route exact path='/cards/:code' component={SetView} />
+            <Route path='/login/' component={LoginView} />
+            <Route path='/signup/' component={SignUpView} />
+            <PrivateRoute path='/decks/new' component={CreateSealedView} />
+            <PrivateRoute path='/decks/edit/:deckID' component={DeckBuilderView} />
+            <PrivateRoute path='/decks/:deckID' component={DeckView} />
 
-              <PrivateRoute path='/decks/new' component={CreateSealedView} />
-              <PrivateRoute path='/decks/edit/:deckID' component={DeckBuilderView} />
-              <PrivateRoute path='/decks/:deckID' component={DeckView} />
-
-              <PrivateRoute path='/user/decks' component={UserDecksView} />
-            </Switch>
-          </Router>
-        </div>
+            <PrivateRoute path='/user/decks' component={UserDecksView} />
+          </Switch>
+        </Router>
 
         <MTGFooter />
       </div>

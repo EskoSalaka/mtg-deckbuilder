@@ -31,24 +31,26 @@ function CardTable({ cards }) {
   }, [])
 
   return (
-    <Paper className={classes.root}>
+    <>
       {cardImageToPopover && (
         <CardImagePopover cardImg={cardImageToPopover} anchorPosition={cardImagePopoverPosition} />
       )}
-      <Table className={classes.table} size='small'>
-        <HeaderRow />
-        <TableBody>
-          {cards.map((card) => (
-            <CardRow
-              key={card.id}
-              card={card}
-              handleMouseMove={handleMouseMove}
-              handleMouseLeave={handleMouseLeave}
-            />
-          ))}
-        </TableBody>
-      </Table>
-    </Paper>
+      <Paper className={classes.root}>
+        <Table className={classes.table} size='small'>
+          <HeaderRow />
+          <TableBody>
+            {cards.map((card) => (
+              <CardRow
+                key={card.id}
+                card={card}
+                handleMouseMove={handleMouseMove}
+                handleMouseLeave={handleMouseLeave}
+              />
+            ))}
+          </TableBody>
+        </Table>
+      </Paper>
+    </>
   )
 }
 
