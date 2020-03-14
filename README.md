@@ -17,7 +17,7 @@ The backend API is deployed in Heroku at https://mtg-deckbuilder-api.herokuapp.c
 In short, it contains the following features:
 
 - A connection to a PostgreSQL database containing the mtg data from Scryfall and various other tables/relationships
-  like Users and their Decks
+  like Users and their Decks. It has about 100k records
 - Various routes related to retrieving certain mtg data in a similar format than in Scryfall
 - Authentication for Users with JWT
 
