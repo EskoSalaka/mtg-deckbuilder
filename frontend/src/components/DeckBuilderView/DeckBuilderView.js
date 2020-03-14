@@ -56,7 +56,7 @@ export default function DeckBuilderView() {
       setAlertMessage(editResponse.message)
     } else if (editError) {
       setAlertOpen(true)
-      setAlertSeverity('success')
+      setAlertSeverity('error')
       setAlertMessage(editError.message)
     }
   }, [editResponse, editError])
