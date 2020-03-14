@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-
-const baseURL = process.env.BASE_URL || 'https://mtg-deckbuilder-api.herokuapp.com/api'
+import authService from "./auth"
+const baseURL = process.env == "development" ?' /api' : 'https://mtg-deckbuilder-api.herokuapp.com/api'
 
 const getAll = async () => {
   const response = await axios.get(baseURL)
@@ -157,6 +157,34 @@ const useGetUserDecks = () => {
   return [decks, error, isLoading]
 }
 
+const useGetUserDeck = (deckID) => {
+  const [deck, setDeck] = useState(null)
+  const [error, setError] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios({
+          method: 'get',
+          url: `${baseURL}/user/decks/${deckID}`,
+          headers: {
+            Authorization: `Bearer ${authService.getAuthToken()}`
+          }
+        })
+
+        setDeck(response.data)
+        setIsLoading(false)
+      } catch (error) {
+        setError(error)
+        setIsLoading(false)
+      }
+    }
+    fetchData()
+  }, [deckID])
+  return [deck, error, isLoading]
+}
+
 export default {
   get,
   getBySet,
@@ -165,5 +193,6 @@ export default {
   create,
   useEditDeck,
   useCreateDeck,
-  useGetUserDecks
+  useGetUserDecks,
+  useGetUserDeck
 }

@@ -224,7 +224,7 @@ def deck(api_id):
 
 @routes_blueprint.route("/api/user/decks", methods=["GET"])
 @authorize
-def decks_of_user(user):
+def user_decks(user):
     cards_schema = CardSchema(many=True)
 
     decks = [{
@@ -237,6 +237,25 @@ def decks_of_user(user):
                     for deck in user.decks]
 
     return jsonify({"decks": decks}), 200
+
+
+@routes_blueprint.route("/api/user/decks/<api_id>", methods=["GET"])
+@authorize
+def user_deck(user, api_id):
+    deck = Deck.query.filter_by(api_id=api_id).first_or_404()
+
+    if deck.user.api_id != user.api_id:
+        return jsonify(error=403, status="Fail", message="Forbidden"), 403
+
+    cards_schema = CardSchema(many=True)
+    return jsonify(
+        api_id=deck.api_id,
+        name=deck.name,
+        user=deck.user.username,
+        created_at=deck.created_at.strftime("%Y-%m-%d %H:%M"),
+        mainboard=cards_schema.dump(deck.get_mainboard()),
+        sideboard=cards_schema.dump(deck.get_sideboard()),
+    )
 
 
 @routes_blueprint.route("/api/decks/<api_id>", methods=["PUT"])

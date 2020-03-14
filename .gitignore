@@ -1294,3 +1294,6 @@ backend/app/__pycache__/__init__.cpython-37.pyc
 backend/app/__pycache__/routes.cpython-37.pyc
 backend/app/__pycache__/models.cpython-37.pyc
 backend/app/__pycache__/config.cpython-37.pyc
+node_modules
+.vscode/settings.json
+.vscode/settings.json

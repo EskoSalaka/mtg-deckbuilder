@@ -31,7 +31,7 @@ export default function DeckBuilderView() {
   const classes = styles()
   const { deckID } = useParams()
 
-  const [deckData, error, isLoading] = decksService.useGetDeck(deckID)
+  const [deckData, error, isLoading] = decksService.useGetUserDeck(deckID)
   const [editDeck, editResponse, editError, editIsLoading] = decksService.useEditDeck(deckID)
 
   const [mainBoard, setMainBoard] = useState([])

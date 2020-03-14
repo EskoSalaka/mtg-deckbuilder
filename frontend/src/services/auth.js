@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 
-const baseURL = process.env.BASE_URL || 'https://mtg-deckbuilder-api.herokuapp.com/api'
+const baseURL = process.env == "development" ?' /api' : 'https://mtg-deckbuilder-api.herokuapp.com/api'
 
 const formUrlEncoded = (x) =>
   Object.keys(x).reduce((p, c) => p + `&${c}=${encodeURIComponent(x[c])}`, '')

@@ -70,14 +70,11 @@ function DeckRow({ deck }) {
 
   const handleRowClick = useCallback((e, a) => {
     console.log(e, a)
-
     history.push(`/decks/${deck.api_id}`)
-    history.go()
   })
-
   const handleEditButtonClick = useCallback((e) => {
     history.push(`/decks/edit/${deck.api_id}`)
-    history.go()
+
   })
 
   const handleDeleteButtonClick = useCallback((e) => {})
