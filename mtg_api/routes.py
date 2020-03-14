@@ -226,7 +226,7 @@ def deck(api_id):
 @authorize
 def decks_of_user(user):
     cards_schema = CardSchema(many=True)
-    
+
     decks = [{
         "api_id": deck.api_id,
         "name": deck.name,

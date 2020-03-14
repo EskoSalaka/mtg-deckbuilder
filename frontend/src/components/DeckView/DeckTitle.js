@@ -6,7 +6,7 @@ export default function DeckTitle({ deck }) {
   return (
     <>
       <Typography variant='h6'>{`${deck.name} (${count(deck.mainboard)})`}</Typography>
-      <Typography variant='subtitle'>
+      <Typography variant='subtitle2'>
         {`Created at ${deck.created_at}`} <span>&#8281;</span> {`by ${deck.user}`}
       </Typography>
     </>

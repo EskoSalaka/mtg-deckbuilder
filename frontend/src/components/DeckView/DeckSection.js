@@ -15,7 +15,7 @@ export default function DeckSection({ cards, sectionName, handleMouseMove, handl
       >{`${sectionName} (${cardCount})`}</Typography>
       {cards
         ? cards.map((c) => (
-            <Grid item component='span'>
+            <Grid item key={c.id} component='span'>
               <Typography variant='body2'>
                 <Link
                   href={`/cards/${c.set}/${c.collector_number}`}

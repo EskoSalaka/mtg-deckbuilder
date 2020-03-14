@@ -24,6 +24,7 @@ export default function DeckContents() {
   const [groupBy, setGroupBy] = useState('type')
   const [cardToShow, setCardToShow] = useState(null)
   const [imagePopoverPosition, setImagePopoverPosition] = useState(null)
+  console.log(groups, groupNames)
 
   function handleMouseMove(e, card) {
     e.preventDefault()
@@ -44,7 +45,9 @@ export default function DeckContents() {
 
   useEffect(() => {
     setGroups(group(mainBoard, groupBy))
-    setGroupNames(Object.keys(groups).sort((g1, g2) => groups[g1].length <= groups[g2].length))
+    console.log(groups)
+
+    setGroupNames(Object.keys(groups).sort((g1, g2) => groups[g1].length < groups[g2].length))
   }, [mainBoard])
 
   return (
@@ -62,7 +65,7 @@ export default function DeckContents() {
               <Grid container direction='row' spacing={2}>
                 {groupNames.map((groupName) => {
                   return groups[groupName].length ? (
-                    <Grid item xs={4} ms={4} lg={4}>
+                    <Grid item xs={4} ms={4} lg={4} key={groupName}>
                       <DeckSection
                         cards={groups[groupName]}
                         sectionName={groupName}

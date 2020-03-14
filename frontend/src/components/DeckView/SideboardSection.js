@@ -15,7 +15,7 @@ export default function SideboardSection({ cards, handleMouseMove, handleMouseLe
       <Grid container direction='row' alignItems='flex-start' justify='flex-start'>
         {cards
           ? cards.map((c) => (
-              <Grid item xs={4}>
+              <Grid item xs={4} key={c.id}>
                 <Typography variant='body2'>
                   <Link
                     href={`/cards/${c.set}/${c.collector_number}`}

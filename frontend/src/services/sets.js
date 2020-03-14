@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { useState, useEffect } from 'react'
-const baseURL = process.env.BASE_URL || '/api'
-//const baseURL = process.env.BASE_URL || 'https://mtg-deckbuilder-api.herokuapp.com/api'
+
+const baseURL = process.env.BASE_URL || 'https://mtg-deckbuilder-api.herokuapp.com/api'
 
 async function getAll() {
   try {
