@@ -42,3 +42,21 @@ Behind the scenes, there are also many utilities that handle the mtg data in var
 
 All the sets
 ![Sets](/images/Sets.png)
+
+Cards of a set
+![Cards](/images/Cards.png)
+
+Cards of a set as image list
+![Cards2](/images/Cards2.png)
+
+Decks of a user
+![Userdecks](/images/User decks.png)
+
+Creating a new deck
+![Userdecks](/images/Create decks.png)
+
+Editing a deck
+![Userdecks](/images/Edit1.png)
+
+Editing a deck, stats
+![Userdecks](/images/Edit2.png)
