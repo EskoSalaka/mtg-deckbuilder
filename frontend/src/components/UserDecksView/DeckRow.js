@@ -74,7 +74,6 @@ function DeckRow({ deck }) {
   })
   const handleEditButtonClick = useCallback((e) => {
     history.push(`/decks/edit/${deck.api_id}`)
-
   })
 
   const handleDeleteButtonClick = useCallback((e) => {})
@@ -93,7 +92,7 @@ function DeckRow({ deck }) {
       </TableCell>
       <TableCell key='cards' className={classes.cell} onClick={handleRowClick}>
         <Typography className={classes.cellText}>
-          {deck.mainboard.length} / {deck.sideboard.length}
+          {deck.mainboard_card_count} / {deck.sideboard_card_count}
         </Typography>
       </TableCell>
 

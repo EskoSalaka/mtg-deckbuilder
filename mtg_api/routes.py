@@ -231,6 +231,8 @@ def user_decks(user):
             "api_id": deck.api_id,
             "name": deck.name,
             "user": deck.user.username,
+            "mainboard_card_count": len(deck.get_mainboard()),
+            "sideboard_card_count": len(deck.get_sideboard()),
             "created_at": deck.created_at.strftime("%Y-%m-%d %H:%M")} for deck in user.decks]
 
         return jsonify({"decks": decks}), 200
