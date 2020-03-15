@@ -12,6 +12,8 @@ export default function SetsView() {
 
   const [setsData, setsError, isLoadingSets] = setsService.useFetchSets()
 
+  if (setsError) throw setsError
+
   return (
     <div>
       {isLoadingSets && <Loading />}

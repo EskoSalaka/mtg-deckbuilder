@@ -19,7 +19,6 @@ export default function SimpleTypesPie({ cards }) {
           labelLine={false}
           outerRadius={90}
           margin={{ top: 10, right: 10, bottom: 0, left: 10 }}
-          labelLine
           label
         >
           {simpleData.map((entry, index) => (

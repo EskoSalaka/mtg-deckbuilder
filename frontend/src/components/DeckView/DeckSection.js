@@ -3,7 +3,7 @@ import { Grid, Typography, Link } from '@material-ui/core'
 import styles from './styles'
 import { count } from '../Common/utils'
 
-export default function DeckSection({ cards, sectionName, handleMouseMove, handleMouseLeave }) {
+function DeckSection({ cards, sectionName, handleMouseMove, handleMouseLeave }) {
   const classes = styles()
   const cardCount = cards ? count(cards) : 0
 
@@ -20,7 +20,7 @@ export default function DeckSection({ cards, sectionName, handleMouseMove, handl
                 <Link
                   href={`/cards/${c.set}/${c.collector_number}`}
                   color='inherit'
-                  onMouseOver={(e) => handleMouseMove(e, c)}
+                  onMouseMove={(e) => handleMouseMove(e, c)}
                   onMouseLeave={(e) => handleMouseLeave(e)}
                 >{`${c.count} ${c.name}`}</Link>
               </Typography>
@@ -30,3 +30,5 @@ export default function DeckSection({ cards, sectionName, handleMouseMove, handl
     </Grid>
   )
 }
+
+export default React.memo(DeckSection)

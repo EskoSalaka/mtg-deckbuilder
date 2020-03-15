@@ -31,7 +31,10 @@ export default function SetView() {
     if (e.target.name === 'show') {
       setShow(e.target.value)
     }
-  })
+  }, [])
+
+  if (cardsError) throw cardsError
+  if (setError) throw setError
 
   return (
     <div>

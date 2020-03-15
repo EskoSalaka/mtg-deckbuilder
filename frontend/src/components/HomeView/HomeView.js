@@ -1,22 +1,9 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+
 import { Typography, Box } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 
-const useStyles = makeStyles(() => ({
-  mainContainer: {
-    display: 'flex',
-    flexGrow: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    marginTop: 32,
-    marginBottom: 32
-  }
-}))
-
 function HomeView() {
-  const classes = useStyles()
-
   return (
     <Box display='flex' justifyContent='center' pt={3}>
       <Box display='flex' flexDirection='column' maxWidth='800px' fontFamily='roboto'>

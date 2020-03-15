@@ -3,7 +3,7 @@ import { Grid, Typography, Link } from '@material-ui/core'
 import styles from './styles'
 import { count } from '../Common/utils'
 
-export default function SideboardSection({ cards, handleMouseMove, handleMouseLeave }) {
+function SideboardSection({ cards, handleMouseMove, handleMouseLeave }) {
   const classes = styles()
   const cardCount = cards ? count(cards) : 0
 
@@ -31,3 +31,5 @@ export default function SideboardSection({ cards, handleMouseMove, handleMouseLe
     </div>
   )
 }
+
+export default React.memo(SideboardSection)

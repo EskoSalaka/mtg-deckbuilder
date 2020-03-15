@@ -218,7 +218,7 @@ function colorStats(cards) {
 }
 
 function manaSymbols(cards) {
-  const nonLands = cards.map((c) => (!_.includes(c.type_line, 'Land') ? c : false))
+  // const nonLands = cards.map((c) => (!_.includes(c.type_line, 'Land') ? c : false))
 
   var costs = cards.map((c) => frontFaceAttr(c, 'mana_cost').repeat(c.count))
   costs = costs.join()

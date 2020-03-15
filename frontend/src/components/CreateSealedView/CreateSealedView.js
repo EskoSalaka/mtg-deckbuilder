@@ -103,6 +103,8 @@ export default function CreateSealedView() {
     setBoosters(boosters.filter((b) => b.id !== booster.id))
   }
 
+  if (setsError) throw setsError
+
   return (
     <div>
       {(setsIsLoading || createIsLoading) && <Loading />}

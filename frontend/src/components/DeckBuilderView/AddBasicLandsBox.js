@@ -1,13 +1,11 @@
-import React, { useState } from 'react'
-import { Grid, Box, IconButton } from '@material-ui/core'
-import styles from './styles'
+import React from 'react'
+import { Box, IconButton } from '@material-ui/core'
+
 import ManaCost from '../ManaCost'
 import AddCircleIcon from '@material-ui/icons/AddCircle'
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'
 
 export default function AddBasicLandsBox({ handleRemoveButtonClick, handleAddButtonClick }) {
-  const classes = styles()
-
   return (
     <>
       <Box fontSize={20} flex='1'>

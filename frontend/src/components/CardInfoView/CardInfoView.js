@@ -10,16 +10,15 @@ export default function CardInfoView() {
   const [card, setCard] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  const fetchCard = async () => {
-    let response = await cardService.getBySet(code, collector_number)
-
-    setCard(response.data)
-    setLoading(false)
-  }
-
   useEffect(() => {
+    const fetchCard = async () => {
+      let response = await cardService.getBySet(code, collector_number)
+
+      setCard(response.data)
+      setLoading(false)
+    }
     fetchCard()
-  }, [])
+  }, [code, collector_number])
 
   return loading ? <Loading /> : <FullCardInfo card={card} />
 }

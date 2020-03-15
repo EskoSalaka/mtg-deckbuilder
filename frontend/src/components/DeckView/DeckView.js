@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Grid, Paper, Divider, Container } from '@material-ui/core'
 import styles from './styles'
 import decksService from '../../services/decks'
@@ -16,7 +16,7 @@ export default function DeckContents() {
   const classes = styles()
   let { deckID } = useParams()
 
-  const [deckData, error, isLoading] = decksService.useGetDeck(deckID)
+  const [deckData, deckError, isLoading] = decksService.useGetDeck(deckID)
   const [mainBoard, setMainBoard] = useState([])
   const [sideboard, setSideboard] = useState([])
   const [groups, setGroups] = useState([])
@@ -26,17 +26,17 @@ export default function DeckContents() {
   const [imagePopoverPosition, setImagePopoverPosition] = useState(null)
   console.log(groups, groupNames)
 
-  function handleMouseMove(e, card) {
+  const handleMouseMove = useCallback((e, card) => {
     e.preventDefault()
 
     setImagePopoverPosition({ top: e.pageY - 50 + 'px', left: e.pageX + 50 + 'px' })
     setCardToShow(card)
-  }
+  }, [])
 
-  function handleMouseLeave(e) {
+  const handleMouseLeave = useCallback((e, card) => {
     e.preventDefault()
     setCardToShow(null)
-  }
+  }, [])
 
   useEffect(() => {
     setSideboard(deckData ? byCount(deckData.sideboard) : [])
@@ -50,14 +50,14 @@ export default function DeckContents() {
     setGroupNames(Object.keys(groups).sort((g1, g2) => groups[g1].length < groups[g2].length))
   }, [mainBoard])
 
+  if (deckError) throw deckError
+
   return (
     <Container className={classes.mainContainer}>
+      {cardToShow && <CardImagePopover card={cardToShow} anchorPosition={imagePopoverPosition} />}
       {isLoading && <Loading />}
       {deckData && (
         <Paper className={classes.deckListPaper}>
-          {cardToShow && (
-            <CardImagePopover card={cardToShow} anchorPosition={imagePopoverPosition} />
-          )}
           <DeckTitle deck={deckData} />
           <Divider className={classes.divider} />
           <Grid container direction='row' spacing={2}>
