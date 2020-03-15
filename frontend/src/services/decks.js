@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import authService from './auth'
-const baseURL = '/api'
+const baseURL = 'https://mtg-deckbuilder-api.herokuapp.com/api'
 
 const getAll = async () => {
   const response = await axios.get(baseURL)
