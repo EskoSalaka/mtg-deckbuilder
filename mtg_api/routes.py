@@ -24,10 +24,11 @@ from .models import (
 
 routes_blueprint = Blueprint("routes", __name__ )
 
+
 @routes_blueprint.route("/api/cards/")
 def cards():
     page = request.args.get("page", 1, type=int)
-    paginator = Card.query.paginate(12, 300, False)
+    paginator = Card.query.paginate(page, 300, False)
 
     next_page = (
         url_for("routes.cards", page=paginator.next().page, _external=True)
@@ -225,18 +226,18 @@ def deck(api_id):
 @routes_blueprint.route("/api/user/decks", methods=["GET"])
 @authorize
 def user_decks(user):
-    cards_schema = CardSchema(many=True)
+    try:
+        decks = [{
+            "api_id": deck.api_id,
+            "name": deck.name,
+            "user": deck.user.username,
+            "created_at": deck.created_at.strftime("%Y-%m-%d %H:%M")}]
 
-    decks = [{
-        "api_id": deck.api_id,
-        "name": deck.name,
-        "user": deck.user.username,
-        "created_at": deck.created_at.strftime("%Y-%m-%d %H:%M"),
-        "mainboard": cards_schema.dump(deck.get_mainboard()),
-        "sideboard": cards_schema.dump(deck.get_sideboard())}
-                    for deck in user.decks]
-
-    return jsonify({"decks": decks}), 200
+        return jsonify({"decks": decks}), 200
+    
+    except Exception as e:
+        print("error", str(e))
+        return jsonify(error=500, status="Fail", message="Internal server error"), 500
 
 
 @routes_blueprint.route("/api/user/decks/<api_id>", methods=["GET"])

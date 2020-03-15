@@ -110,7 +110,7 @@ function incremented(cards, card) {
       return c
     })
   } else {
-    const newCard = _.clone(card)
+    const newCard = _.cloneDeep(card)
     newCard.count = 1
     return [...cards, newCard]
   }

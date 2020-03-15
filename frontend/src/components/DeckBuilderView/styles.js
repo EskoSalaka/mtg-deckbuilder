@@ -31,6 +31,18 @@ const styles = makeStyles({
     '&:hover': {
       backgroundColor: blue[900]
     }
+  },
+  landsfab: {
+    margin: 0,
+    top: 'auto',
+    left: 'auto',
+    bottom: 120,
+    right: 155,
+    position: 'fixed',
+    backgroundColor: blue[800],
+    '&:hover': {
+      backgroundColor: blue[900]
+    }
   }
 })
 

@@ -1,91 +1,61 @@
 import React, { useState } from 'react'
-import { Grid, TextField, Box } from '@material-ui/core'
+import { Grid, Box, IconButton } from '@material-ui/core'
 import styles from './styles'
+import ManaCost from '../ManaCost'
+import AddCircleIcon from '@material-ui/icons/AddCircle'
+import RemoveCircleIcon from '@material-ui/icons/RemoveCircle'
 
-export default function AddBasicLandsBox({ cards }) {
+export default function AddBasicLandsBox({ handleRemoveButtonClick, handleAddButtonClick }) {
   const classes = styles()
-  const [lands, setLands] = useState({
-    plains: 0,
-    islands: 0,
-    swamps: 0,
-    mouintains: 0,
-    forests: 0
-  })
-
-  function handleChange(e) {
-    if (!isNaN(e.target.value) && e.target.value >= 0) {
-      setLands({ ...lands, [e.target.id]: e.target.value })
-    } else {
-      setLands({ ...lands, [e.target.id]: 0 })
-    }
-  }
 
   return (
-    <Box border={1} borderRadius='borderRadius'>
-      <Grid container className={classes.basicLandsGrid} direction='column'>
-        <TextField
-          id='plains'
-          label='plains'
-          variant='outlined'
-          value={lands.plains}
-          onChange={handleChange}
-          type='number'
-          className={classes.textField}
-          margin='dense'
-        />
-        <TextField
-          id='islands'
-          label='islands'
-          value={lands.islands}
-          variant='outlined'
-          onChange={(e) => handleChange(e)}
-          type='number'
-          className={classes.textField}
-          InputLabelProps={{
-            shrink: true
-          }}
-          margin='dense'
-        />
-        <TextField
-          id='swamps'
-          label='swamps'
-          value={lands.swamps}
-          variant='outlined'
-          onChange={(e) => handleChange(e)}
-          type='number'
-          className={classes.textField}
-          InputLabelProps={{
-            shrink: true
-          }}
-          margin='dense'
-        />
-        <TextField
-          id='mouintains'
-          label='mountains'
-          value={lands.mouintains}
-          variant='outlined'
-          onChange={(e) => handleChange(e)}
-          type='number'
-          className={classes.textField}
-          InputLabelProps={{
-            shrink: true
-          }}
-          margin='dense'
-        />
-        <TextField
-          id='forests'
-          label='forests'
-          value={lands.forests}
-          variant='outlined'
-          onChange={(e) => handleChange(e)}
-          type='number'
-          className={classes.textField}
-          InputLabelProps={{
-            shrink: true
-          }}
-          margin='dense'
-        />
-      </Grid>
-    </Box>
+    <>
+      <Box fontSize={20} flex='1'>
+        <IconButton color='secondary' id='plains' onClick={handleRemoveButtonClick}>
+          <RemoveCircleIcon />
+        </IconButton>
+        <ManaCost manaCost={'{W}'}></ManaCost>
+        <IconButton color='primary' id='plains' onClick={handleAddButtonClick}>
+          <AddCircleIcon />
+        </IconButton>
+      </Box>
+
+      <Box fontSize={20} flex='1'>
+        <IconButton color='secondary' id='island' onClick={handleRemoveButtonClick}>
+          <RemoveCircleIcon />
+        </IconButton>
+        <ManaCost manaCost={'{U}'}></ManaCost>
+        <IconButton color='primary' id='island' onClick={handleAddButtonClick}>
+          <AddCircleIcon />
+        </IconButton>
+      </Box>
+      <Box fontSize={20} flex='1'>
+        <IconButton color='secondary' id='swamp' onClick={handleRemoveButtonClick}>
+          <RemoveCircleIcon />
+        </IconButton>
+        <ManaCost manaCost={'{B}'}></ManaCost>
+        <IconButton color='primary' id='swamp' onClick={handleAddButtonClick}>
+          <AddCircleIcon />
+        </IconButton>
+      </Box>
+      <Box fontSize={20} flex='1'>
+        <IconButton color='secondary' id='mountain' onClick={handleRemoveButtonClick}>
+          <RemoveCircleIcon />
+        </IconButton>
+        <ManaCost manaCost={'{R}'}></ManaCost>
+        <IconButton color='primary' id='mountain' onClick={handleAddButtonClick}>
+          <AddCircleIcon />
+        </IconButton>
+      </Box>
+      <Box fontSize={20} flex='1'>
+        <IconButton color='secondary' id='forest' onClick={handleRemoveButtonClick}>
+          <RemoveCircleIcon />
+        </IconButton>
+        <ManaCost manaCost={'{G}'} />
+        <IconButton color='primary' id='forest' onClick={handleAddButtonClick}>
+          <AddCircleIcon />
+        </IconButton>
+      </Box>
+    </>
   )
 }
