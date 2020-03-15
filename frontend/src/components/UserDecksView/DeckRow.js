@@ -92,7 +92,7 @@ function DeckRow({ deck }) {
       </TableCell>
       <TableCell key='cards' className={classes.cell} onClick={handleRowClick}>
         <Typography className={classes.cellText}>
-          {deck.mainboard_card_count} / {deck.sideboard_card_count}
+          {deck.mainboard.length} / {deck.sideboard.length}
         </Typography>
       </TableCell>
 

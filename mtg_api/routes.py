@@ -227,16 +227,20 @@ def deck(api_id):
 @authorize
 def user_decks(user):
     try:
+        cards_schema = CardSchema(many=True)
+
         decks = [{
             "api_id": deck.api_id,
             "name": deck.name,
             "user": deck.user.username,
-            "mainboard_card_count": len(deck.get_mainboard()),
-            "sideboard_card_count": len(deck.get_sideboard()),
-            "created_at": deck.created_at.strftime("%Y-%m-%d %H:%M")} for deck in user.decks]
+            "created_at": deck.created_at.strftime("%Y-%m-%d %H:%M"),
+            "mainboard": cards_schema.dump(deck.get_mainboard()),
+            "sideboard": cards_schema.dump(deck.get_sideboard())}
+            for deck in user.decks]
 
         return jsonify({"decks": decks}), 200
 
+        return jsonify({"decks": decks}), 200
     except Exception as e:
         print("error", str(e))
         return jsonify(error=500, status="Fail", message="Internal server error"), 500
