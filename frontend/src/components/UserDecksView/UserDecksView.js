@@ -22,12 +22,14 @@ export default function UserDecksView() {
   const [decksData, decksError, isLoadingDecks] = decksService.useGetUserDecks()
   console.log(decksData)
 
+  if (decksError) throw decksError
+
   return (
     <div>
       {isLoadingDecks && <Loading />}
       {decksData && (
         <Container className={classes.mainContainer}>
-          <UserDecksTable decks={decksData.decks} />
+          <UserDecksTable decksInfo={decksData.decks} />
         </Container>
       )}
     </div>

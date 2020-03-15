@@ -43,7 +43,8 @@ const styles = makeStyles({
     '&:hover': {
       backgroundColor: blue[900]
     }
-  }
+  },
+  landsPopover: {}
 })
 
 export default styles

@@ -227,15 +227,14 @@ def deck(api_id):
 @authorize
 def user_decks(user):
     try:
-        cards_schema = CardSchema(many=True)
-
         decks = [{
             "api_id": deck.api_id,
             "name": deck.name,
             "user": deck.user.username,
             "created_at": deck.created_at.strftime("%Y-%m-%d %H:%M"),
-            "mainboard": cards_schema.dump(deck.get_mainboard()),
-            "sideboard": cards_schema.dump(deck.get_sideboard())}
+            "colors": deck.get_deck_colors(),
+            "mainboard_card_count": len(deck.get_mainboard()),
+            "sideboard_card_count": len(deck.get_sideboard())}
             for deck in user.decks]
 
         return jsonify({"decks": decks}), 200
@@ -493,7 +492,14 @@ def verify_auth():
     auth_header = request.headers.get("Authorization")
 
     if auth_header:
-        auth_token = auth_header.split(" ")[1]
+        try:
+            auth_token = auth_header.split(" ")[1]
+
+        except IndexError:
+            return (
+                jsonify(error=401, status="Fail", message="Invalid or expired token"),
+                400,
+            )
 
         resp = User.decode_auth_token(auth_token)
 
@@ -502,7 +508,7 @@ def verify_auth():
         else:
             return (
                 jsonify(error=401, status="Fail", message="Invalid or expired token"),
-                401,
+                400,
             )
 
     else:
@@ -514,7 +520,15 @@ def get_user():
     auth_header = request.headers.get("Authorization")
 
     if auth_header:
-        auth_token = auth_header.split(" ")[1]
+        try:
+            auth_token = auth_header.split(" ")[1]
+
+        except IndexError:
+            return (
+                jsonify(error=401, status="Fail", message="Invalid or expired token"),
+                400,
+            )
+
         user = User.from_token(auth_token)
 
         if user:
@@ -529,7 +543,7 @@ def get_user():
         else:
             return (
                 jsonify(error=401, status="Fail", message="Invalid or expired token"),
-                401,
+                400,
             )
 
     else:

@@ -11,7 +11,7 @@ const styles = makeStyles({
   table: { width: 'fit-content' }
 })
 
-function UserDecksTable({ decks }) {
+function UserDecksTable({ decksInfo }) {
   const classes = styles()
 
   return (
@@ -19,8 +19,8 @@ function UserDecksTable({ decks }) {
       <Table className={classes.table} size='small'>
         <HeaderRow />
         <TableBody>
-          {decks.map((deck) => (
-            <DeckRow deck={deck} key={deck.api_id} />
+          {decksInfo.map((deckInfo) => (
+            <DeckRow deckInfo={deckInfo} key={deckInfo.api_id} />
           ))}
         </TableBody>
       </Table>

@@ -8,6 +8,15 @@ export default function PrivateRoute({ component: Component, ...rest }) {
   let location = useLocation()
 
   if (isLoading) return <Loading />
+  if (error)
+    return (
+      <Redirect
+        to={{
+          pathname: '/login',
+          state: { from: location }
+        }}
+      />
+    )
 
   return (
     <Route

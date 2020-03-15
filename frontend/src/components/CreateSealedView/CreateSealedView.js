@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react'
-import { Paper, AppBar, Toolbar, Button, Grid, Fab, Badge } from '@material-ui/core'
+import { Paper, Grid, Fab, Badge } from '@material-ui/core'
 
 import styles from './styles'
 import SetsTable from './SetsTable'

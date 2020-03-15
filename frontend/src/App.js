@@ -1,7 +1,6 @@
 import React from 'react'
 import MTGAppBar from './components/MTGAppBar'
 import MTGFooter from './components/MTGFooter'
-import { withStyles } from '@material-ui/core'
 import { Router, Route, Switch } from 'react-router-dom'
 
 import history from './history'
@@ -17,8 +16,9 @@ import DeckView from './components/DeckView'
 import SetsView from './components/SetsView'
 import UserDecksView from './components/UserDecksView'
 import HomeView from './components/HomeView'
+import { makeStyles } from '@material-ui/core'
 
-const styles = (theme) => ({
+const styles = makeStyles({
   root: {
     backgroundColor: '#e6e3e3',
     display: 'flex',
@@ -27,33 +27,29 @@ const styles = (theme) => ({
   }
 })
 
-class App extends React.Component {
-  render() {
-    const { classes } = this.props
+export default function App() {
+  const classes = styles()
 
-    return (
-      <div className={classes.root}>
-        <Router history={history}>
-          <MTGAppBar />
-          <Switch>
-            <Route exact path='/' component={HomeView} />
-            <Route exact path='/sets' component={SetsView} />
-            <Route exact path='/cards/:code/:collector_number' component={CardInfoView} />
-            <Route exact path='/cards/:code' component={SetView} />
-            <Route path='/login/' component={LoginView} />
-            <Route path='/signup/' component={SignUpView} />
-            <PrivateRoute path='/decks/new' component={CreateSealedView} />
-            <PrivateRoute path='/decks/edit/:deckID' component={DeckBuilderView} />
-            <PrivateRoute path='/decks/:deckID' component={DeckView} />
+  return (
+    <div className={classes.root}>
+      <Router history={history}>
+        <MTGAppBar />
+        <Switch>
+          <Route exact path='/' component={HomeView} />
+          <Route exact path='/sets' component={SetsView} />
+          <Route exact path='/cards/:code/:collector_number' component={CardInfoView} />
+          <Route exact path='/cards/:code' component={SetView} />
+          <Route path='/login/' component={LoginView} />
+          <Route path='/signup/' component={SignUpView} />
+          <PrivateRoute path='/decks/new' component={CreateSealedView} />
+          <PrivateRoute path='/decks/edit/:deckID' component={DeckBuilderView} />
+          <PrivateRoute path='/decks/:deckID' component={DeckView} />
 
-            <PrivateRoute path='/user/decks' component={UserDecksView} />
-          </Switch>
-        </Router>
+          <PrivateRoute path='/user/decks' component={UserDecksView} />
+        </Switch>
+      </Router>
 
-        <MTGFooter />
-      </div>
-    )
-  }
+      <MTGFooter />
+    </div>
+  )
 }
-
-export default withStyles(styles)(App)

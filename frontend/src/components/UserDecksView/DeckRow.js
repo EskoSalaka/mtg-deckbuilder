@@ -48,41 +48,40 @@ const styles = makeStyles({
   }
 })
 
-function DeckRow({ deck }) {
+function DeckRow({ deckInfo }) {
   const classes = styles()
   const history = useHistory()
 
-  let deckColors = new Set(
-    deck.mainboard
-      .map((card) => {
-        console.log(card.color_identity.flat())
-
-        if (card.color_identity) return card.color_identity
-      })
-      .flat()
-  )
-
   var deckColorStr = ''
 
-  for (const color of deckColors) {
+  for (const color of deckInfo.colors) {
     deckColorStr = deckColorStr + '{' + color + '}'
   }
 
-  const handleRowClick = useCallback((e, a) => {
-    console.log(e, a)
-    history.push(`/decks/${deck.api_id}`)
-  })
-  const handleEditButtonClick = useCallback((e) => {
-    history.push(`/decks/edit/${deck.api_id}`)
-  })
+  const handleRowClick = useCallback(
+    (e) => {
+      e.preventDefault()
+      history.push(`/decks/${deckInfo.api_id}`)
+    },
+    [deckInfo, history]
+  )
+  const handleEditButtonClick = useCallback(
+    (e) => {
+      e.preventDefault()
+      history.push(`/decks/edit/${deckInfo.api_id}`)
+    },
+    [deckInfo, history]
+  )
 
-  const handleDeleteButtonClick = useCallback((e) => {})
+  const handleDeleteButtonClick = useCallback((e) => {
+    e.preventDefault()
+  }, [])
 
   return (
     <TableRow className={classes.row}>
       <TableCell key='name' className={classes.cell} onClick={handleRowClick}>
         <Box display='flex'>
-          <Typography className={classes.cellText}>{deck.name}</Typography>
+          <Typography className={classes.cellText}>{deckInfo.name}</Typography>
           <Box ml={2} display='flex'>
             <Typography className={classes.cellText}>
               <ManaCost manaCost={deckColorStr} />
@@ -92,12 +91,12 @@ function DeckRow({ deck }) {
       </TableCell>
       <TableCell key='cards' className={classes.cell} onClick={handleRowClick}>
         <Typography className={classes.cellText}>
-          {deck.mainboard.length} / {deck.sideboard.length}
+          {deckInfo.mainboard_card_count} / {deckInfo.sideboard_card_count}
         </Typography>
       </TableCell>
 
       <TableCell key='added' className={classes.cell} onClick={handleRowClick}>
-        <Typography className={classes.cellText}>{deck.created_at}</Typography>
+        <Typography className={classes.cellText}>{deckInfo.created_at}</Typography>
       </TableCell>
       <TableCell key='tools1' className={classes.lastCell}>
         <Tooltip title='Edit deck' aria-label='Edit deck'>

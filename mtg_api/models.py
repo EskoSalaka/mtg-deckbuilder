@@ -1,5 +1,5 @@
 import datetime
-
+import itertools
 import jwt
 from marshmallow import fields
 from sqlalchemy.orm import relationship
@@ -260,6 +260,12 @@ class Deck(db.Model):
             sideboard += sbassoc.count * [sbassoc.card]
 
         return sideboard
+
+    def get_deck_colors(self):
+        flatten = itertools.chain.from_iterable
+        flat_colors = set(flatten([card.colors for card in self.get_mainboard()]))
+
+        return [color.value for color in flat_colors]
 
     def __repr__(self):
         return "<Deck %r %r %r>" % (

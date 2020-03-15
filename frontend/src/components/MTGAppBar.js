@@ -4,10 +4,9 @@ import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
-import IconButton from '@material-ui/core/IconButton'
-import MenuIcon from '@material-ui/icons/Menu'
+
 import authService from '../services/auth'
-import { Link, useHistory, Redirect, useLocation } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import Loading from './Common/Loading'
 
 const useStyles = makeStyles((theme) => ({
@@ -25,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
 function MTGAppBar() {
   const classes = useStyles()
   let history = useHistory()
-  let location = useLocation()
 
   const [user, error, isLoading] = authService.useGetUser()
 
