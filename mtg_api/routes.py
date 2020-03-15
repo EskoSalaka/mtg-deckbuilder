@@ -240,7 +240,6 @@ def user_decks(user):
 
         return jsonify({"decks": decks}), 200
 
-        return jsonify({"decks": decks}), 200
     except Exception as e:
         print("error", str(e))
         return jsonify(error=500, status="Fail", message="Internal server error"), 500
