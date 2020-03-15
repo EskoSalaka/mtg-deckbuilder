@@ -16,6 +16,7 @@ import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
 import styles from './styles'
 import authService from '../../services/auth'
 import { Redirect, useHistory, useLocation } from 'react-router-dom'
+import Loading from '../Common/Loading'
 
 export default function LoginView() {
   const classes = styles()
@@ -23,7 +24,7 @@ export default function LoginView() {
   let location = useLocation()
   let { from } = location.state || { from: { pathname: '/' } }
 
-  const [user, error, isLoading] = authService.useGetUser()
+  const [user, , isLoading] = authService.useGetUser()
   const [values, setValues] = useState({
     email: '',
     password: ''
@@ -46,9 +47,11 @@ export default function LoginView() {
     setValues({ ...values, [e.target.id]: e.target.value })
   }
 
+  if (isLoading) return <Loading />
+  if (user) return <Redirect to='/' />
+
   return (
     <Grid container justify='center'>
-      {user && <Redirect to='/' />}
       <Paper className={classes.loginPaper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />

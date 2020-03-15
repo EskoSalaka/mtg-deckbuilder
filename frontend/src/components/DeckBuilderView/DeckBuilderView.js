@@ -531,7 +531,7 @@ export default function DeckBuilderView() {
   const classes = styles()
   const { deckID } = useParams()
 
-  const [deckData, error, isLoading] = decksService.useGetUserDeck(deckID)
+  const [deckData, deckError, isLoading] = decksService.useGetUserDeck(deckID)
   const [editDeck, editResponse, editError, editIsLoading] = decksService.useEditDeck(deckID)
 
   const [mainBoard, setMainBoard] = useState([])
@@ -622,6 +622,7 @@ export default function DeckBuilderView() {
   }
 
   if (isLoading) return <Loading />
+  if (deckError) throw deckError
 
   return (
     <div>

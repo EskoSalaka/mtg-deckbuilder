@@ -1,5 +1,5 @@
 import React from 'react'
-import { PieChart, Pie, Sector, Cell } from 'recharts'
+import { PieChart, Pie, Cell } from 'recharts'
 
 import { colorStats, manaSymbols } from '../utils'
 import { Typography } from '@material-ui/core'

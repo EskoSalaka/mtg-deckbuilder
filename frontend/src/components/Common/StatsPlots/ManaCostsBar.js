@@ -1,6 +1,6 @@
 import React from 'react'
 import { BarChart, XAxis, YAxis, Bar, Scatter } from 'recharts'
-import { manaCosts, avgManaCost } from '../utils'
+import { manaCosts } from '../utils'
 import { Typography } from '@material-ui/core'
 
 export default function ManaCostsBar({ cards }) {

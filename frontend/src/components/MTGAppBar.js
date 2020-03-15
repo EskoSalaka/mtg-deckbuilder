@@ -25,9 +25,10 @@ function MTGAppBar() {
   const classes = useStyles()
   let history = useHistory()
 
-  const [user, error, isLoading] = authService.useGetUser()
+  const [user, , isLoading] = authService.useGetUser()
 
   async function handleLogout(e) {
+    e.preventDefault()
     const resp = await authService.logout()
 
     if (resp.status === 'Success') {

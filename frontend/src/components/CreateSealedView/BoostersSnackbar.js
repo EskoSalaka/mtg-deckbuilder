@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Box, Grid, Typography } from '@material-ui/core'
+import { Button, Box, Typography } from '@material-ui/core'
 import Snackbar from '@material-ui/core/Snackbar'
 import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'

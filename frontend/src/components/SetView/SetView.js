@@ -25,7 +25,6 @@ export default function SetView() {
   const [cardsData, cardsError, isLoadingCards] = setsService.useFetchSetData(`${setCode}/cards/`)
   const [setdata, setError, isLoadingSet] = setsService.useFetchSetData(setCode)
 
-  // #TODO const [sortBy, setSortBy] = useState('Name')
   const [show, setShow] = useState('checklist')
 
   const handleChange = useCallback((e) => {

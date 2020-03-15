@@ -43,12 +43,16 @@ function SetRow({ set }) {
 
   const history = useHistory()
 
-  const handleClick = useCallback((e) => {
-    history.push(`/cards/${set.code}`)
-  })
+  const handleRowClick = useCallback(
+    (e) => {
+      e.preventDefault()
+      history.push(`/cards/${set.code}`)
+    },
+    [set, history]
+  )
 
   return (
-    <TableRow hover className={classes.row} onClick={handleClick}>
+    <TableRow hover className={classes.row} onClick={handleRowClick}>
       <TableCell key='name' className={classes.cell}>
         <Box display='flex'>
           <Box mr={2} display='flex'>
