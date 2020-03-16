@@ -1,6 +1,7 @@
 import React from 'react'
-import { Grid, Typography, Link } from '@material-ui/core'
+import { Grid, Typography } from '@material-ui/core'
 import styles from './styles'
+import { Link } from 'react-router-dom'
 import { count } from '../Common/utils'
 
 function SideboardSection({ cards, handleMouseMove, handleMouseLeave }) {
@@ -18,8 +19,8 @@ function SideboardSection({ cards, handleMouseMove, handleMouseLeave }) {
               <Grid item xs={4} key={c.id}>
                 <Typography variant='body2'>
                   <Link
-                    href={`/cards/${c.set}/${c.collector_number}`}
-                    color='inherit'
+                    className={classes.cardLink}
+                    to={`/cards/${c.set}/${c.collector_number}`}
                     onMouseMove={(e) => handleMouseMove(e, c)}
                     onMouseLeave={(e) => handleMouseLeave(e)}
                   >{`${c.count} ${c.name}`}</Link>

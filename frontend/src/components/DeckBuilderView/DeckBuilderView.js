@@ -593,13 +593,10 @@ export default function DeckBuilderView() {
   }
 
   function handleAddLandButtonClick(e) {
-    console.log(e.currentTarget.id)
-
     setMainBoard(incrementedMany(mainBoard, [basicLands[e.currentTarget.id]]))
   }
 
   function handleRemoveLandButtonClick(e) {
-    console.log(e.currentTarget.id)
     setMainBoard(decrementedMany(mainBoard, [basicLands[e.currentTarget.id]]))
   }
 
@@ -612,7 +609,6 @@ export default function DeckBuilderView() {
   }
 
   const handleCloseLands = (e) => {
-    console.log(e)
     setBasicLandsOpen(false)
   }
 
@@ -622,7 +618,10 @@ export default function DeckBuilderView() {
   }
 
   if (isLoading) return <Loading />
-  if (deckError) throw deckError
+  if (deckError) {
+    console.log(deckError, deckError.response.status, deckError.headers)
+    console.log(JSON.stringify(deckError))
+  }
 
   return (
     <div>

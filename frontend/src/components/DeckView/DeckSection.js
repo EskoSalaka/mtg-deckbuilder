@@ -1,7 +1,8 @@
 import React from 'react'
-import { Grid, Typography, Link } from '@material-ui/core'
+import { Grid, Typography } from '@material-ui/core'
 import styles from './styles'
 import { count } from '../Common/utils'
+import { Link } from 'react-router-dom'
 
 function DeckSection({ cards, sectionName, handleMouseMove, handleMouseLeave }) {
   const classes = styles()
@@ -18,8 +19,8 @@ function DeckSection({ cards, sectionName, handleMouseMove, handleMouseLeave }) 
             <Grid item key={c.id} component='span'>
               <Typography variant='body2'>
                 <Link
-                  href={`/cards/${c.set}/${c.collector_number}`}
-                  color='inherit'
+                  className={classes.cardLink}
+                  to={`/cards/${c.set}/${c.collector_number}`}
                   onMouseMove={(e) => handleMouseMove(e, c)}
                   onMouseLeave={(e) => handleMouseLeave(e)}
                 >{`${c.count} ${c.name}`}</Link>

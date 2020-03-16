@@ -24,7 +24,6 @@ export default function DeckContents() {
   const [groupBy, setGroupBy] = useState('type')
   const [cardToShow, setCardToShow] = useState(null)
   const [imagePopoverPosition, setImagePopoverPosition] = useState(null)
-  console.log(groups, groupNames)
 
   const handleMouseMove = useCallback((e, card) => {
     e.preventDefault()
@@ -33,7 +32,7 @@ export default function DeckContents() {
     setCardToShow(card)
   }, [])
 
-  const handleMouseLeave = useCallback((e, card) => {
+  const handleMouseLeave = useCallback((e) => {
     e.preventDefault()
     setCardToShow(null)
   }, [])
@@ -45,7 +44,6 @@ export default function DeckContents() {
 
   useEffect(() => {
     setGroups(group(mainBoard, groupBy))
-    console.log(groups)
 
     setGroupNames(Object.keys(groups).sort((g1, g2) => groups[g1].length < groups[g2].length))
   }, [mainBoard])
@@ -60,24 +58,22 @@ export default function DeckContents() {
         <Paper className={classes.deckListPaper}>
           <DeckTitle deck={deckData} />
           <Divider className={classes.divider} />
+
           <Grid container direction='row' spacing={2}>
-            <Grid item xs={8}>
-              <Grid container direction='row' spacing={2}>
-                {groupNames.map((groupName) => {
-                  return groups[groupName].length ? (
-                    <Grid item xs={4} ms={4} lg={4} key={groupName}>
-                      <DeckSection
-                        cards={groups[groupName]}
-                        sectionName={groupName}
-                        handleMouseMove={handleMouseMove}
-                        handleMouseLeave={handleMouseLeave}
-                      />
-                    </Grid>
-                  ) : null
-                })}
-              </Grid>
-            </Grid>
+            {groupNames.map((groupName) => {
+              return groups[groupName].length ? (
+                <Grid item xs={4} ms={4} lg={4} key={groupName}>
+                  <DeckSection
+                    cards={groups[groupName]}
+                    sectionName={groupName}
+                    handleMouseMove={handleMouseMove}
+                    handleMouseLeave={handleMouseLeave}
+                  />
+                </Grid>
+              ) : null
+            })}
           </Grid>
+
           <Divider className={classes.divider} />
 
           <SideboardSection

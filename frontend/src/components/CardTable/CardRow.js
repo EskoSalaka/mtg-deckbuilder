@@ -69,11 +69,6 @@ const styles = makeStyles({
 function CardRow({ card, handleMouseMove, handleMouseLeave }) {
   const classes = styles()
 
-  const frontFace =
-    card.layout === 'transform' || card.layout === 'double_faced_token'
-      ? card.card_faces[0].image_uris.normal
-      : card.image_uris.normal
-
   const manaCost =
     card.layout === 'transform' || card.layout === 'double_faced_token'
       ? card.card_faces[0].mana_cost
@@ -90,7 +85,7 @@ function CardRow({ card, handleMouseMove, handleMouseLeave }) {
     <TableRow
       hover
       className={classes.row}
-      onMouseMove={(e) => handleMouseMove(e, frontFace)}
+      onMouseMove={(e) => handleMouseMove(e, card)}
       onMouseOut={handleMouseLeave}
       onClick={() => {
         history.push(`/cards/${card.set}/${card.collector_number}`)

@@ -267,6 +267,12 @@ class Deck(db.Model):
 
         return [color.value for color in flat_colors]
 
+    def get_mainboard_size(self):
+        return sum([cardassoc.count for cardassoc in self.cards])
+
+    def get_sideboard_size(self):
+        return sum([cardassoc.count for cardassoc in self.sideboard])
+
     def __repr__(self):
         return "<Deck %r %r %r>" % (
             self.name,

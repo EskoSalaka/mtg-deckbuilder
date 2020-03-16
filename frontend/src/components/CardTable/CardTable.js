@@ -1,10 +1,10 @@
-import React, { useState, useCallback } from 'react'
+import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import TableBody from '@material-ui/core/TableBody'
 import Table from '@material-ui/core/Table'
 import Paper from '@material-ui/core/Paper'
 import CardRow from './CardRow'
-import CardImagePopover from './CardImagePopover'
+
 import HeaderRow from './HeaderRow'
 
 const styles = makeStyles({
@@ -12,29 +12,11 @@ const styles = makeStyles({
   table: { width: 'fit-content' }
 })
 
-function CardTable({ cards }) {
+function CardTable({ cards, handleMouseMove, handleMouseLeave }) {
   const classes = styles()
-
-  const [cardImageToPopover, setCardImageToPopover] = useState('')
-  const [cardImagePopoverPosition, setCardImagePopoverPosition] = useState({
-    top: '200px',
-    left: '200px'
-  })
-
-  const handleMouseMove = useCallback((e, card) => {
-    setCardImageToPopover(card)
-    setCardImagePopoverPosition({ top: e.pageY - 50 + 'px', left: e.pageX + 50 + 'px' })
-  }, [])
-
-  const handleMouseLeave = useCallback((e) => {
-    setCardImageToPopover(null)
-  }, [])
 
   return (
     <>
-      {cardImageToPopover && (
-        <CardImagePopover cardImg={cardImageToPopover} anchorPosition={cardImagePopoverPosition} />
-      )}
       <Paper className={classes.root}>
         <Table className={classes.table} size='small'>
           <HeaderRow />
