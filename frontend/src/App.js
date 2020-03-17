@@ -17,6 +17,7 @@ import SetsView from './components/SetsView'
 import UserDecksView from './components/UserDecksView'
 import HomeView from './components/HomeView'
 import { makeStyles } from '@material-ui/core'
+import { AuthProvider } from './AuthContext'
 
 const styles = makeStyles({
   root: {
@@ -32,24 +33,26 @@ export default function App() {
 
   return (
     <div className={classes.root}>
-      <Router history={history}>
-        <MTGAppBar />
-        <Switch>
-          <Route exact path='/' component={HomeView} />
-          <Route exact path='/sets' component={SetsView} />
-          <Route exact path='/cards/:code/:collector_number' component={CardInfoView} />
-          <Route exact path='/cards/:code' component={SetView} />
-          <Route path='/login/' component={LoginView} />
-          <Route path='/signup/' component={SignUpView} />
-          <PrivateRoute path='/decks/new' component={CreateSealedView} />
-          <PrivateRoute path='/decks/edit/:deckID' component={DeckBuilderView} />
-          <PrivateRoute path='/decks/:deckID' component={DeckView} />
+      <AuthProvider>
+        <Router history={history}>
+          <MTGAppBar />
+          <Switch>
+            <Route exact path='/' component={HomeView} />
+            <Route exact path='/sets' component={SetsView} />
+            <Route exact path='/cards/:code/:collector_number' component={CardInfoView} />
+            <Route exact path='/cards/:code' component={SetView} />
+            <Route path='/login/' component={LoginView} />
+            <Route path='/signup/' component={SignUpView} />
+            <PrivateRoute path='/decks/new' component={CreateSealedView} />
+            <PrivateRoute path='/decks/edit/:deckID' component={DeckBuilderView} />
+            <PrivateRoute path='/decks/:deckID' component={DeckView} />
 
-          <PrivateRoute path='/user/decks' component={UserDecksView} />
-        </Switch>
-      </Router>
+            <PrivateRoute path='/user/decks' component={UserDecksView} />
+          </Switch>
+        </Router>
 
-      <MTGFooter />
+        <MTGFooter />
+      </AuthProvider>
     </div>
   )
 }

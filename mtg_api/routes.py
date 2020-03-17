@@ -435,6 +435,7 @@ def login():
                     status="Success",
                     message="Login successful",
                     auth_token=auth_token.decode(),
+                    user={"username": user.username, "email": user.email}
                 ),
                 200,
             )

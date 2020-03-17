@@ -17,14 +17,16 @@ import styles from './styles'
 import authService from '../../services/auth'
 import { Redirect, useHistory, useLocation } from 'react-router-dom'
 import Loading from '../Common/Loading'
+import { useAuth } from '../../AuthContext'
 
 export default function LoginView() {
   const classes = styles()
   let history = useHistory()
   let location = useLocation()
   let { from } = location.state || { from: { pathname: '/' } }
+  console.log(from)
 
-  const [user, , isLoading] = authService.useGetUser()
+  const { user, login, loginResponse } = useAuth()
   const [values, setValues] = useState({
     email: '',
     password: ''
@@ -33,12 +35,13 @@ export default function LoginView() {
 
   async function handleSubmit(e) {
     e.preventDefault()
-    let resp = await authService.login(values.email, values.password)
+    await login(values.email, values.password)
 
-    if (resp.status === 'Fail') setErrorMessage(resp.message)
+    if (loginResponse.status === 'Fail') setErrorMessage(loginResponse.message)
     else {
-      history.replace(from)
-      window.location.reload()
+      console.log(from.pathname)
+
+      history.replace(from.pathname)
     }
   }
 
@@ -47,7 +50,6 @@ export default function LoginView() {
     setValues({ ...values, [e.target.id]: e.target.value })
   }
 
-  if (isLoading) return <Loading />
   if (user) return <Redirect to='/' />
 
   return (

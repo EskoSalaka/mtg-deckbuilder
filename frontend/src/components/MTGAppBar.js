@@ -4,10 +4,8 @@ import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
-
-import authService from '../services/auth'
 import { Link, useHistory } from 'react-router-dom'
-import Loading from './Common/Loading'
+import { useAuth } from '../AuthContext'
 
 const useStyles = makeStyles((theme) => ({
   appbar: {
@@ -25,22 +23,7 @@ function MTGAppBar() {
   const classes = useStyles()
   let history = useHistory()
 
-  const [user, , isLoading] = authService.useGetUser()
-
-  async function handleLogout(e) {
-    e.preventDefault()
-    const resp = await authService.logout()
-
-    if (resp.status === 'Success') {
-      history.push('/')
-      window.location.reload()
-    } else {
-      history.push('/')
-      window.location.reload()
-    }
-  }
-
-  if (isLoading) return <Loading />
+  const { user, logout } = useAuth()
 
   return (
     <div>
@@ -73,7 +56,7 @@ function MTGAppBar() {
               <Button component={Link} to='/user/decks' color='primary' className={classes.button}>
                 My decks
               </Button>{' '}
-              <Button color='primary' className={classes.button} onClick={handleLogout}>
+              <Button color='primary' className={classes.button} onClick={() => logout(history)}>
                 Log out
               </Button>{' '}
             </>

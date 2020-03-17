@@ -51,6 +51,7 @@ async function verifyAuth() {
 }
 
 async function getUser() {
+  if (!getAuthToken()) return null
   try {
     const response = await axios({
       method: 'get',
@@ -59,8 +60,6 @@ async function getUser() {
         Authorization: `Bearer ${getAuthToken()}`
       }
     })
-
-    console.log(response.data)
 
     return response.data.user
   } catch (error) {
@@ -145,21 +144,26 @@ const useIsLoggedIn = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const response = await axios({
-          method: 'get',
-          url: `${baseURL}/verify_auth`,
-          headers: {
-            Authorization: `Bearer ${getAuthToken()}`
-          }
-        })
-
-        response.data.status === 'Success' ? setIsLoggedIn(true) : setIsLoggedIn(false)
-
+      if (!getAuthToken()) {
+        setIsLoggedIn(false)
         setIsLoading(false)
-      } catch (error) {
-        setError(error)
-        setIsLoading(false)
+      } else {
+        try {
+          const response = await axios({
+            method: 'get',
+            url: `${baseURL}/verify_auth`,
+            headers: {
+              Authorization: `Bearer ${getAuthToken()}`
+            }
+          })
+
+          response.data.status === 'Success' ? setIsLoggedIn(true) : setIsLoggedIn(false)
+
+          setIsLoading(false)
+        } catch (error) {
+          setError(error)
+          setIsLoading(false)
+        }
       }
     }
     fetchData()
