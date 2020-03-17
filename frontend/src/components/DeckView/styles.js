@@ -16,7 +16,8 @@ const styles = makeStyles({
   cardLink: {
     color: 'inherit',
     textDecoration: 'none'
-  }
+  },
+  expansionPanel: { margin: '-10px' }
 })
 
 export default styles

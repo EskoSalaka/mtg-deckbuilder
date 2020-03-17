@@ -16,7 +16,7 @@ import DeckView from './components/DeckView'
 import SetsView from './components/SetsView'
 import UserDecksView from './components/UserDecksView'
 import HomeView from './components/HomeView'
-import { makeStyles } from '@material-ui/core'
+import { makeStyles, CssBaseline } from '@material-ui/core'
 import { AuthProvider } from './AuthContext'
 
 const styles = makeStyles({
@@ -33,6 +33,7 @@ export default function App() {
 
   return (
     <div className={classes.root}>
+      <CssBaseline />
       <AuthProvider>
         <Router history={history}>
           <MTGAppBar />

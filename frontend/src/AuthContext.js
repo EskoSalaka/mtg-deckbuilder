@@ -6,40 +6,49 @@ const authContext = createContext({})
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [isGlobalLoading, setIsGlobalLoading] = useState(true)
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true)
+      setIsGlobalLoading(true)
+
       const userResp = await authService.getUser()
       setUser(userResp)
+      setIsGlobalLoading(false)
       setIsLoading(false)
     }
     if (!user) {
       fetchData()
     }
-  }, [user])
+  }, [])
 
   const logout = async () => {
-    setIsLoading(true)
+    setIsGlobalLoading(true)
     await authService.logout()
     setUser(null)
-    setIsLoading(false)
+    setIsGlobalLoading(false)
   }
 
   const login = async (email, password) => {
+    setIsLoading(true)
     let loginResponse = await authService.login(email, password)
 
     if (loginResponse.status === 'Success') {
       setUser(loginResponse.user)
     }
-
+    setIsLoading(false)
     return loginResponse
   }
 
-  if (isLoading) return <Loading />
+  if (isGlobalLoading) return <Loading />
 
-  return <authContext.Provider value={{ user, login, logout }}>{children}</authContext.Provider>
+  return (
+    <authContext.Provider value={{ user, login, logout, isLoading }}>
+      {children}
+    </authContext.Provider>
+  )
 }
 
 const useAuth = () => React.useContext(authContext)

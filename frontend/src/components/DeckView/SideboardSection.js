@@ -16,7 +16,7 @@ function SideboardSection({ cards, handleMouseMove, handleMouseLeave }) {
   const cardCount = cards ? count(cards) : 0
 
   return (
-    <ExpansionPanel>
+    <ExpansionPanel className={classes.expansionPanel}>
       <ExpansionPanelSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls='panel1a-content'
@@ -26,7 +26,7 @@ function SideboardSection({ cards, handleMouseMove, handleMouseLeave }) {
           {`Sideboard (${cardCount})`}
         </Typography>
       </ExpansionPanelSummary>
-      <ExpansionPanelDetails>
+      <ExpansionPanelDetails className={classes.expansionPanel}>
         <Grid container direction='row' alignItems='flex-start' justify='flex-start'>
           {cards
             ? cards.map((c) => (
