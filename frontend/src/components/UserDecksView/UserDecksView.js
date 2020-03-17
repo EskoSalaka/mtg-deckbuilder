@@ -20,7 +20,6 @@ export default function UserDecksView() {
   const classes = styles()
 
   const [decksData, decksError, isLoadingDecks] = decksService.useGetUserDecks()
-  console.log(decksData)
 
   if (decksError) throw decksError
 

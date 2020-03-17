@@ -7,40 +7,44 @@ import {
   Button,
   Paper,
   Avatar,
-  Box,
-  IconButton,
   Grid
 } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined'
+
 import styles from './styles'
-import authService from '../../services/auth'
+
 import { Redirect, useHistory, useLocation } from 'react-router-dom'
-import Loading from '../Common/Loading'
+import AlertSnackbar from '../Common/AlertSnackbar'
 import { useAuth } from '../../AuthContext'
+import Loading from '../Common/Loading'
 
 export default function LoginView() {
   const classes = styles()
   let history = useHistory()
   let location = useLocation()
   let { from } = location.state || { from: { pathname: '/' } }
-  console.log(from)
 
-  const { user, login, loginResponse } = useAuth()
+  const { user, login } = useAuth()
+  const [isLoading, setIsLoading] = useState(false)
   const [values, setValues] = useState({
     email: '',
     password: ''
   })
-  const [errorMessage, setErrorMessage] = useState('')
+  const [alertOpen, setAlertOpen] = useState(false)
+  const [alertSeverity, setAlertSeverity] = useState('')
+  const [alertMessage, setAlertMessage] = useState('')
 
   async function handleSubmit(e) {
     e.preventDefault()
-    await login(values.email, values.password)
+    setIsLoading(true)
+    const loginResponse = await login(values.email, values.password)
 
-    if (loginResponse.status === 'Fail') setErrorMessage(loginResponse.message)
-    else {
-      console.log(from.pathname)
-
+    if (loginResponse.status === 'Fail') {
+      setIsLoading(false)
+      setAlertMessage(loginResponse.message)
+      setAlertSeverity('error')
+      setAlertOpen(true)
+    } else {
       history.replace(from.pathname)
     }
   }
@@ -50,76 +54,78 @@ export default function LoginView() {
     setValues({ ...values, [e.target.id]: e.target.value })
   }
 
+  const handleCloseAlert = (e, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    setAlertOpen(false)
+  }
+
   if (user) return <Redirect to='/' />
 
   return (
-    <Grid container justify='center'>
-      <Paper className={classes.loginPaper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component='h1' variant='h5'>
-          Log in
-        </Typography>
-        {errorMessage && (
-          <Box
-            p={1}
-            mt={1}
-            borderRadius={16}
-            bgcolor='error.main'
-            display='flex'
-            alignItems='center'
-          >
-            <Typography className={classes.errorText}>{errorMessage}</Typography>
-            <IconButton size='small' onClick={(e) => setErrorMessage('')}>
-              <CloseOutlinedIcon />
-            </IconButton>
-          </Box>
-        )}
+    <div>
+      {isLoading && <Loading />}
+      <AlertSnackbar
+        open={alertOpen}
+        severity={alertSeverity}
+        message={alertMessage}
+        handleClose={handleCloseAlert}
+      />
+      <Grid container justify='center'>
+        <Paper className={classes.loginPaper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component='h1' variant='h5'>
+            Log in
+          </Typography>
 
-        <form
-          className={classes.loginForm}
-          noValidate
-          onSubmit={handleSubmit}
-          onChange={handleOnChange}
-        >
-          <TextField
-            variant='outlined'
-            margin='normal'
-            required
-            fullWidth
-            id='email'
-            label='Email Address'
-            name='email'
-            autoComplete='email'
-            autoFocus
-          />
-          <TextField
-            variant='outlined'
-            margin='normal'
-            required
-            fullWidth
-            name='password'
-            label='Password'
-            type='password'
-            id='password'
-            autoComplete='current-password'
-          />
-          <FormControlLabel
-            control={<Checkbox value='remember' color='primary' />}
-            label='Remember me'
-          />
-          <Button
-            type='submit'
-            fullWidth
-            variant='contained'
-            color='primary'
-            className={classes.submit}
+          <form
+            className={classes.loginForm}
+            noValidate
+            onSubmit={handleSubmit}
+            onChange={handleOnChange}
           >
-            Sign In
-          </Button>
-        </form>
-      </Paper>
-    </Grid>
+            <TextField
+              variant='outlined'
+              margin='normal'
+              required
+              fullWidth
+              id='email'
+              label='Email Address'
+              name='email'
+              autoComplete='email'
+              autoFocus
+            />
+            <TextField
+              variant='outlined'
+              margin='normal'
+              required
+              fullWidth
+              name='password'
+              label='Password'
+              type='password'
+              id='password'
+              autoComplete='current-password'
+            />
+            <FormControlLabel
+              control={<Checkbox value='remember' color='primary' />}
+              label='Remember me'
+            />
+            <Button
+              type='submit'
+              fullWidth
+              variant='contained'
+              color='primary'
+              className={classes.submit}
+            >
+              Sign In
+            </Button>
+          </form>
+        </Paper>
+      </Grid>
+    </div>
   )
 }

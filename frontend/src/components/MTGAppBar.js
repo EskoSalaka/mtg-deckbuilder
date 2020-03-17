@@ -25,6 +25,11 @@ function MTGAppBar() {
 
   const { user, logout } = useAuth()
 
+  const handleLogout = () => {
+    logout()
+    history.push('/')
+  }
+
   return (
     <div>
       <AppBar position='static' className={classes.appbar}>
@@ -56,7 +61,7 @@ function MTGAppBar() {
               <Button component={Link} to='/user/decks' color='primary' className={classes.button}>
                 My decks
               </Button>{' '}
-              <Button color='primary' className={classes.button} onClick={() => logout(history)}>
+              <Button color='primary' className={classes.button} onClick={handleLogout}>
                 Log out
               </Button>{' '}
             </>
