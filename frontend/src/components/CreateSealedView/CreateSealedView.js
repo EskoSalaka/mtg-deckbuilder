@@ -18,7 +18,6 @@ export default function CreateSealedView() {
 
   const [setsData, setsError, setsIsLoading] = setsService.useFetchSets()
   const [sendBoosters, createResponse, createError, createIsLoading] = decksService.useCreateDeck()
-  console.log(setsData)
 
   const [anchorEl, setAnchorEl] = useState(null)
   const [menuAnchorEl, setMenuAnchorEl] = useState(null)
@@ -122,11 +121,7 @@ export default function CreateSealedView() {
         onClick={handleOpenSelectedMenu}
       >
         <Badge badgeContent={boosters.length} color='secondary'>
-          <img
-            src={process.env.PUBLIC_URL + '/tome.svg'}
-            alt='Tome'
-            className={classes.tomeIcon}
-          ></img>
+          <span className={classes.tomeIcon} />
         </Badge>
       </Fab>
       <Fab

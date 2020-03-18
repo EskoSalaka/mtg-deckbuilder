@@ -26,7 +26,7 @@ function SideboardSection({ cards, handleMouseMove, handleMouseLeave }) {
           {`Sideboard (${cardCount})`}
         </Typography>
       </ExpansionPanelSummary>
-      <ExpansionPanelDetails className={classes.expansionPanel}>
+      <ExpansionPanelDetails>
         <Grid container direction='row' alignItems='flex-start' justify='flex-start'>
           {cards
             ? cards.map((c) => (

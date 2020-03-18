@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { useState, useEffect } from 'react'
-
 const baseURL = 'https://mtg-deckbuilder-api.herokuapp.com/api'
 
 const formUrlEncoded = (x) =>

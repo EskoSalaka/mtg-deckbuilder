@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react'
+import React, { useState, useMemo, useEffect, useCallback, useImperativeHandle } from 'react'
 import styles from './styles'
 import TableBody from '@material-ui/core/TableBody'
 import Table from '@material-ui/core/Table'
@@ -7,20 +7,11 @@ import CRow from './CRow'
 import Header from './Header'
 import { sorted } from '../../Common/utils'
 
-const DeckBuilderCardTable = React.memo(({ cards, handleTransfer, setImage, transferTrigger }) => {
+const DeckBuilderCardTable = React.memo(({ cards, handleTransfer, setImage }) => {
   const classes = styles()
   const [order, setOrder] = useState('desc')
   const [orderBy, setOrderBy] = useState('none')
   const [selected, setSelected] = useState([])
-
-  useEffect(() => {
-    console.log('setImage')
-  }, [setImage])
-
-  useEffect(() => {
-    console.log('trig')
-    handleTransfer(cards.filter((c) => selected.indexOf(c.id) !== -1))
-  }, [transferTrigger])
 
   var sortedCards = useMemo(() => {
     return sorted(cards, order, orderBy)

@@ -1,7 +1,7 @@
 import datetime
 import itertools
 import jwt
-from marshmallow import fields
+from marshmallow import fields, pre_dump, post_dump
 from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -397,3 +397,17 @@ class CardSchema(ma.Schema):
 
 class SimpleListInput(ma.Schema):
     items = fields.Nested(ColorSchema, many=True)
+
+
+class DeckAssociationSchema(ma.Schema):
+    count = fields.Integer()
+    card = fields.Nested(CardSchema)
+
+    @post_dump
+    def postt(self, item,  **kwargs):
+        nested_card = item['card']
+        nested_card['count'] = item['count']
+        return nested_card
+
+
+

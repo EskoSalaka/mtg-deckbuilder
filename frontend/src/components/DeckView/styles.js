@@ -1,6 +1,12 @@
 import { makeStyles } from '@material-ui/core'
 
 const styles = makeStyles({
+  root: {
+    '&$expanded': {
+      margin: '0px'
+    }
+  },
+  expanded: {},
   mainContainer: {
     display: 'flex',
     flexGrow: 0,
@@ -17,7 +23,12 @@ const styles = makeStyles({
     color: 'inherit',
     textDecoration: 'none'
   },
-  expansionPanel: { margin: '-10px' }
+  expansionPanel: {
+    margin: '-10px',
+    '&$expanded': {
+      margin: '-15px'
+    }
+  }
 })
 
 export default styles

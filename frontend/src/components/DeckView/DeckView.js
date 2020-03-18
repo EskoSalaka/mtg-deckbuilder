@@ -38,8 +38,8 @@ export default function DeckContents() {
   }, [])
 
   useEffect(() => {
-    setSideboard(deckData ? byCount(deckData.sideboard) : [])
-    setMainBoard(deckData ? byCount(deckData.mainboard) : [])
+    setSideboard(deckData ? deckData.sideboard : [])
+    setMainBoard(deckData ? deckData.mainboard : [])
   }, [deckData])
 
   useEffect(() => {

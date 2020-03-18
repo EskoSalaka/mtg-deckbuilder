@@ -20,7 +20,7 @@ from .models import (
     Deck,
     DeckCardAssociation,
     SideboardCardAssociation,
-)
+    DeckAssociationSchema)
 
 routes_blueprint = Blueprint("routes", __name__ )
 
@@ -211,15 +211,15 @@ def set_booster(code):
 @routes_blueprint.route("/api/decks/<api_id>", methods=["GET"])
 def deck(api_id):
     deck = Deck.query.filter_by(api_id=api_id).first_or_404()
-    cards_schema = CardSchema(many=True)
+    deck_association_schema = DeckAssociationSchema(many=True)
 
     return jsonify(
         api_id=deck.api_id,
         name=deck.name,
         user=deck.user.username,
         created_at=deck.created_at.strftime("%Y-%m-%d %H:%M"),
-        mainboard=cards_schema.dump(deck.get_mainboard()),
-        sideboard=cards_schema.dump(deck.get_sideboard()),
+        mainboard=deck_association_schema.dump(deck.cards),
+        sideboard=deck_association_schema.dump(deck.sideboard),
     )
 
 
@@ -252,14 +252,15 @@ def user_deck(user, api_id):
     if deck.user.api_id != user.api_id:
         return jsonify(error=403, status="Fail", message="Forbidden"), 403
 
-    cards_schema = CardSchema(many=True)
+    deck_association_schema = DeckAssociationSchema(many=True)
+
     return jsonify(
         api_id=deck.api_id,
         name=deck.name,
         user=deck.user.username,
         created_at=deck.created_at.strftime("%Y-%m-%d %H:%M"),
-        mainboard=cards_schema.dump(deck.get_mainboard()),
-        sideboard=cards_schema.dump(deck.get_sideboard()),
+        mainboard=deck_association_schema.dump(deck.cards),
+        sideboard=deck_association_schema.dump(deck.sideboard),
     )
 
 

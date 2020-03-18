@@ -24,8 +24,7 @@ export default function LoginView() {
   let location = useLocation()
   let { from } = location.state || { from: { pathname: '/' } }
 
-  const { user, login } = useAuth()
-  const [isLoading, setIsLoading] = useState(false)
+  const { user, login, isLoading } = useAuth()
   const [values, setValues] = useState({
     email: '',
     password: ''
@@ -36,11 +35,10 @@ export default function LoginView() {
 
   async function handleSubmit(e) {
     e.preventDefault()
-    setIsLoading(true)
+
     const loginResponse = await login(values.email, values.password)
 
     if (loginResponse.status === 'Fail') {
-      setIsLoading(false)
       setAlertMessage(loginResponse.message)
       setAlertSeverity('error')
       setAlertOpen(true)

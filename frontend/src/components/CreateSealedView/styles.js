@@ -36,7 +36,15 @@ const styles = makeStyles({
     whiteSpace: 'pre'
   },
   createSealedAppbar: { background: 'tan' },
-  tomeIcon: { width: 30, height: 30 },
+  tomeIcon: {
+    display: 'inline-block',
+    backgroundSize: 'cover',
+    filter: 'invert(100%)',
+    width: 30,
+    height: 30,
+    fill: 'white',
+    backgroundImage: "url('/tome.svg')"
+  },
   tomeIconButton: { width: 30, height: 30, marginLeft: 'auto' },
   donefab: {
     margin: 0,
