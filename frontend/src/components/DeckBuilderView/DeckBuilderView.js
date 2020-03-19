@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, createRef } from 'react'
+import React, { useState, useEffect, useCallback, createRef, useRef } from 'react'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import { Grid, Typography, Button, Drawer, Box, Paper, Fab, Popover } from '@material-ui/core'
@@ -41,8 +41,8 @@ export default function DeckBuilderView() {
   const [alertSeverity, setAlertSeverity] = useState('')
   const [alertMessage, setAlertMessage] = useState('')
 
-  const mainboardRef = createRef()
-  const sideboardRef = createRef()
+  const mainboardRef = useRef()
+  const sideboardRef = useRef()
   console.log(mainboardRef)
 
   useEffect(() => {
@@ -187,7 +187,7 @@ export default function DeckBuilderView() {
             <Grid item>
               <Typography variant='h6'>{`Sideboard (${count(sideboard)})`}</Typography>
               <DeckBuildeCardTable
-                ref={mainboardRef}
+                ref={sideboardRef}
                 cards={sideboard}
                 handleTransfer={sbToDeck}
                 setImage={setCardToShow}

@@ -7,7 +7,7 @@ import CRow from './CRow'
 import Header from './Header'
 import { sorted } from '../../Common/utils'
 
-const DeckBuilderCardTable = React.memo(({ cards, handleTransfer, setImage }) => {
+const DeckBuilderCardTable = React.forwardRef(({ cards, handleTransfer, setImage }, ref) => {
   const classes = styles()
   const [order, setOrder] = useState('desc')
   const [orderBy, setOrderBy] = useState('none')
@@ -25,6 +25,12 @@ const DeckBuilderCardTable = React.memo(({ cards, handleTransfer, setImage }) =>
   function transferSelected() {
     handleTransfer(cards.filter((c) => selected.indexOf(c.id) !== -1))
   }
+
+  useImperativeHandle(ref, () => ({
+    transferSelected() {
+      handleTransfer(cards.filter((c) => selected.indexOf(c.id) !== -1))
+    }
+  }))
 
   const handleMouseOver = useCallback(
     (e) => {
@@ -128,4 +134,4 @@ const DeckBuilderCardTable = React.memo(({ cards, handleTransfer, setImage }) =>
   )
 })
 
-export default DeckBuilderCardTable
+export default React.memo(DeckBuilderCardTable)

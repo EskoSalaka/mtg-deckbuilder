@@ -26,22 +26,19 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1, 0)
   },
   speedDial: {
-    position: 'absolute',
-    right: 0,
-    top: 0,
-
-    left: '',
-
-    '&.MuiSpeedDial-directionUp, &.MuiSpeedDial-directionLeft': {
-      bottom: theme.spacing(2),
-      right: theme.spacing(2),
-      right: 0,
-      top: 0,
-      left: ''
+    '&.MuiSpeedDial-fab': {
+      width: 40,
+      height: 40
     },
-    '&.MuiSpeedDial-directionDown, &.MuiSpeedDial-directionRight': {
+    '&.MuiFab-root': {
+      width: 40,
+      height: 40
+    },
+    '&.MuiSpeedDial-directionDown': {
+      position: 'absolute',
       top: theme.spacing(2),
       left: theme.spacing(2),
+
       right: 0,
       top: 0,
       left: ''
@@ -57,7 +54,7 @@ const actions = [
   { icon: <FavoriteIcon />, name: 'Like' }
 ]
 
-export default function DeckTitle({ deck }) {
+function DeckTitle({ deck }) {
   const classes = useStyles()
 
   const [open, setOpen] = React.useState(false)
@@ -105,3 +102,5 @@ export default function DeckTitle({ deck }) {
     </Box>
   )
 }
+
+export default React.memo(DeckTitle)
