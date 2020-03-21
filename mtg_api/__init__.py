@@ -5,8 +5,7 @@ from flask_migrate import Migrate
 from flask_cors import CORS
 from pathlib import Path
 
-
-app = Flask(__name__)
+app = Flask(__name__, static_folder=Path.cwd() / "frontend/build")
 
 db = SQLAlchemy(app)
 ma = Marshmallow(app)

@@ -2,6 +2,7 @@ import datetime
 import itertools
 import jwt
 from marshmallow import fields, pre_dump, post_dump
+from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -59,6 +60,32 @@ SCRYFALL_CARD_FIELDS = (
     "futureshifted",
 )
 
+SCRYFALL_CARD_PLAY_FIELDS = (
+    "id",
+    "name",
+    "layout",
+    "scryfall_uri",
+    "cmc",
+    "type_line",
+    "oracle_text",
+    "mana_cost",
+    "power",
+    "toughness",
+    "loyalty",
+    "life_modifier",
+    "colors",
+    "color_indicator",
+    "color_identity",
+    "all_parts",
+    "card_faces",
+    "legalities",
+    "set",
+    "set_name",
+    "collector_number",
+    "image_uris",
+    "rarity"
+)
+
 SCRYFALL_SET_FIELDS = (
     "id",
     "code",
@@ -89,14 +116,6 @@ class DeckCardAssociation(db.Model):
 
     card = relationship("Card", back_populates="decks")
     deck = relationship("Deck", back_populates="cards")
-
-
-card_color_association_table = db.Table(
-    "card_color_association",
-    db.Model.metadata,
-    db.Column("card_api_id", db.Integer, db.ForeignKey("card.api_id")),
-    db.Column("color_api_id", db.Integer, db.ForeignKey("color.api_id")),
-)
 
 
 class SideboardCardAssociation(db.Model):
@@ -163,12 +182,12 @@ class Card(db.Model):
     life_modifier = db.Column(db.String(4), unique=False, nullable=True)
     hand_modifier = db.Column(db.String(3), unique=False, nullable=True)
 
-    colors = relationship("Color", secondary=card_color_association_table)
-    color_indicator = db.Column(db.PickleType(), unique=False, nullable=True)
-    color_identity = db.Column(db.PickleType(), unique=False)
-    all_parts = db.Column(db.PickleType(), unique=False, nullable=True)
-    card_faces = db.Column(db.PickleType(), unique=False, nullable=True)
-    legalities = db.Column(db.PickleType(), unique=False)
+    colors = db.Column(JSON(), unique=False)
+    color_indicator = db.Column(JSON(), unique=False, nullable=True)
+    color_identity = db.Column(JSON(), unique=False)
+    all_parts = db.Column(JSON(), unique=False, nullable=True)
+    card_faces = db.Column(JSON(), unique=False, nullable=True)
+    legalities = db.Column(JSON(), unique=False)
 
     reserved = db.Column(db.Boolean(), unique=False)
     foil = db.Column(db.Boolean(), unique=False)
@@ -182,7 +201,7 @@ class Card(db.Model):
     collector_number = db.Column(db.String(11), unique=False)
 
     highres_image = db.Column(db.Boolean(), unique=False)
-    purchase_uris = db.Column(db.PickleType(), unique=False, nullable=True)
+    purchase_uris = db.Column(JSON(), unique=False, nullable=True)
 
     printed_name = db.Column(db.String(50), unique=False, nullable=True)
     printed_type_line = db.Column(db.String(50), unique=False, nullable=True)
@@ -213,11 +232,11 @@ class Card(db.Model):
     # set_search_uri = db.Column(db.String(300), unique=False) useless
     scryfall_set_uri = db.Column(db.String(60), unique=False)
 
-    image_uris = db.Column(db.PickleType(), unique=False, nullable=True)
+    image_uris = db.Column(JSON(), unique=False, nullable=True)
 
     # uri = db.Column(db.String(300), unique=False) useless
     # spotlight_uri = db.Column(db.String(300), unique=False )useless
-    prices = db.Column(db.PickleType(), unique=False)
+    prices = db.Column(JSON(), unique=False)
 
     def __repr__(self):
         return "<Card %r [%r]>" % (self.name, self.set)
@@ -262,10 +281,11 @@ class Deck(db.Model):
         return sideboard
 
     def get_deck_colors(self):
+
         flatten = itertools.chain.from_iterable
         flat_colors = set(flatten([card.colors for card in self.get_mainboard()]))
 
-        return [color.value for color in flat_colors]
+        return [color for color in flat_colors]
 
     def get_mainboard_size(self):
         return sum([cardassoc.count for cardassoc in self.cards])
@@ -279,19 +299,6 @@ class Deck(db.Model):
             self.created_at,
             self.api_id,
         )
-
-
-class Color(db.Model):
-    __tablename__ = "color"
-
-    api_id = db.Column(db.Integer, primary_key=True)
-    value = db.Column(db.String(500), unique=True, nullable=False)
-
-    def __repr__(self):
-        return self.value
-
-    def __str__(self):
-        return self.value
 
 
 class User(db.Model):
@@ -375,33 +382,35 @@ class BlacklistToken(db.Model):
 #################################################################################################
 # Schemas
 #################################################################################################
-class ColorSchema(ma.Schema):
-    value = fields.String()
-
-    def load(self, items, *args):
-        items = [{"key": item} if isinstance(item, str) else item for item in items]
-        return super().load(items, *args)
-
-
 class SetSchema(ma.Schema):
     class Meta:
         fields = SCRYFALL_SET_FIELDS
 
 
 class CardSchema(ma.Schema):
-    colors = fields.List(fields.String())
-
     class Meta:
         fields = SCRYFALL_CARD_FIELDS
 
 
-class SimpleListInput(ma.Schema):
-    items = fields.Nested(ColorSchema, many=True)
+class CardPlaySchema(ma.Schema):
+    class Meta:
+        fields = SCRYFALL_CARD_PLAY_FIELDS
 
 
 class DeckAssociationSchema(ma.Schema):
     count = fields.Integer()
     card = fields.Nested(CardSchema)
+
+    @post_dump
+    def postt(self, item,  **kwargs):
+        nested_card = item['card']
+        nested_card['count'] = item['count']
+        return nested_card
+
+
+class DeckAssociationPlaySchema(ma.Schema):
+    count = fields.Integer()
+    card = fields.Nested(CardPlaySchema)
 
     @post_dump
     def postt(self, item,  **kwargs):

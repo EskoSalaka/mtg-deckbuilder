@@ -1,4 +1,6 @@
-from flask import Blueprint, url_for
+import os
+
+from flask import Blueprint, url_for, send_from_directory
 from flask.json import jsonify
 from flask import request
 
@@ -6,23 +8,30 @@ from sqlalchemy import or_
 from random import sample, randint
 
 from .decorators import authorize
-from . import db
+from . import db, app
 from .forms import SignupForm, LoginForm
 from .models import (
     CardSchema,
     Card,
     SetSchema,
     Set,
-    Color,
-    ColorSchema,
     User,
     BlacklistToken,
     Deck,
     DeckCardAssociation,
     SideboardCardAssociation,
-    DeckAssociationSchema)
+    DeckAssociationSchema, DeckAssociationPlaySchema, CardPlaySchema)
 
-routes_blueprint = Blueprint("routes", __name__ )
+routes_blueprint = Blueprint("routes", __name__)
+
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve(path):
+    if path != "" and os.path.exists(app.static_folder + '/' + path):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, 'index.html')
 
 
 @routes_blueprint.route("/api/cards/")
@@ -98,14 +107,6 @@ def sets():
     return jsonify(total_items=len(res), data=res)
 
 
-@routes_blueprint.route("/api/colors/")
-def colors():
-    all_colors = Color.query.all()
-    color_chema = ColorSchema(many=True)
-    res = color_chema.dump(all_colors)
-    return jsonify(res)
-
-
 @routes_blueprint.route("/api/cards/<id>/")
 def card(id):
     card = Card.query.filter_by(id=id).first_or_404()
@@ -127,6 +128,7 @@ def card_by_set(set_code, collector_number):
     ).first_or_404()
     cards_schema = CardSchema()
     res = cards_schema.dump(card)
+
     return jsonify(data=res)
 
 
@@ -134,7 +136,7 @@ def card_by_set(set_code, collector_number):
 def set_cards(code):
     mset = Set.query.filter_by(code=code).first_or_404()
     cards = mset.cards
-    cards_schema = CardSchema(many=True)
+    cards_schema = CardPlaySchema(many=True)
     res = cards_schema.dump(cards)
     return jsonify(total_items=len(cards), data=res)
 
@@ -211,7 +213,7 @@ def set_booster(code):
 @routes_blueprint.route("/api/decks/<api_id>", methods=["GET"])
 def deck(api_id):
     deck = Deck.query.filter_by(api_id=api_id).first_or_404()
-    deck_association_schema = DeckAssociationSchema(many=True)
+    deck_association_schema = DeckAssociationPlaySchema(many=True)
 
     return jsonify(
         api_id=deck.api_id,
@@ -356,7 +358,6 @@ def create_deck(user):
                                            booster["basicLands"])
             cards.extend(booster_cards)
         new_deck = Deck()
-        print(new_deck.api_id)
 
         for card in cards:
             sb_assoc = db.session.query(SideboardCardAssociation).filter_by(deck_api_id=new_deck.api_id,

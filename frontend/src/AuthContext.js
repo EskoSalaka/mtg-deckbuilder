@@ -22,7 +22,7 @@ const AuthProvider = ({ children }) => {
     if (!user) {
       fetchData()
     }
-  }, [])
+  }, [user])
 
   const logout = async () => {
     setIsGlobalLoading(true)

@@ -25,6 +25,7 @@ export default function SetView() {
 
   const [cardsData, cardsError, isLoadingCards] = setsService.useFetchSetData(`${setCode}/cards/`)
   const [setdata, setError, isLoadingSet] = setsService.useFetchSetData(setCode)
+  console.log(cardsData)
 
   const [show, setShow] = useState('checklist')
   const [cardToPopover, setCardToPopover] = useState(null)
