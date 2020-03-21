@@ -1,9 +1,9 @@
 {
-  "prettier.arrowParens": "always",
+  "eslint.alwaysShowStatus": true,
+  "eslint.run": "onSave",
+  "prettier.printWidth": 100,
+  "prettier.semi": false,
   "editor.formatOnSave": true,
-  "python.pythonPath": "C:\\Users\\35840\\AppData\\Local\\Programs\\Python\\Python38\\python.exe",
-  "code-runner.executorMap": {
-    "python": "$pythonPath -u $fullFileName"
-},
-"python.formatting.provider": "black"
+  "editor.snippetSuggestions": "top",
+  "editor.minimap.enabled": false
 }
