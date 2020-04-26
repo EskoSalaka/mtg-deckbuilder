@@ -8,10 +8,10 @@ import HeaderRow from './HeaderRow'
 
 const styles = makeStyles({
   root: { maxWidth: 1200 },
-  table: { width: 'fit-content' }
+  table: { width: 'fit-content' },
 })
 
-function UserDecksTable({ decksInfo }) {
+function UserDecksTable({ decksInfo, handleDelete, isLoading }) {
   const classes = styles()
 
   return (
@@ -20,7 +20,12 @@ function UserDecksTable({ decksInfo }) {
         <HeaderRow />
         <TableBody>
           {decksInfo.map((deckInfo) => (
-            <DeckRow deckInfo={deckInfo} key={deckInfo.api_id} />
+            <DeckRow
+              deckInfo={deckInfo}
+              key={deckInfo.api_id}
+              handleDelete={handleDelete}
+              isLoading={isLoading}
+            />
           ))}
         </TableBody>
       </Table>

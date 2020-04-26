@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react'
 
 import { useParams } from 'react-router-dom'
 
-import setsService from '../../services/sets'
+import sets from '../../api/sets'
 import CardImageGrid from '../CardImageGrid/CardImageGrid'
 import CardTable from '../CardTable'
 import {
@@ -12,7 +12,7 @@ import {
   Select,
   MenuItem,
   FormControl,
-  InputLabel
+  InputLabel,
 } from '@material-ui/core'
 import styles from './styles'
 import SetTitle from './SetTitle'
@@ -21,18 +21,17 @@ import CardImagePopover from '../Common/CardImagePopover'
 
 export default function SetView() {
   const classes = styles()
-  const { code: setCode } = useParams()
+  const { code } = useParams()
 
-  const [cardsData, cardsError, isLoadingCards] = setsService.useFetchSetData(`${setCode}/cards/`)
-  const [setdata, setError, isLoadingSet] = setsService.useFetchSetData(setCode)
-  console.log(cardsData)
+  const [{ data: cardsData, error: cardsError, loading: loadingCards }] = sets.useGetCards(code)
+  const [{ data: setdata, error: setError, loading: loadingSet }] = sets.useGet(code)
 
   const [show, setShow] = useState('checklist')
   const [cardToPopover, setCardToPopover] = useState(null)
   const [showCardPopover, setShowCardPopover] = useState(false)
   const [cardPopoverPosition, setCardPopoverPosition] = useState({
     top: '200px',
-    left: '200px'
+    left: '200px',
   })
 
   const handleMouseMove = useCallback((e, card) => {
@@ -59,7 +58,7 @@ export default function SetView() {
 
   return (
     <div>
-      {(isLoadingCards || isLoadingSet) && <Loading />}
+      {(loadingCards || loadingSet) && <Loading />}
       {cardsData && setdata && (
         <>
           {showCardPopover && (
@@ -79,12 +78,12 @@ export default function SetView() {
                       getContentAnchorEl: null,
                       anchorOrigin: {
                         vertical: 'bottom',
-                        horizontal: 'left'
-                      }
+                        horizontal: 'left',
+                      },
                     }}
                     inputProps={{
                       name: 'show',
-                      id: 'show'
+                      id: 'show',
                     }}
                     onChange={handleChange}
                   >
@@ -97,10 +96,10 @@ export default function SetView() {
           </AppBar>
           <Container className={classes.mainContainer}>
             {show === 'images' ? (
-              <CardImageGrid cards={cardsData.data} />
+              <CardImageGrid cards={cardsData.cards} />
             ) : (
               <CardTable
-                cards={cardsData.data}
+                cards={cardsData.cards}
                 handleMouseMove={handleMouseMove}
                 handleMouseLeave={handleMouseLeave}
               />

@@ -5,25 +5,28 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import { Link, useHistory } from 'react-router-dom'
-import { useAuth } from '../AuthContext'
+import { useAuth } from '../api/auth'
 
 const useStyles = makeStyles((theme) => ({
   appbar: {
     flexGrow: 1,
-    backgroundColor: '#13293d'
+    backgroundColor: '#13293d',
   },
   title: { paddingRight: 30 },
   strecter: { flex: 1 },
   toolbar: {},
   button: { color: 'white' },
-  link: { textDecoration: 'none', color: 'white' }
+  link: { textDecoration: 'none', color: 'white' },
 }))
 
 function MTGAppBar() {
   const classes = useStyles()
   let history = useHistory()
 
-  const { user, logout } = useAuth()
+  const {
+    user,
+    useLogout: [, logout],
+  } = useAuth()
 
   const handleLogout = () => {
     logout()

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import decksService from '../../services/decks'
+import decksService from '../../api/decks'
 import { Container } from '@material-ui/core'
 import UserDecksTable from './UserDecksTable'
 import Loading from '../Common/Loading'
@@ -12,23 +12,23 @@ const styles = makeStyles({
     flexGrow: 1,
     justifyContent: 'center',
     marginTop: 32,
-    marginBottom: 32
-  }
+    marginBottom: 32,
+  },
 })
 
 export default function UserDecksView() {
   const classes = styles()
+  const [{ data, loading, error }] = decksService.useGetUserDecks()
+  console.log(data)
 
-  const [decksData, decksError, isLoadingDecks] = decksService.useGetUserDecks()
-
-  if (decksError) throw decksError
+  if (error) throw error
 
   return (
     <div>
-      {isLoadingDecks && <Loading />}
-      {decksData && (
+      {loading && <Loading />}
+      {data && (
         <Container className={classes.mainContainer}>
-          <UserDecksTable decksInfo={decksData.decks} />
+          <UserDecksTable decksInfo={data.decks} />
         </Container>
       )}
     </div>

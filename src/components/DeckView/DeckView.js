@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { Grid, Paper, Divider, Container } from '@material-ui/core'
 import styles from './styles'
-import decksService from '../../services/decks'
+import decks from '../../api/decks'
 import { group } from '../Common/utils'
 import DeckSection from './DeckSection'
 import SideboardSection from './SideboardSection'
 import DeckTitle from './DeckTitle'
 import { useParams } from 'react-router-dom'
-import { byCount } from '../Common/utils'
 
 import CardImagePopover from '../Common/CardImagePopover'
 import Loading from '../Common/Loading'
@@ -16,7 +15,7 @@ export default function DeckContents() {
   const classes = styles()
   let { deckID } = useParams()
 
-  const [deckData, deckError, isLoading] = decksService.useGetDeck(deckID)
+  const [{ data: deckData, deckError, isLoading }] = decks.useGet(deckID)
   const [mainBoard, setMainBoard] = useState([])
   const [sideboard, setSideboard] = useState([])
   const [groups, setGroups] = useState([])

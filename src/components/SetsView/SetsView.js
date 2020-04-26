@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './styles'
 
-import setsService from '../../services/sets'
+import sets from '../../api/sets'
 import SetsTable from './SetsTable'
 import { Container } from '@material-ui/core'
 
@@ -10,16 +10,16 @@ import Loading from '../Common/Loading'
 export default function SetsView() {
   const classes = styles()
 
-  const [setsData, setsError, isLoadingSets] = setsService.useFetchSets()
+  const [{ data, error, loading }] = sets.useGetAll()
 
-  if (setsError) throw setsError
+  if (error) throw error
 
   return (
     <div>
-      {isLoadingSets && <Loading />}
-      {setsData && (
+      {loading && <Loading />}
+      {data && (
         <Container className={classes.mainContainer}>
-          <SetsTable sets={setsData.data}></SetsTable>
+          <SetsTable sets={data.sets}></SetsTable>
         </Container>
       )}
     </div>

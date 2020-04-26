@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useCallback, useImperativeHandle } from 'react'
+import React, { useState, useMemo, useCallback, useImperativeHandle } from 'react'
 import styles from './styles'
 import TableBody from '@material-ui/core/TableBody'
 import Table from '@material-ui/core/Table'
@@ -29,7 +29,7 @@ const DeckBuilderCardTable = React.forwardRef(({ cards, handleTransfer, setImage
   useImperativeHandle(ref, () => ({
     transferSelected() {
       handleTransfer(cards.filter((c) => selected.indexOf(c.id) !== -1))
-    }
+    },
   }))
 
   const handleMouseOver = useCallback(

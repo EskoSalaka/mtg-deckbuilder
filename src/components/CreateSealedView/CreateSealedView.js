@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react'
-import { Paper, Grid, Fab, Badge } from '@material-ui/core'
+import { Paper, Grid, Fab, Badge, Box } from '@material-ui/core'
 
 import styles from './styles'
 import SetsTable from './SetsTable'
@@ -7,17 +7,15 @@ import AddBoosterPopover from './AddBoosterPopover'
 import BoostersSnackbar from './BoostersSnackbar'
 import DoneIcon from '@material-ui/icons/Done'
 
-import setsService from '../../services/sets'
-import decksService from '../../services/decks'
+import sets from '../../api/sets'
+import decks from '../../api/decks'
 import SelectedBoostersMenu from './SelectedBoostersMenu'
 import Loading from '../Common/Loading'
 import AlertSnackbar from '../Common/AlertSnackbar'
+import LoadingWrapper from '../Common/LoadingWrapper'
 
 export default function CreateSealedView() {
   const classes = styles()
-
-  const [setsData, setsError, setsIsLoading] = setsService.useFetchSets()
-  const [sendBoosters, createResponse, createError, createIsLoading] = decksService.useCreateDeck()
 
   const [anchorEl, setAnchorEl] = useState(null)
   const [menuAnchorEl, setMenuAnchorEl] = useState(null)
@@ -31,23 +29,23 @@ export default function CreateSealedView() {
   const [alertSeverity, setAlertSeverity] = useState('')
   const [alertMessage, setAlertMessage] = useState('')
 
+  const [{ data: setsData, error: setsError, loading: setsLoading }] = sets.useGetAll()
+  const [
+    { response: createResponse, error: createError, loading: createLoading },
+    create,
+  ] = decks.useCreate(boosters)
+
   useEffect(() => {
     if (createResponse) {
       setAlertOpen(true)
       setAlertSeverity('success')
-      setAlertMessage(createResponse.message)
+      setAlertMessage('New deck created')
     } else if (createError) {
       setAlertSeverity('error')
       setAlertOpen(true)
-
-      setAlertMessage(createError.message)
+      setAlertMessage(createError.response.data.message)
     }
   }, [createResponse, createError])
-
-  async function handleDone(e) {
-    e.preventDefault()
-    sendBoosters(boosters)
-  }
 
   const handleAddButtonClick = useCallback((e) => {
     e.preventDefault()
@@ -63,7 +61,7 @@ export default function CreateSealedView() {
       commons: booster.commons,
       uncommons: booster.uncommons,
       rares: booster.rares,
-      basicLands: booster.addBasicLand
+      basicLands: booster.addBasicLand,
     }
 
     setBoosters([...boosters, nb])
@@ -95,7 +93,8 @@ export default function CreateSealedView() {
   }
 
   function handleOpenSelectedMenu(e) {
-    setMenuAnchorEl(e.currentTarget)
+    e.preventDefault()
+    if (boosters.length) setMenuAnchorEl(e.currentTarget)
   }
 
   function handleRemoveBooster(e, booster) {
@@ -103,42 +102,38 @@ export default function CreateSealedView() {
   }
 
   if (setsError) throw setsError
+  if (setsLoading) return <Loading />
 
   return (
     <div>
-      {(setsIsLoading || createIsLoading) && <Loading />}
       <AlertSnackbar
         open={alertOpen}
         severity={alertSeverity}
         message={alertMessage}
         handleClose={handleCloseAlert}
       />
-      <Fab
-        size='large'
-        color='primary'
-        aria-label='add'
-        className={classes.boostersfab}
-        onClick={handleOpenSelectedMenu}
-      >
-        <Badge badgeContent={boosters.length} color='secondary'>
-          <span className={classes.tomeIcon} />
-        </Badge>
-      </Fab>
-      <Fab
-        size='large'
-        color='primary'
-        aria-label='add'
-        className={classes.donefab}
-        onClick={handleDone}
-      >
-        <DoneIcon />
-      </Fab>
+      <Box position='fixed' margin={0} top='80px' left='auto' bottom='auto' right='25px'>
+        <Box display='flex'>
+          <Fab size='large' color='primary' aria-label='add' onClick={handleOpenSelectedMenu}>
+            <Badge badgeContent={boosters.length} color='secondary'>
+              <span className={classes.tomeIcon} />
+            </Badge>
+          </Fab>
+          <Box ml={1}>
+            <LoadingWrapper loading={createLoading} size={36}>
+              <Fab size='large' color='primary' aria-label='add' onClick={create}>
+                <DoneIcon />
+              </Fab>
+            </LoadingWrapper>
+          </Box>
+        </Box>
+      </Box>
 
       <Grid container justify='center'>
         {setsData && (
           <Paper className={classes.paper}>
             <SetsTable
-              setsData={setsData.data}
+              setsData={setsData.sets}
               handleAddButtonClick={handleAddButtonClick}
             ></SetsTable>
           </Paper>

@@ -7,7 +7,7 @@ import {
   ListItem,
   Avatar,
   ListItemAvatar,
-  ListItemSecondaryAction
+  ListItemSecondaryAction,
 } from '@material-ui/core'
 import styles from './styles'
 import SetIcon from '../Common/SetIcon'
@@ -17,7 +17,7 @@ export default function SelectedBoostersMenu({
   boosters,
   anchorEl,
   handleClose,
-  handleRemoveBooster
+  handleRemoveBooster,
 }) {
   const classes = styles()
 
@@ -28,16 +28,16 @@ export default function SelectedBoostersMenu({
       onClose={() => handleClose()}
       anchorOrigin={{
         vertical: 'bottom',
-        horizontal: 'center'
+        horizontal: 'center',
       }}
       transformOrigin={{
         vertical: 'top',
-        horizontal: 'center'
+        horizontal: 'center',
       }}
     >
       <List dense>
-        {boosters.map((booster) => (
-          <ListItem>
+        {boosters.map((booster, i) => (
+          <ListItem key={i}>
             <ListItemAvatar>
               <Avatar>
                 <SetIcon colorStyle='common' setCode={booster.set} width={25} />

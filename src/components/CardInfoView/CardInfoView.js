@@ -1,24 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import FullCardInfo from './FullCardInfo'
 import Loading from '../Common/Loading'
-import cardService from '../../services/cards'
+import cards from '../../api/cards'
 import { useParams } from 'react-router-dom'
 
 export default function CardInfoView() {
   const { code, collector_number } = useParams()
 
-  const [card, setCard] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [{ data, error, loading }] = cards.useGetBySet(code, collector_number)
+  console.log(data)
 
-  useEffect(() => {
-    const fetchCard = async () => {
-      let response = await cardService.getBySet(code, collector_number)
+  if (error) throw error
 
-      setCard(response.data)
-      setLoading(false)
-    }
-    fetchCard()
-  }, [code, collector_number])
+  if (loading) return <Loading />
 
-  return loading ? <Loading /> : <FullCardInfo card={card} />
+  return <FullCardInfo card={data} />
 }

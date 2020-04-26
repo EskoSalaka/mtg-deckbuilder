@@ -1,15 +1,8 @@
 import React from 'react'
 import { Typography, Box } from '@material-ui/core'
 import { count } from '../Common/utils'
-
 import { makeStyles } from '@material-ui/core/styles'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormLabel from '@material-ui/core/FormLabel'
-import Radio from '@material-ui/core/Radio'
-import RadioGroup from '@material-ui/core/RadioGroup'
-import Switch from '@material-ui/core/Switch'
 import SpeedDial from '@material-ui/lab/SpeedDial'
-import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon'
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction'
 import FileCopyIcon from '@material-ui/icons/FileCopyOutlined'
 import SaveIcon from '@material-ui/icons/Save'
@@ -20,30 +13,26 @@ import SettingsIcon from '@material-ui/icons/Settings'
 
 const useStyles = makeStyles((theme) => ({
   exampleWrapper: {
-    position: 'relative'
+    position: 'relative',
   },
   radioGroup: {
-    margin: theme.spacing(1, 0)
+    margin: theme.spacing(1, 0),
   },
   speedDial: {
     '&.MuiSpeedDial-fab': {
       width: 40,
-      height: 40
+      height: 40,
     },
     '&.MuiFab-root': {
       width: 40,
-      height: 40
+      height: 40,
     },
     '&.MuiSpeedDial-directionDown': {
       position: 'absolute',
       top: theme.spacing(2),
       left: theme.spacing(2),
-
-      right: 0,
-      top: 0,
-      left: ''
-    }
-  }
+    },
+  },
 }))
 
 const actions = [
@@ -51,7 +40,7 @@ const actions = [
   { icon: <SaveIcon />, name: 'Save' },
   { icon: <PrintIcon />, name: 'Print' },
   { icon: <ShareIcon />, name: 'Share' },
-  { icon: <FavoriteIcon />, name: 'Like' }
+  { icon: <FavoriteIcon />, name: 'Like' },
 ]
 
 function DeckTitle({ deck }) {

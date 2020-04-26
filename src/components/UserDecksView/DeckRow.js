@@ -1,7 +1,7 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
-
+import decks from '../../api/decks'
 import { makeStyles } from '@material-ui/styles'
 import { Typography, Box, Tooltip } from '@material-ui/core'
 import { useHistory } from 'react-router-dom'
@@ -9,6 +9,8 @@ import IconButton from '@material-ui/core/IconButton'
 import EditIcon from '@material-ui/icons/Edit'
 import DeleteIcon from '@material-ui/icons/Delete'
 import ManaCost from '../ManaCost'
+import LoadingWrapper from '../Common/LoadingWrapper'
+import AlertSnackbar from '../Common/AlertSnackbar'
 
 const styles = makeStyles({
   cellText: {
@@ -19,38 +21,42 @@ const styles = makeStyles({
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     maxWidth: '300px',
-    texDecoration: 'none'
+    texDecoration: 'none',
   },
   cell: {
     cursor: 'pointer',
     padding: '3px 6px 3px 11px',
     textDecoration: 'none',
-    borderBottom: '1px solid #bfbfbf'
+    borderBottom: '1px solid #bfbfbf',
   },
   lastCell: {
     padding: '3px 6px 3px 4px',
     paddingRight: '0px',
     whiteSpace: 'pre',
     textDecoration: 'none',
-    borderBottom: '0px'
+    borderBottom: '0px',
   },
   row: {
     '&:nth-of-type(odd)': {
-      backgroundColor: '#e8e8e8;'
+      backgroundColor: '#e8e8e8;',
     },
     '&:nth-of-type(even)': {
-      backgroundColor: 'transparent'
-    }
+      backgroundColor: 'transparent',
+    },
   },
   cellTextSecondary: {
     fontSize: 10,
-    whiteSpace: 'pre'
-  }
+    whiteSpace: 'pre',
+  },
 })
 
 function DeckRow({ deckInfo }) {
   const classes = styles()
   const history = useHistory()
+
+  const [{ response, error, loading }, deleteDeck] = decks.useDelete(deckInfo.api_id)
+  const [alertOpen, setAlertOpen] = useState(false)
+  const [alertMessage, setAlertMessage] = useState('')
 
   var deckColorStr = ''
 
@@ -73,9 +79,32 @@ function DeckRow({ deckInfo }) {
     [deckInfo, history]
   )
 
-  const handleDeleteButtonClick = useCallback((e) => {
-    e.preventDefault()
-  }, [])
+  const handleDeleteButtonClick = useCallback(
+    (e) => {
+      e.preventDefault()
+      deleteDeck()
+    },
+    [deleteDeck]
+  )
+
+  const handleCloseAlert = (e, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    setAlertOpen(false)
+  }
+
+  useEffect(() => {
+    if (error) {
+      setAlertMessage('Something went wrong. Try again later')
+      setAlertOpen(true)
+    }
+  }, [error])
+
+  console.log(response)
+
+  if (response?.status === 200) return null
 
   return (
     <TableRow className={classes.row}>
@@ -83,6 +112,7 @@ function DeckRow({ deckInfo }) {
         <Box display='flex'>
           <Typography className={classes.cellText}>{deckInfo.name}</Typography>
           <Box ml={2} display='flex'>
+            <AlertSnackbar open={alertOpen} message={alertMessage} handleClose={handleCloseAlert} />
             <Typography className={classes.cellText}>
               <ManaCost manaCost={deckColorStr} />
             </Typography>
@@ -94,7 +124,6 @@ function DeckRow({ deckInfo }) {
           {deckInfo.mainboard_card_count} / {deckInfo.sideboard_card_count}
         </Typography>
       </TableCell>
-
       <TableCell key='added' className={classes.cell} onClick={handleRowClick}>
         <Typography className={classes.cellText}>{deckInfo.created_at}</Typography>
       </TableCell>
@@ -106,11 +135,13 @@ function DeckRow({ deckInfo }) {
         </Tooltip>
       </TableCell>
       <TableCell key='tools2' className={classes.lastCell}>
-        <Tooltip title='Delete deck' aria-label='Delete deck'>
-          <IconButton color='primary' size='small' onClick={handleDeleteButtonClick}>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
+        <LoadingWrapper loading={loading} thickness={3} size={28}>
+          <Tooltip title='Delete deck' aria-label='Delete deck'>
+            <IconButton color='primary' size='small' onClick={handleDeleteButtonClick}>
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        </LoadingWrapper>
       </TableCell>
     </TableRow>
   )

@@ -1,6 +1,6 @@
 import os
 
-from flask import Blueprint, url_for, send_from_directory
+from flask import Blueprint, url_for, send_from_directory, make_response
 from flask.json import jsonify
 from flask import request
 
@@ -104,7 +104,7 @@ def sets():
     all_sets = Set.query.all()
     sets_schema = SetSchema(many=True)
     res = sets_schema.dump(all_sets)
-    return jsonify(total_items=len(res), data=res)
+    return jsonify(total_items=len(res), sets=res)
 
 
 @routes_blueprint.route("/api/cards/<id>/")
@@ -129,7 +129,7 @@ def card_by_set(set_code, collector_number):
     cards_schema = CardSchema()
     res = cards_schema.dump(card)
 
-    return jsonify(data=res)
+    return jsonify(res)
 
 
 @routes_blueprint.route("/api/sets/<code>/cards/")
@@ -138,7 +138,7 @@ def set_cards(code):
     cards = mset.cards
     cards_schema = CardPlaySchema(many=True)
     res = cards_schema.dump(cards)
-    return jsonify(total_items=len(cards), data=res)
+    return jsonify(total_items=len(cards), cards=res)
 
 
 @routes_blueprint.route("/api/sets/<code>/booster")
@@ -348,6 +348,9 @@ def delete_deck(user, api_id):
 def create_deck(user):
     try:
         boosters = request.json
+
+        if not boosters:
+            return jsonify(status="Fail", message="No boosters specified"), 400
         cards = []
 
         for booster in boosters:
@@ -432,15 +435,15 @@ def login():
             user = User.query.filter_by(email=form.email.data).first()
             auth_token = user.encode_auth_token()
 
-            return (
-                jsonify(
-                    status="Success",
-                    message="Login successful",
-                    auth_token=auth_token.decode(),
-                    user={"username": user.username, "email": user.email}
-                ),
-                200,
-            )
+            resp = make_response({
+                "status": "Success",
+                "message": "Login successful",
+                "user": {"username": user.username,
+                         "email": user.email}
+                 }, 200)
+            resp.set_cookie('auth_token', auth_token, httponly=True)
+
+            return resp
 
         except Exception as e:
             print(e)
@@ -460,97 +463,42 @@ def login():
 
 @routes_blueprint.route("/api/logout", methods=["POST"])
 def logout():
-    auth_header = request.headers.get("Authorization")
+    auth_token = request.cookies.get('auth_token')
 
-    if auth_header:
-        auth_token = auth_header.split(" ")[1]
+    resp = make_response({
+        "status": "Success",
+        "message": "Logout successful"
+    }, 200)
+    resp.set_cookie('auth_token', '', expires=0)
 
-        resp = User.decode_auth_token(auth_token)
+    if auth_token:
+        user = User.decode_auth_token(auth_token)
 
-        if not isinstance(resp, str):
+        if not isinstance(user, str):
             blacklist_token = BlacklistToken(token=auth_token)
 
             try:
                 db.session.add(blacklist_token)
                 db.session.commit()
 
-                return jsonify(status="Success", message="Logout successful"), 200
             except Exception as e:
                 print(e)
-                return jsonify(status="Success", message=str(e)), 200
-        else:
-            return (
-                jsonify(
-                    error=401, status="Fail", message="Invalid or expired auth token"
-                ),
-                401,
-            )
+                return resp
 
-    else:
-        return jsonify(error=403, status="Fail", message="Missing token"), 403
-
-
-@routes_blueprint.route("/api/verify_auth", methods=["GET"])
-def verify_auth():
-    auth_header = request.headers.get("Authorization")
-
-    if auth_header:
-        try:
-            auth_token = auth_header.split(" ")[1]
-
-        except IndexError:
-            return (
-                jsonify(error=401, status="Fail", message="Invalid or expired token"),
-                400,
-            )
-
-        resp = User.decode_auth_token(auth_token)
-
-        if not isinstance(resp, str):
-            return jsonify(status="Success", message="Authenticated"), 200
-        else:
-            return (
-                jsonify(error=401, status="Fail", message="Invalid or expired token"),
-                400,
-            )
-
-    else:
-        return jsonify(error=401, status="Fail", message="Missing token"), 403
+    return resp
 
 
 @routes_blueprint.route("/api/user", methods=["GET"])
-def get_user():
-    auth_header = request.headers.get("Authorization")
-
-    if auth_header:
-        try:
-            auth_token = auth_header.split(" ")[1]
-
-        except IndexError:
-            return (
-                jsonify(error=401, status="Fail", message="Invalid or expired token"),
-                400,
-            )
-
-        user = User.from_token(auth_token)
-
-        if user:
-            return (
-                jsonify(
-                    status="Success",
-                    message="Authenticated",
-                    user={"username": user.username, "email": user.email},
-                ),
-                200,
-            )
-        else:
-            return (
-                jsonify(error=401, status="Fail", message="Invalid or expired token"),
-                400,
-            )
-
-    else:
-        return jsonify(error=401, status="Fail", message="Missing token"), 403
+@authorize
+def get_user(user):
+    return (
+        jsonify(
+            status="Success",
+            message="Authenticated",
+            user={"username": user.username, "email": user.email},
+        ),
+        200,
+    )
 
 
 def _create_sealed(set_code, commons_num, uncommons_num, rares_num, basic_land):

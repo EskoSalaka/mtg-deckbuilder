@@ -1,36 +1,46 @@
-import React, { useState, useEffect, useCallback, createRef, useRef } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import { Grid, Typography, Button, Drawer, Box, Paper, Fab, Popover } from '@material-ui/core'
 
 import styles from './styles'
 import DeckBuildeCardTable from './DeckBuilderCardTable'
-import { incrementedMany, decrementedMany, count, byCount } from '../Common/utils'
+import { incrementedMany, decrementedMany, count } from '../Common/utils'
 import FullStatsBox from '../Common/StatsPlots/FullStatsBox'
 import CardImage from '../CardImage'
 import DoneIcon from '@material-ui/icons/Done'
 import LandscapeIcon from '@material-ui/icons/Landscape'
 import PieChartIcon from '@material-ui/icons/PieChart'
 
-import decksService from '../../services/decks'
+import decks from '../../api/decks'
 
 import { useParams } from 'react-router-dom'
 import AddBasicLandsBox from './AddBasicLandsBox'
 import AlertSnackbar from '../Common/AlertSnackbar'
 import Loading from '../Common/Loading'
 import getBasicLands from './BasicLands'
+import LoadingWrapper from '../Common/LoadingWrapper'
 
 const basicLands = getBasicLands()
 
 export default function DeckBuilderView() {
   const classes = styles()
   const { deckID } = useParams()
+  const [deck, setDeck] = useState({
+    api_id: -1,
+    created_at: '',
+    mainboard: [],
+    name: '',
+    sideboard: [],
+    user: '',
+  })
 
-  const [deckData, deckError, isLoading] = decksService.useGetUserDeck(deckID)
-  const [editDeck, editResponse, editError, editIsLoading] = decksService.useEditDeck(deckID)
+  const [{ data: deckData, error: deckError, loading: deckLoading }] = decks.useGetUserDeck(deckID)
+  const [
+    { response: editResponse, error: editError, loading: editLoading },
+    editDeck,
+  ] = decks.useEdit(deck)
 
-  const [mainBoard, setMainBoard] = useState([])
-  const [sideboard, setSideboard] = useState([])
   const [showStats, setShowStats] = useState(false)
   const [cardToShow, setCardToShow] = useState(null)
 
@@ -43,58 +53,57 @@ export default function DeckBuilderView() {
 
   const mainboardRef = useRef()
   const sideboardRef = useRef()
-  console.log(mainboardRef)
 
   useEffect(() => {
-    setSideboard(deckData ? deckData.sideboard : [])
-    setMainBoard(deckData ? deckData.mainboard : [])
+    if (deckData) setDeck({ ...deckData })
   }, [deckData])
 
   useEffect(() => {
     if (editResponse) {
       setAlertOpen(true)
       setAlertSeverity('success')
-      setAlertMessage(editResponse.message)
+      setAlertMessage(editResponse.data.message)
     } else if (editError) {
       setAlertOpen(true)
       setAlertSeverity('error')
-      setAlertMessage(editError.message)
+      setAlertMessage('Something went wrong. Try again later')
     }
   }, [editResponse, editError])
 
   const sbToDeck = useCallback(
     (cards) => {
-      setMainBoard(incrementedMany(mainBoard, cards))
-      setSideboard(decrementedMany(sideboard, cards))
+      setDeck({
+        ...deck,
+        mainboard: incrementedMany(deck.mainboard, cards),
+        sideboard: decrementedMany(deck.sideboard, cards),
+      })
     },
-    [mainBoard, sideboard]
+    [deck]
   )
 
   const deckToSb = useCallback(
     (cards) => {
-      setMainBoard(decrementedMany(mainBoard, cards))
-      setSideboard(incrementedMany(sideboard, cards))
+      setDeck({
+        ...deck,
+        mainboard: decrementedMany(deck.mainboard, cards),
+        sideboard: incrementedMany(deck.sideboard, cards),
+      })
     },
-    [mainBoard, sideboard]
+    [deck]
   )
 
-  function handleDoneButtonClick(e) {
-    e.preventDefault()
-
-    editDeck({
-      mainboard: mainBoard,
-      sideboard: sideboard,
-      api_id: deckData.api_id,
-      name: deckData.name
+  function handleAddLandButtonClick(e) {
+    setDeck({
+      ...deck,
+      mainboard: incrementedMany(deck.mainboard, [basicLands[e.currentTarget.id]]),
     })
   }
 
-  function handleAddLandButtonClick(e) {
-    setMainBoard(incrementedMany(mainBoard, [basicLands[e.currentTarget.id]]))
-  }
-
   function handleRemoveLandButtonClick(e) {
-    setMainBoard(decrementedMany(mainBoard, [basicLands[e.currentTarget.id]]))
+    setDeck({
+      ...deck,
+      mainboard: decrementedMany(deck.mainboard, [basicLands[e.currentTarget.id]]),
+    })
   }
 
   const handleClose = (e, reason) => {
@@ -114,66 +123,12 @@ export default function DeckBuilderView() {
     setBasicLandsAnchorEl(e.currentTarget)
   }
 
-  if (isLoading) return <Loading />
-  if (deckError) {
-    console.log(deckError, deckError.response.status, deckError.headers)
-    console.log(JSON.stringify(deckError))
-  }
+  if (deckLoading) return <Loading />
+
+  if (deckError) throw deckError
 
   return (
     <div>
-      {editIsLoading && <Loading />}
-      <AlertSnackbar
-        open={alertOpen}
-        severity={alertSeverity}
-        message={alertMessage}
-        handleClose={handleClose}
-      />
-      <Fab
-        size='large'
-        color='primary'
-        aria-label='add'
-        className={classes.statsfab}
-        onClick={() => (showStats ? setShowStats(false) : setShowStats(true))}
-      >
-        <PieChartIcon />
-      </Fab>
-      <Fab
-        size='large'
-        color='primary'
-        aria-label='add'
-        className={classes.donefab}
-        onClick={handleDoneButtonClick}
-      >
-        <DoneIcon />
-      </Fab>
-      <Fab
-        size='large'
-        color='primary'
-        aria-label='add'
-        className={classes.landsfab}
-        onClick={handleOpenBasicLands}
-      >
-        <LandscapeIcon />
-      </Fab>
-      <Popover
-        open={basicLandsOpen}
-        onClose={handleCloseLands}
-        anchorEl={basicLandsAnchorEl}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'center'
-        }}
-        transformOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center'
-        }}
-      >
-        <AddBasicLandsBox
-          handleAddButtonClick={handleAddLandButtonClick}
-          handleRemoveButtonClick={handleRemoveLandButtonClick}
-        />
-      </Popover>
       <Box display='flex' justifyContent='center' p='10px'>
         <Paper className={classes.topPaper}>
           <Grid
@@ -185,10 +140,10 @@ export default function DeckBuilderView() {
             alignItems='flex-start'
           >
             <Grid item>
-              <Typography variant='h6'>{`Sideboard (${count(sideboard)})`}</Typography>
+              <Typography variant='h6'>{`Sideboard (${count(deck.sideboard)})`}</Typography>
               <DeckBuildeCardTable
                 ref={sideboardRef}
-                cards={sideboard}
+                cards={deck.sideboard}
                 handleTransfer={sbToDeck}
                 setImage={setCardToShow}
               />
@@ -212,10 +167,10 @@ export default function DeckBuilderView() {
               </Box>
             </Grid>
             <Grid item>
-              <Typography variant='h6'>{`Deck (${count(mainBoard)})`}</Typography>
+              <Typography variant='h6'>{`Deck (${count(deck.mainboard)})`}</Typography>
               <DeckBuildeCardTable
                 ref={mainboardRef}
-                cards={mainBoard}
+                cards={deck.mainboard}
                 handleTransfer={deckToSb}
                 setImage={setCardToShow}
               />
@@ -223,13 +178,62 @@ export default function DeckBuilderView() {
           </Grid>
 
           <Drawer anchor='top' open={showStats} onClose={() => setShowStats(false)}>
-            <FullStatsBox cards={mainBoard} direction={'row'} />
+            <FullStatsBox cards={deck.mainboard} direction={'row'} />
           </Drawer>
         </Paper>
         <Box className={classes.cardImageBox} ml={5}>
           {<CardImage card={cardToShow} />}
         </Box>
       </Box>
+      <AlertSnackbar
+        open={alertOpen}
+        severity={alertSeverity}
+        message={alertMessage}
+        handleClose={handleClose}
+      />
+
+      <Box position='fixed' margin={0} top='auto' left='auto' bottom='120px' right='25px'>
+        <Box display='flex'>
+          <Fab
+            size='large'
+            color='primary'
+            aria-label='add'
+            onClick={() => (showStats ? setShowStats(false) : setShowStats(true))}
+          >
+            <PieChartIcon />
+          </Fab>
+          <Box ml={1}>
+            <Fab size='large' color='primary' aria-label='add' onClick={handleOpenBasicLands}>
+              <LandscapeIcon />
+            </Fab>
+          </Box>
+          <Box ml={1}>
+            <LoadingWrapper loading={editLoading} size={36}>
+              <Fab size='large' color='primary' aria-label='add' onClick={editDeck}>
+                <DoneIcon />
+              </Fab>
+            </LoadingWrapper>
+          </Box>
+        </Box>
+      </Box>
+      <Popover
+        open={basicLandsOpen}
+        onClose={handleCloseLands}
+        anchorEl={basicLandsAnchorEl}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+      >
+        <AddBasicLandsBox
+          handleAddButtonClick={handleAddLandButtonClick}
+          handleRemoveButtonClick={handleRemoveLandButtonClick}
+        />
+      </Popover>
     </div>
   )
 }

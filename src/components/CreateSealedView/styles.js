@@ -4,38 +4,36 @@ import { blue } from '@material-ui/core/colors'
 const styles = makeStyles({
   paper: {
     width: 'fit-content',
-    padding: 10
+    padding: 10,
   },
-  posBox: { alignSelf: 'center' },
+
   boosterTextField: {
-    width: 90
+    width: 90,
   },
   popoverBottomGrid: { paddingBottom: 0 },
   cell: {
     paddingTop: 3,
     paddingBottom: 3,
     whiteSpace: 'pre',
-    textDecoration: 'none'
+    textDecoration: 'none',
   },
   lastCell: {
     padding: '3px 6px 3px 4px',
     paddingRight: '0px',
     whiteSpace: 'pre',
     textDecoration: 'none',
-    borderBottom: '0px'
+    borderBottom: '0px',
   },
   cellText: {
     fontSize: 14,
-    whiteSpace: 'pre'
+    whiteSpace: 'pre',
   },
   subheaderSecondary: { fontSize: 12 },
   subheaderPrimary: { fontSize: 14, fontWeight: 500 },
-
   cellTextSecondary: {
     fontSize: 10,
-    whiteSpace: 'pre'
+    whiteSpace: 'pre',
   },
-  createSealedAppbar: { background: 'tan' },
   tomeIcon: {
     display: 'inline-block',
     backgroundSize: 'cover',
@@ -43,7 +41,7 @@ const styles = makeStyles({
     width: 30,
     height: 30,
     fill: 'white',
-    backgroundImage: "url('/tome.svg')"
+    backgroundImage: "url('/tome.svg')",
   },
   tomeIconButton: { width: 30, height: 30, marginLeft: 'auto' },
   donefab: {
@@ -55,8 +53,8 @@ const styles = makeStyles({
     position: 'fixed',
     backgroundColor: blue[800],
     '&:hover': {
-      backgroundColor: blue[900]
-    }
+      backgroundColor: blue[900],
+    },
   },
   boostersfab: {
     margin: 0,
@@ -67,9 +65,9 @@ const styles = makeStyles({
     position: 'fixed',
     backgroundColor: blue[800],
     '&:hover': {
-      backgroundColor: blue[900]
-    }
-  }
+      backgroundColor: blue[900],
+    },
+  },
 })
 
 export default styles

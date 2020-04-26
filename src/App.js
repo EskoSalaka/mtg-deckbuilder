@@ -17,15 +17,15 @@ import SetsView from './components/SetsView'
 import UserDecksView from './components/UserDecksView'
 import HomeView from './components/HomeView'
 import { makeStyles, CssBaseline } from '@material-ui/core'
-import { AuthProvider } from './AuthContext'
+import { AuthProvider } from './api/auth'
 
 const styles = makeStyles({
   root: {
     backgroundColor: '#e6e3e3',
     display: 'flex',
     flexDirection: 'column',
-    minHeight: '100vh'
-  }
+    minHeight: '100vh',
+  },
 })
 
 export default function App() {

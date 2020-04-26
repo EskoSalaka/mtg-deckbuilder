@@ -6,16 +6,16 @@ from .models import User
 def authorize(f):
     @wraps(f)
     def decorated_function(*args, **kws):
-        auth_header = request.headers.get('Authorization')
 
-        if not auth_header:
+        auth_token = request.cookies.get('auth_token')
+
+        if not auth_token:
             return jsonify(error=403, status="Fail", message="Login required"), 403
 
-        auth_token = auth_header.split(" ")[1]
         user = User.from_token(auth_token)
 
         if not user:
-            return jsonify(error=403, status="Fail", message="Invalid or expired token")
+            return jsonify(error=403, status="Fail", message="Login required")
 
         return f(user, *args, **kws)
     return decorated_function
