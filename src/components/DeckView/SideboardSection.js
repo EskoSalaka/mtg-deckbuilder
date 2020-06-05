@@ -4,12 +4,23 @@ import {
   Typography,
   ExpansionPanel,
   ExpansionPanelDetails,
-  ExpansionPanelSummary
+  ExpansionPanelSummary,
+  makeStyles,
 } from '@material-ui/core'
-import styles from './styles'
 import { Link } from 'react-router-dom'
 import { count } from '../Common/utils'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+
+const styles = makeStyles({
+  sectionTitle: { fontSize: '16px', fontWeight: 550 },
+  cardLink: {
+    color: 'inherit',
+    textDecoration: 'none',
+  },
+  expansionPanel: {
+    margin: '-10px',
+  },
+})
 
 function SideboardSection({ cards, handleMouseMove, handleMouseLeave }) {
   const classes = styles()

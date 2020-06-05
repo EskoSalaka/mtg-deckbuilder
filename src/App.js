@@ -42,13 +42,13 @@ export default function App() {
             <Route exact path='/sets' component={SetsView} />
             <Route exact path='/cards/:code/:collector_number' component={CardInfoView} />
             <Route exact path='/cards/:code' component={SetView} />
-            <Route path='/login/' component={LoginView} />
-            <Route path='/signup/' component={SignUpView} />
-            <PrivateRoute path='/decks/new' component={CreateSealedView} />
-            <PrivateRoute path='/decks/edit/:deckID' component={DeckBuilderView} />
-            <PrivateRoute path='/decks/:deckID' component={DeckView} />
+            <Route exact path='/login/' component={LoginView} />
+            <Route exact path='/signup/' component={SignUpView} />
+            <PrivateRoute exact path='/decks/new' component={CreateSealedView} />
+            <PrivateRoute exact path='/decks/edit/:deckID' component={DeckBuilderView} />
+            <PrivateRoute exact path='/decks/:deckID' component={DeckView} />
 
-            <PrivateRoute path='/user/decks' component={UserDecksView} />
+            <PrivateRoute exact path='/user/decks' component={UserDecksView} />
           </Switch>
         </Router>
 

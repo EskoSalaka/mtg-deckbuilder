@@ -49,7 +49,7 @@ const DeckBuilderCardTable = React.forwardRef(({ cards, handleTransfer, setImage
         setSelected([...selected, cardID])
       }
     },
-    [cards, selected]
+    [cards, selected, setImage]
   )
 
   const handleMouseDown = useCallback(

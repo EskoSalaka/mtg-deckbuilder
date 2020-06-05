@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import { Grid, Paper, Divider, Container } from '@material-ui/core'
-import styles from './styles'
+import React, { useState, useCallback } from 'react'
+import { Paper, Divider, Container, makeStyles } from '@material-ui/core'
 import decks from '../../api/decks'
-import { group } from '../Common/utils'
-import DeckSection from './DeckSection'
+
+import MainboardSection from './MainboardSection'
 import SideboardSection from './SideboardSection'
 import DeckTitle from './DeckTitle'
 import { useParams } from 'react-router-dom'
@@ -11,16 +10,24 @@ import { useParams } from 'react-router-dom'
 import CardImagePopover from '../Common/CardImagePopover'
 import Loading from '../Common/Loading'
 
+const styles = makeStyles({
+  mainContainer: {
+    display: 'flex',
+    flexGrow: 0,
+    justifyContent: 'center',
+    marginTop: 32,
+    marginBottom: 32,
+  },
+  deckListPaper: { padding: 10, maxWidth: 600 },
+  divider: { marginTop: 15, marginBottom: 10 },
+})
+
 export default function DeckContents() {
   const classes = styles()
   let { deckID } = useParams()
 
-  const [{ data: deckData, deckError, isLoading }] = decks.useGet(deckID)
-  const [mainBoard, setMainBoard] = useState([])
-  const [sideboard, setSideboard] = useState([])
-  const [groups, setGroups] = useState([])
-  const [groupNames, setGroupNames] = useState([])
-  const [groupBy, setGroupBy] = useState('type')
+  const [{ data, error, loading }] = decks.useGet(deckID)
+
   const [cardToShow, setCardToShow] = useState(null)
   const [imagePopoverPosition, setImagePopoverPosition] = useState(null)
 
@@ -36,48 +43,24 @@ export default function DeckContents() {
     setCardToShow(null)
   }, [])
 
-  useEffect(() => {
-    setSideboard(deckData ? deckData.sideboard : [])
-    setMainBoard(deckData ? deckData.mainboard : [])
-  }, [deckData])
-
-  useEffect(() => {
-    setGroups(group(mainBoard, groupBy))
-
-    setGroupNames(Object.keys(groups).sort((g1, g2) => groups[g1].length < groups[g2].length))
-  }, [mainBoard])
-
-  if (deckError) throw deckError
+  if (error) throw error
 
   return (
     <Container className={classes.mainContainer}>
       {cardToShow && <CardImagePopover card={cardToShow} anchorPosition={imagePopoverPosition} />}
-      {isLoading && <Loading />}
-      {deckData && (
+      {loading && <Loading />}
+      {data && (
         <Paper className={classes.deckListPaper}>
-          <DeckTitle deck={deckData} />
+          <DeckTitle deck={data} />
           <Divider className={classes.divider} />
-
-          <Grid container direction='row' spacing={2}>
-            {groupNames.map((groupName) => {
-              return groups[groupName].length ? (
-                <Grid item xs={4} ms={4} lg={4} key={groupName}>
-                  <DeckSection
-                    cards={groups[groupName]}
-                    sectionName={groupName}
-                    handleMouseMove={handleMouseMove}
-                    handleMouseLeave={handleMouseLeave}
-                  />
-                </Grid>
-              ) : null
-            })}
-          </Grid>
-
+          <MainboardSection
+            cards={data.mainboard}
+            handleMouseMove={handleMouseMove}
+            handleMouseLeave={handleMouseLeave}
+          />
           <Divider className={classes.divider} />
-
           <SideboardSection
-            cards={sideboard}
-            sectionName={'Sideaboard'}
+            cards={data.sideboard}
             handleMouseMove={handleMouseMove}
             handleMouseLeave={handleMouseLeave}
           />

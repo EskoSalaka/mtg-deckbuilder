@@ -1,20 +1,10 @@
-import React from "react"
-import { makeStyles } from "@material-ui/styles"
-import { Box, Typography } from "@material-ui/core"
-
-const styles = makeStyles({
-  containerBox: {
-    paddingTop: 8,
-    paddingBottom: 8
-  }
-})
+import React from 'react'
+import { Box, Typography } from '@material-ui/core'
 
 export default function CardPT({ cardPower, cardToughness }) {
-  const classes = styles()
-
   return (
-    <Box className={classes.containerBox}>
-      <Typography>
+    <Box display='flex' justifyContent='flex-end'>
+      <Typography variant='h6'>
         {cardPower}/{cardToughness}
       </Typography>
     </Box>

@@ -1,13 +1,12 @@
 import datetime
 import itertools
+
 import jwt
-from marshmallow import fields, pre_dump, post_dump
 from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from . import db, ma, app
-
+from . import db, app
 
 SCRYFALL_CARD_FIELDS = (
     "id",
@@ -123,7 +122,7 @@ class SideboardCardAssociation(db.Model):
     deck_api_id = db.Column(db.Integer, db.ForeignKey("deck.api_id"), primary_key=True)
     card_api_id = db.Column(db.Integer, db.ForeignKey("card.api_id"), primary_key=True)
 
-    count = db.Column(db.Integer,)
+    count = db.Column(db.Integer, )
 
     card = relationship("Card", back_populates="sideboards")
     sideboard = relationship("Deck", back_populates="sideboard")
@@ -320,8 +319,7 @@ class User(db.Model):
     def encode_auth_token(self):
         try:
             payload = {
-                "exp": datetime.datetime.utcnow()
-                + datetime.timedelta(days=1, seconds=0),
+                "exp": datetime.datetime.utcnow() + datetime.timedelta(days=1, seconds=0),
                 "iat": datetime.datetime.utcnow(),
                 "user_id": self.api_id,
             }
@@ -377,46 +375,3 @@ class BlacklistToken(db.Model):
 
     def __repr__(self):
         return "<id: token: {}".format(self.token)
-
-
-#################################################################################################
-# Schemas
-#################################################################################################
-class SetSchema(ma.Schema):
-    class Meta:
-        fields = SCRYFALL_SET_FIELDS
-
-
-class CardSchema(ma.Schema):
-    class Meta:
-        fields = SCRYFALL_CARD_FIELDS
-
-
-class CardPlaySchema(ma.Schema):
-    class Meta:
-        fields = SCRYFALL_CARD_PLAY_FIELDS
-
-
-class DeckAssociationSchema(ma.Schema):
-    count = fields.Integer()
-    card = fields.Nested(CardSchema)
-
-    @post_dump
-    def postt(self, item,  **kwargs):
-        nested_card = item['card']
-        nested_card['count'] = item['count']
-        return nested_card
-
-
-class DeckAssociationPlaySchema(ma.Schema):
-    count = fields.Integer()
-    card = fields.Nested(CardPlaySchema)
-
-    @post_dump
-    def postt(self, item,  **kwargs):
-        nested_card = item['card']
-        nested_card['count'] = item['count']
-        return nested_card
-
-
-

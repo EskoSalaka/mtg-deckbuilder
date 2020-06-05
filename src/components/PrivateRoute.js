@@ -6,7 +6,6 @@ import { useAuth } from '../api/auth'
 export default function PrivateRoute({ Component, ...rest }) {
   const { user } = useAuth()
   let location = useLocation()
-  console.log('proute', user)
 
   return (
     <Route

@@ -1,22 +1,16 @@
-import React from "react"
-import { makeStyles } from "@material-ui/styles"
-import { Box, Typography } from "@material-ui/core"
+import React from 'react'
 
-const styles = makeStyles({
-  containerBox: {
-    paddingTop: 8,
-    paddingBottom: 8,
-    alignContent: "space-between"
-  }
-})
+import { Box, Typography } from '@material-ui/core'
+import BrushIcon from '@material-ui/icons/Brush'
 
 export default function CardIllustrationLine({ card }) {
-  const classes = styles()
-
   return (
-    <Box className={classes.containerBox}>
-      <Typography>{`illustr. by ${card.artist}`}</Typography>
-      <Typography variant="subtitle">{`#${card.collector_number}`}</Typography>
+    <Box display='flex' alignContent='center' textAlign='center'>
+      <Box display='flex' alignContent='center' flexGrow={1}>
+        <BrushIcon fontSize='small' />
+        <Typography>{` ${card.artist}`}</Typography>
+      </Box>
+      <Typography variant='subtitle1'>{`#${card.collector_number}`}</Typography>
     </Box>
   )
 }

@@ -29,3 +29,4 @@ mydata.fs.index
 mydata.fs.lock
 mydata.fs.old
 mydata.fs.tmp
+wsgi.py
