@@ -4,7 +4,7 @@ mtg-deckbuilder is an online tool for deckbuilding similar to for example
 https://deckstats.net/deckbuilder/ or https://manastack.com/home. It is made purely for fun & practice
 purposes, but it will also have a few useful features!
 
-Currently, both the frontend and backend are deployed in https://mtg-deckbuilder-api.herokuapp.com
+Currently, both the frontend and backend are deployed in https://mtg-deckbuilder-api.herokuapp.com, and its usable with a few bugs and some missing functionality.
 
 # The project
 
