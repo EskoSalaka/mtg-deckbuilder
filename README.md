@@ -1,8 +1,10 @@
 # mtg-deckbuilder
 
-mtg-deckbuilder is a little online tool for deckbuilding similar to for example
+mtg-deckbuilder is an online tool for deckbuilding similar to for example
 https://deckstats.net/deckbuilder/ or https://manastack.com/home. It is made purely for fun & practice
 purposes, but it will also have a few useful features!
+
+Currently, both the frontend and backend are deployed in https://mtg-deckbuilder-api.herokuapp.com
 
 # The project
 
@@ -11,8 +13,6 @@ purposes, but it will also have a few useful features!
 The backend API of the project is built with Flask and SQLAlchemy. It uses a PostgreSQL database supplied by Heroku and The Magic: the Gathering Card and Set data is essentially the same as the publicly available data from Scryfall. I populate the database with the mtg data by using another project of mine (take a look at the populate_database.py script).
 
 Along with serving a bunch of routes related to the mtg data (such as the sets and cards), the backend also handles authentication for Users with simple JWT access tokens.
-
-The backend API is deployed in Heroku at https://mtg-deckbuilder-api.herokuapp.com. You can for example access the set data with https://mtg-deckbuilder-api.herokuapp.com/api/sets/.
 
 In short, it contains the following features:
 
@@ -23,9 +23,7 @@ In short, it contains the following features:
 
 ## Frontend
 
-The frontend, which is decoupled from the backend, is implemented with React and simple javascript (typescript would be handy here). It uses axios to consume the backend api. The authentication is handled in a simple way by saving the access token granted by backend to local storage. This is not the safest of ways, but good enough for now.
-
-The app is deployed also in Heroku at https://mtg-deckbuilder-app.herokuapp.com
+The frontend, which is coupled with the backend, is implemented with React and simple javascript (typescript would be handy here). It uses axios to consume the backend api. The authentication is handled in a simple way by saving the access token granted by backend to local storage. This is not the safest of ways, but good enough for now.
 
 In short, it contains the following features:
 
