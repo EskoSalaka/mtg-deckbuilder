@@ -1,7 +1,6 @@
-from flask import Blueprint, url_for
+from flask import Blueprint
 from flask import request
 from flask.json import jsonify
-from sqlalchemy import asc
 
 from .. import db
 from ..decorators import authorize
@@ -37,32 +36,17 @@ def deck(api_id):
 @authorize
 def user_decks(user):
     try:
-        page = request.args.get("page", 1, type=int)
-        paginator = Deck.query.filter(Deck.user == user). \
-            order_by(asc('created_at')).paginate(page, 10, False)
+        decks = [{
+            "api_id": deck.api_id,
+            "name": deck.name,
+            "user": deck.user.username,
+            "created_at": deck.created_at.strftime("%Y-%m-%d %H:%M"),
+            "colors": deck.get_deck_colors(),
+            "mainboard_card_count": deck.get_mainboard_size(),
+            "sideboard_card_count": deck.get_sideboard_size()}
+            for deck in user.decks]
 
-        next_page = (
-            url_for("decks.user_decks", page=paginator.next().page, _external=True)
-            if paginator.has_next
-            else ""
-        )
-
-        return jsonify(
-            total_pages=paginator.pages,
-            total_items=paginator.total,
-            has_next=paginator.has_next,
-            next_page=next_page,
-            page=paginator.page,
-            decks=[{
-                "api_id": deck.api_id,
-                "name": deck.name,
-                "user": deck.user.username,
-                "created_at": deck.created_at.strftime("%Y-%m-%d %H:%M"),
-                "colors": deck.get_deck_colors(),
-                "mainboard_card_count": deck.get_mainboard_size(),
-                "sideboard_card_count": deck.get_sideboard_size()}
-                for deck in paginator.items],
-        ), 200
+        return jsonify({"decks": decks}), 200
 
     except Exception as e:
         print("error", str(e))

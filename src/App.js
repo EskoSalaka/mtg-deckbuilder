@@ -44,11 +44,11 @@ export default function App() {
             <Route exact path='/cards/:code' component={SetView} />
             <Route exact path='/login/' component={LoginView} />
             <Route exact path='/signup/' component={SignUpView} />
-            <PrivateRoute exact path='/decks/new' comp={CreateSealedView} />
-            <PrivateRoute exact path='/decks/edit/:deckID' comp={DeckBuilderView} />
-            <PrivateRoute exact path='/decks/:deckID' comp={DeckView} />
+            <PrivateRoute exact path='/decks/new' component={CreateSealedView} />
+            <PrivateRoute exact path='/decks/edit/:deckID' component={DeckBuilderView} />
+            <PrivateRoute exact path='/decks/:deckID' component={DeckView} />
 
-            <PrivateRoute exact path='/user/decks' comp={UserDecksView} />
+            <PrivateRoute exact path='/user/decks' component={UserDecksView} />
           </Switch>
         </Router>
 

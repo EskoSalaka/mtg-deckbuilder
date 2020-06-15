@@ -1,11 +1,11 @@
 import React, { createContext, useEffect, useState } from 'react'
+import Loading from '../components/Common/Loading'
 import { useApi } from './apiClient'
 
 const authContext = createContext({})
 
 const AuthProvider = ({ children }) => {
   const [user, setuser] = useState(null)
-  const [globalUserLoading, setGlobaluserLoading] = useState(true)
 
   const [{ response: userResponse, loading: userLoading, error: userError }, refecthUser] = useApi(
     '/user'
@@ -59,22 +59,21 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     if (userResponse?.status === 200) {
       setuser(userResponse.data.user)
-      setGlobaluserLoading(false)
     }
   }, [userResponse])
 
   useEffect(() => {
     if (userError) {
       setuser(null)
-      setGlobaluserLoading(false)
     }
   }, [userError])
+
+  if (userLoading) return <Loading />
 
   return (
     <authContext.Provider
       value={{
         user: user,
-        userLoading: globalUserLoading || userLoading,
         useLogin: [{ response: loginResponse, loading: loginLoading, error: loginError }, login],
         useLogout: [
           { response: logoutResponse, loading: logoutLoading, error: logoutError },

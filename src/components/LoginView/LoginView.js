@@ -14,13 +14,14 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 
 import styles from './styles'
 
-import { Redirect, useLocation } from 'react-router-dom'
+import { Redirect, useHistory, useLocation } from 'react-router-dom'
 import AlertSnackbar from '../Common/AlertSnackbar'
 import { useAuth } from '../../api/auth'
 import LoadingWrapper from '../Common/LoadingWrapper'
 
 export default function LoginView() {
   const classes = styles()
+  let history = useHistory()
   let location = useLocation()
   let { from } = location.state || { from: { pathname: '/' } }
 
@@ -58,10 +59,10 @@ export default function LoginView() {
     }
   }, [error])
 
-  if (user) return <Redirect to={from.pathname} />
+  if (user) return <Redirect to={history.replace(from.pathname)} />
 
   return (
-    <Container maxWidth='lg'>
+    <Container main maxWidth='lg'>
       <Box display='flex' justifyContent='center'>
         <AlertSnackbar open={alertOpen} message={alertMessage} handleClose={handleCloseAlert} />
         <Paper className={classes.loginPaper}>

@@ -27,15 +27,8 @@ export default {
     )
   },
 
-  useGetUserDecks(page = 1) {
-    return useApi(
-      {
-        url: '/user/decks',
-        method: 'GET',
-        params: { page: page },
-      },
-      { manual: true }
-    )
+  useGetUserDecks() {
+    return useApi('/user/decks')
   },
 
   useGetUserDeck(deckID) {
