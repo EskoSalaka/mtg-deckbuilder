@@ -6,7 +6,7 @@ import {
   Button,
   Box,
   Popover,
-  Grid
+  Grid,
 } from '@material-ui/core'
 import styles from './styles'
 
@@ -17,15 +17,15 @@ export default function AddBoosterPopover({ anchorEl, handleClose, handleAddBoos
     commons: 11,
     uncommons: 3,
     rares: 1,
-    addBasicLand: false
+    addBasicLand: false,
   })
 
   function handleChange(e) {
     if (e.target.id === 'addBasicLand') {
       setBooster({ ...booster, [e.target.id]: e.target.checked })
     } else {
-      if (!isNaN(e.target.value) && e.target.value >= 0) {
-        setBooster({ ...booster, [e.target.id]: e.target.value })
+      if (!isNaN(e.target.value) && parseInt(e.target.value) >= 0) {
+        setBooster({ ...booster, [e.target.id]: parseInt(e.target.value) })
       } else {
         setBooster({ ...booster, [e.target.id]: 0 })
       }
@@ -39,11 +39,11 @@ export default function AddBoosterPopover({ anchorEl, handleClose, handleAddBoos
       onClose={() => handleClose()}
       anchorOrigin={{
         vertical: 'center',
-        horizontal: 'right'
+        horizontal: 'right',
       }}
       transformOrigin={{
         vertical: 'center',
-        horizontal: 'left'
+        horizontal: 'left',
       }}
     >
       <Box p={2}>

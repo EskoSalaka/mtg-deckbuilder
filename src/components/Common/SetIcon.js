@@ -1,5 +1,5 @@
-import React from "react"
-import styles from "./styles"
+import React from 'react'
+import styles from './styles'
 
 export default function SetIcon({ setCode, colorStyle, width, height }) {
   const classes = styles()
@@ -7,16 +7,16 @@ export default function SetIcon({ setCode, colorStyle, width, height }) {
   return (
     <img
       className={
-        colorStyle === "common"
+        colorStyle === 'common'
           ? classes.common
-          : colorStyle === "uncommon"
+          : colorStyle === 'uncommon'
           ? classes.uncommon
-          : colorStyle === "rare"
+          : colorStyle === 'rare'
           ? classes.rare
           : classes.mythic
       }
       src={`${process.env.PUBLIC_URL}/set_icons/${setCode}.svg`}
-      alt="ico"
+      alt='ico'
       width={width}
       height={height}
     />
