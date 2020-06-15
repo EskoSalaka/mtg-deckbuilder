@@ -4,7 +4,7 @@ import TableRow from '@material-ui/core/TableRow'
 import decks from '../../api/decks'
 import { makeStyles } from '@material-ui/styles'
 import { Typography, Box, Tooltip } from '@material-ui/core'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 import IconButton from '@material-ui/core/IconButton'
 import EditIcon from '@material-ui/icons/Edit'
 import DeleteIcon from '@material-ui/icons/Delete'
@@ -20,7 +20,6 @@ const styles = makeStyles({
     color: 'black',
     textOverflow: 'ellipsis',
     overflow: 'hidden',
-    maxWidth: '300px',
     texDecoration: 'none',
   },
   cell: {
@@ -34,7 +33,7 @@ const styles = makeStyles({
     paddingRight: '0px',
     whiteSpace: 'pre',
     textDecoration: 'none',
-    borderBottom: '0px',
+    borderBottom: '1px solid #bfbfbf',
   },
   row: {
     '&:nth-of-type(odd)': {
@@ -68,13 +67,6 @@ function DeckRow({ deckInfo }) {
     (e) => {
       e.preventDefault()
       history.push(`/decks/${deckInfo.api_id}`)
-    },
-    [deckInfo, history]
-  )
-  const handleEditButtonClick = useCallback(
-    (e) => {
-      e.preventDefault()
-      history.push(`/decks/edit/${deckInfo.api_id}`)
     },
     [deckInfo, history]
   )
@@ -129,7 +121,14 @@ function DeckRow({ deckInfo }) {
       </TableCell>
       <TableCell key='tools1' className={classes.lastCell}>
         <Tooltip title='Edit deck' aria-label='Edit deck'>
-          <IconButton color='primary' size='small' onClick={handleEditButtonClick}>
+          <IconButton
+            color='primary'
+            size='small'
+            component={Link}
+            to={`/decks/edit/${deckInfo.api_id}`}
+            className={classes.button}
+            replace
+          >
             <EditIcon />
           </IconButton>
         </Tooltip>
