@@ -2,16 +2,12 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core'
 
 const styles = makeStyles({
-  manaCost: { marginLeft: '2px' }
+  manaCost: { marginLeft: '2px' },
 })
 
-function isBlank(str) {
-  return !str || /^\s*$/.test(str)
-}
-
-function ManaCost({ manaCost }) {
+const ManaCost = ({ manaCost }) => {
   const classes = styles()
-  const mscs = !isBlank(manaCost) ? manaCost.match(/[^{}]+(?=})/g) : []
+  let mscs = manaCost.includes('{') ? manaCost.match(/[^{}]+(?=})/g) : Array.from(manaCost)
 
   return (
     <>

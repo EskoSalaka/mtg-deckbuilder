@@ -16,7 +16,7 @@ const SetsTableRow = React.memo(({ set, handleAddButtonClick }) => {
       <TableCell key='name' className={classes.cell}>
         <Box display='flex'>
           <Box mr={2} display='flex'>
-            <SetIcon setCode={set.code} colorStyle='common' width={18} />
+            <SetIcon setCode={set.code} colorStyle='common' width={18} height={18} />
           </Box>
           <Typography className={classes.cellText}>{set.name}</Typography>
           <Box ml={2} display='flex' color='text.secondary'>

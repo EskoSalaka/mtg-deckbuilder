@@ -1,11 +1,12 @@
 import React from 'react'
 import styles from './styles'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
 
 export default function SetIcon({ setCode, colorStyle, width, height }) {
   const classes = styles()
 
   return (
-    <img
+    <LazyLoadImage
       className={
         colorStyle === 'common'
           ? classes.common
@@ -15,10 +16,9 @@ export default function SetIcon({ setCode, colorStyle, width, height }) {
           ? classes.rare
           : classes.mythic
       }
-      src={`${process.env.PUBLIC_URL}/set_icons/${setCode}.svg`}
       alt='ico'
       width={width}
-      height={height}
-    />
+      src={`${process.env.PUBLIC_URL}/set_icons/${setCode}.svg`}
+    ></LazyLoadImage>
   )
 }

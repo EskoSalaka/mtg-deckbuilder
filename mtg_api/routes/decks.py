@@ -30,7 +30,7 @@ def deck(api_id):
         created_at=deck.created_at.strftime("%Y-%m-%d %H:%M"),
         mainboard=deck_association_schema.dump(deck.cards),
         sideboard=deck_association_schema.dump(deck.sideboard),
-    )
+    ), 200
 
 
 @decks_blueprint.route("/api/user/decks", methods=["GET"])

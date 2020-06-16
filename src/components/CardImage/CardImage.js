@@ -1,24 +1,24 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/styles'
 import FlipButton from './FlipButton'
-import LazyLoad from 'react-lazyload'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
 import CardImagePlaceholder from './CardImagePlaceholder'
 
 const styles = makeStyles({
   cardImage: {
     width: '100%',
     height: '100%',
-    borderRadius: '4.75% / 3.5%'
+    borderRadius: '4.75% / 3.5%',
   },
   fCardImage: {
     width: '100%',
     height: '100%',
     borderRadius: '4.75% / 3.5%',
-    transform: 'scaleX(-1) scaleY(-1)'
+    transform: 'scaleX(-1) scaleY(-1)',
   },
   topDiv: {
-    position: 'relative'
-  }
+    position: 'relative',
+  },
 })
 
 export default function CardImage({ card }) {
@@ -75,21 +75,13 @@ export default function CardImage({ card }) {
   return (
     <div className={classes.topDiv} onMouseEnter={handleMouseEnter} onMouseLeave={HandleMouseLeave}>
       <FlipButton onClickHandler={onFlipButtonClicked} isVisible={flipButtonVisible} />
-      <LazyLoad placeholder={<CardImagePlaceholder />}>
-        {isFlipped ? (
-          <img
-            className={classes.fCardImage}
-            src={isTurned ? backFace : frontFace}
-            alt={card.name}
-          />
-        ) : (
-          <img
-            className={classes.cardImage}
-            src={isTurned ? backFace : frontFace}
-            alt={card.name}
-          />
-        )}
-      </LazyLoad>
+      <LazyLoadImage
+        className={isFlipped ? classes.fCardImage : classes.cardImage}
+        alt={card.name}
+        src={isTurned ? backFace : frontFace}
+        placeholderSrc={process.env.PUBLIC_URL + '/card_back.jpg'}
+        threshold={0}
+      />
     </div>
   )
 }

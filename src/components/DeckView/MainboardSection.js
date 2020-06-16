@@ -3,6 +3,7 @@ import { Typography, makeStyles, Box, Select } from '@material-ui/core'
 
 import { Link } from 'react-router-dom'
 import { group, count } from '../Common/utils'
+import ManaCost from '../ManaCost'
 
 const styles = makeStyles((theme) => ({
   root: {
@@ -47,43 +48,61 @@ function MainboardSection({ cards, handleMouseMove, handleMouseLeave }) {
             <option value={'type'}>Type</option>
             <option value={'color'}>Color</option>
             <option value={'manacost'}>Manacost</option>
+            <option value={'none'}>none</option>
           </Select>
         </Box>
       </Box>
 
       <div className={classes.root}>
-        {Object.entries(group(cards, groupBy))
-          .filter((group) => group[1].length > 0)
-          .map((cardGroup) => {
-            const groupCards = cardGroup[1]
-            const groupName = cardGroup[0]
-
-            return cards.length ? (
-              <Box mb={2} display='inline-block' key={groupName}>
-                <Box display='flex' alignItems='center'>
-                  <Typography variant='h6' className={classes.sectionTitle}>
-                    {`${groupName}`}
-                  </Typography>
-                  <Typography variant='subtitle1' className={classes.sectionTitle}>
-                    {`(${count(groupCards)})`}
-                  </Typography>
-                </Box>
-
-                {groupCards.map((card) => (
-                  <Box key={card.id} component='span'>
-                    <Typography variant='body2'>
-                      <Link
-                        className={classes.cardLink}
-                        to={`/cards/${card.set}/${card.collector_number}`}
-                        onMouseMove={(e) => handleMouseMove(e, card)}
-                        onMouseLeave={(e) => handleMouseLeave(e)}
-                      >{`${card.count} ${card.name}`}</Link>
-                    </Typography>
-                  </Box>
-                ))}
+        {groupBy === 'none'
+          ? cards.map((card) => (
+              <Box key={card.id} component='span'>
+                <Typography variant='body2'>
+                  <Link
+                    className={classes.cardLink}
+                    to={`/cards/${card.set}/${card.collector_number}`}
+                    onMouseMove={(e) => handleMouseMove(e, card)}
+                    onMouseLeave={(e) => handleMouseLeave(e)}
+                  >{`${card.count} ${card.name}`}</Link>
+                </Typography>
               </Box>
-            ) : null
-          })}
+            ))
+          : Object.entries(group(cards, groupBy))
+              .filter((group) => group[1].length > 0)
+              .map((cardGroup) => {
+                const groupCards = cardGroup[1]
+                const groupName = cardGroup[0]
+
+                return cards.length ? (
+                  <Box mb={2} display='inline-block' key={groupName}>
+                    <Box display='flex' alignItems='center'>
+                      <Typography variant='h6' className={classes.sectionTitle}>
+                        {groupBy === 'color' || groupBy === 'manacost' ? (
+                          <ManaCost manaCost={groupName ? groupName.replace(',', '') : 'c'} />
+                        ) : (
+                          `${groupName}`
+                        )}
+                      </Typography>
+                      <Typography variant='subtitle1' className={classes.sectionTitle}>
+                        {`(${count(groupCards)})`}
+                      </Typography>
+                    </Box>
+
+                    {groupCards.map((card) => (
+                      <Box key={card.id} component='span'>
+                        <Typography variant='body2'>
+                          <Link
+                            className={classes.cardLink}
+                            to={`/cards/${card.set}/${card.collector_number}`}
+                            onMouseMove={(e) => handleMouseMove(e, card)}
+                            onMouseLeave={(e) => handleMouseLeave(e)}
+                          >{`${card.count} ${card.name}`}</Link>
+                        </Typography>
+                      </Box>
+                    ))}
+                  </Box>
+                ) : null
+              })}
       </div>
     </Box>
   )

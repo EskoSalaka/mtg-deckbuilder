@@ -9,42 +9,34 @@ import PrintIcon from '@material-ui/icons/Print'
 import ShareIcon from '@material-ui/icons/Share'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import SettingsIcon from '@material-ui/icons/Settings'
+import CallSplitIcon from '@material-ui/icons/CallSplit'
+import GetAppIcon from '@material-ui/icons/GetApp'
+import { deckToText } from '../Common/utils'
 
 const useStyles = makeStyles((theme) => ({
   speedDial: {
     position: 'absolute',
-    '.MuiSpeedDial-fab': {
-      width: '40px',
-      height: '40px',
-    },
-
-    '&.MuiSpeedDial-directionUp, &.MuiSpeedDial-directionLeft': {
-      '.MuiSpeedDial-fab': {
-        width: '40px',
-        height: '40px',
-      },
-    },
-    '&.MuiSpeedDial-directionDown, &.MuiSpeedDial-directionRight': {
-      '.MuiSpeedDial-fab': {
-        width: '40px',
-        height: '40px',
-      },
-    },
   },
 }))
-
-const actions = [
-  { icon: <FileCopyIcon />, name: 'Copy' },
-  { icon: <SaveIcon />, name: 'Save' },
-  { icon: <PrintIcon />, name: 'Print' },
-  { icon: <ShareIcon />, name: 'Share' },
-  { icon: <FavoriteIcon />, name: 'Like' },
-]
 
 function DeckTitle({ deck }) {
   const classes = useStyles()
 
-  const [open, setOpen] = React.useState(false)
+  const [speedDialOpen, setSpeedDialOpen] = React.useState(false)
+
+  const downloadTextFile = (e) => {
+    e.preventDefault()
+
+    let asText = deckToText(deck)
+    const element = document.createElement('a')
+    const file = new Blob([asText], { type: 'text/plain' })
+    element.href = URL.createObjectURL(file)
+    element.download = `${deck.name} by ${deck.user}.txt`
+    document.body.appendChild(element) // Required for this to work in FireFox
+    element.click()
+
+    setSpeedDialOpen(false)
+  }
 
   return (
     <Box display='flex'>
@@ -59,19 +51,36 @@ function DeckTitle({ deck }) {
           ariaLabel='SpeedDial'
           className={classes.speedDial}
           icon={<SettingsIcon />}
-          onClose={() => setOpen(false)}
-          onOpen={() => setOpen(true)}
-          open={open}
+          onClose={() => setSpeedDialOpen(false)}
+          onOpen={() => setSpeedDialOpen(true)}
+          FabProps={{ size: 'small' }}
+          open={speedDialOpen}
           direction='down'
         >
-          {actions.map((action) => (
-            <SpeedDialAction
-              key={action.name}
-              icon={action.icon}
-              tooltipTitle={action.name}
-              onClick={() => setOpen(false)}
-            />
-          ))}
+          <SpeedDialAction
+            key={'fork'}
+            icon={<CallSplitIcon />}
+            tooltipTitle={'Fork'}
+            onClick={(e) => setSpeedDialOpen(false)}
+          />
+          <SpeedDialAction
+            key={'download'}
+            icon={<GetAppIcon />}
+            tooltipTitle={'Download as a text file'}
+            onClick={downloadTextFile}
+          />
+          <SpeedDialAction
+            key={'share'}
+            icon={<ShareIcon />}
+            tooltipTitle={'Share'}
+            onClick={(e) => setSpeedDialOpen(false)}
+          />
+          <SpeedDialAction
+            key={'like'}
+            icon={<FavoriteIcon />}
+            tooltipTitle={'Like'}
+            onClick={(e) => setSpeedDialOpen(false)}
+          />
         </SpeedDial>
       </Box>
     </Box>

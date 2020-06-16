@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/styles'
-
-import CardImagePlaceholder from '../CardImage/CardImagePlaceholder'
-import LazyLoad from 'react-lazyload'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
 
 const styles = makeStyles({
-  popover: { zIndex: 10000000000, position: 'absolute', display: 'block', pointerEvents: 'none' }
+  popover: { zIndex: 10000000000, position: 'absolute', display: 'block', pointerEvents: 'none' },
 })
 
 export default function CardImagePopover({ card, anchorPosition }) {
@@ -25,9 +23,12 @@ export default function CardImagePopover({ card, anchorPosition }) {
 
   return (
     <div className={classes.popover} style={{ left: anchorPosition.left, top: anchorPosition.top }}>
-      <LazyLoad placeholder={<CardImagePlaceholder />}>
-        <img src={frontFaceUri} alt={card.name} width='230px' />
-      </LazyLoad>
+      <LazyLoadImage
+        alt={card.name}
+        width={230}
+        height={1.4 * 230}
+        src={frontFaceUri}
+      ></LazyLoadImage>
     </div>
   )
 }

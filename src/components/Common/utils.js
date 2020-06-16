@@ -281,28 +281,28 @@ function manaCosts(cards) {
 function group(cards, identifier) {
   if (identifier === 'type') {
     return {
-      Creatures: cards.filter((c) => _.includes(frontFaceAttr(c, 'type_line'), 'Creature')),
-      Lands: cards.filter((c) => {
+      Creature: cards.filter((c) => _.includes(frontFaceAttr(c, 'type_line'), 'Creature')),
+      Land: cards.filter((c) => {
         const typeLine = frontFaceAttr(c, 'type_line')
         return _.includes(typeLine, 'Land') && !_.includes(typeLine, 'Creature') ? c : null
       }),
-      Enchantments: cards.filter((c) => {
+      Enchantment: cards.filter((c) => {
         const typeLine = frontFaceAttr(c, 'type_line')
         return _.includes(typeLine, 'Enchantent') && !_.includes(typeLine, 'Creature') ? c : null
       }),
-      Instants: cards.filter((c) => {
+      Instant: cards.filter((c) => {
         const typeLine = frontFaceAttr(c, 'type_line')
         return _.includes(typeLine, 'Instant') ? c : null
       }),
-      Sorceries: cards.filter((c) => {
+      Sorcery: cards.filter((c) => {
         const typeLine = frontFaceAttr(c, 'type_line')
         return _.includes(typeLine, 'Sorcery') ? c : null
       }),
-      Planeswalkers: cards.filter((c) => {
+      Planeswalker: cards.filter((c) => {
         const typeLine = frontFaceAttr(c, 'type_line')
         return _.includes(typeLine, 'Planeswalker') ? c : null
       }),
-      Artifacts: cards.filter((c) => {
+      Artifact: cards.filter((c) => {
         const typeLine = frontFaceAttr(c, 'type_line')
         return _.includes(typeLine, 'Artifact') &&
           !_.includes(typeLine, 'Creature') &&
@@ -316,6 +316,22 @@ function group(cards, identifier) {
   } else if (identifier === 'color') {
     return _.chain(cards).groupBy('colors').value()
   }
+}
+
+function deckToText(deck, groupBy = 'none', addSetCode = true) {
+  let asText = ''
+
+  deck.mainboard.forEach((card) => {
+    asText = asText + `${card.count} ${card.name}\n`
+  })
+
+  asText = asText + `\n`
+
+  deck.sideboard.forEach((card) => {
+    asText = asText + `${card.count} ${card.name}\n`
+  })
+
+  return asText
 }
 
 function avgManaCost(cards) {
@@ -349,4 +365,5 @@ export {
   avgManaCost,
   count,
   group,
+  deckToText,
 }
