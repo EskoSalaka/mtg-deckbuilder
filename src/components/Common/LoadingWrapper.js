@@ -29,7 +29,11 @@ const LoadingWrapper = ({ children, loading, success, size = 30, thickness = 6 }
 
   return (
     <Box position='relative'>
-      {React.cloneElement(children, { disabled: loading, className: successClassName })}
+      <children.type
+        {...children.props}
+        disabled={loading}
+        className={successClassName}
+      ></children.type>
       {loading && (
         <CircularProgress size={size} thickness={thickness} className={classes.progress} />
       )}

@@ -13,10 +13,6 @@ const styles = makeStyles({
     width: '100%',
     marginTop: 8,
   },
-  avatar: {
-    marginBottom: 8,
-    backgroundColor: 'red',
-  },
   submit: {
     borderRadius: 26,
   },

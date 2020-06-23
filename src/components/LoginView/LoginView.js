@@ -4,13 +4,10 @@ import {
   TextField,
   FormControlLabel,
   Checkbox,
-  Button,
   Paper,
-  Avatar,
   Container,
   Box,
 } from '@material-ui/core'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 
 import styles from './styles'
 
@@ -18,6 +15,8 @@ import { Redirect, useLocation } from 'react-router-dom'
 import AlertSnackbar from '../Common/AlertSnackbar'
 import { useAuth } from '../../api/auth'
 import LoadingWrapper from '../Common/LoadingWrapper'
+import MtgDeckbuilderGradientIcon from '../Common/MtgDeckbuilderGradientIcon'
+import PrimaryActionButton from '../UI/PrimaryActionButton'
 
 export default function LoginView() {
   const classes = styles()
@@ -26,8 +25,9 @@ export default function LoginView() {
 
   const {
     user,
-    useLogin: [{ loading, error }, login],
+    useLogin: [{ response, loading, error }, login],
   } = useAuth()
+
   const [values, setValues] = useState({
     email: '',
     password: '',
@@ -65,9 +65,7 @@ export default function LoginView() {
       <Box display='flex' justifyContent='center'>
         <AlertSnackbar open={alertOpen} message={alertMessage} handleClose={handleCloseAlert} />
         <Paper className={classes.loginPaper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
+          <MtgDeckbuilderGradientIcon />
           <Typography component='h1' variant='h5'>
             Log in
           </Typography>
@@ -104,17 +102,15 @@ export default function LoginView() {
               control={<Checkbox value='remember' color='primary' />}
               label='Remember me'
             />
-            <LoadingWrapper loading={loading}>
-              <Button
+            <LoadingWrapper loading={loading} success={response?.status === 200}>
+              <PrimaryActionButton
                 type='submit'
                 fullWidth
-                variant='contained'
-                color='primary'
                 className={classes.submit}
                 disableElevation
               >
                 Sign In
-              </Button>
+              </PrimaryActionButton>
             </LoadingWrapper>
           </form>
         </Paper>

@@ -45,7 +45,6 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (loginResponse?.status === 200) {
-      console.log('login fired', loginResponse)
       refecthUser()
     }
   }, [loginResponse, refecthUser])

@@ -3,25 +3,36 @@ import { makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
 import { Link, useHistory } from 'react-router-dom'
 import { useAuth } from '../api/auth'
+import MtgDeckbuilderGradientIcon from './Common/MtgDeckbuilderGradientIcon'
+import { Box } from '@material-ui/core'
+import PrimaryButton from './UI/PrimaryButton'
+import PrimaryActionButton from './UI/PrimaryActionButton'
+import AddIcon from '@material-ui/icons/Add'
+import SecondaryToolbarButton from './UI/SecondaryToolbarButton'
 
 const useStyles = makeStyles((theme) => ({
   appbar: {
     flexGrow: 1,
-    backgroundColor: '#13293d',
+    backgroundColor: '#37474f',
   },
   title: { paddingRight: 30 },
   strecter: { flex: 1 },
   toolbar: {},
-  button: { color: 'white' },
-  link: { textDecoration: 'none', color: 'white' },
+  buttonPrimary: {
+    color: 'white',
+    border: '1px solid',
+    borderRadius: '40px',
+    minWidth: 80,
+    margin: 8,
+  },
+  link: { textDecoration: 'none', color: 'white', display: 'flex', alignItems: 'center' },
 }))
 
 function MTGAppBar() {
+  const history = useHistory()
   const classes = useStyles()
-  let history = useHistory()
 
   const {
     user,
@@ -30,6 +41,7 @@ function MTGAppBar() {
 
   const handleLogout = () => {
     logout()
+    window.location.reload()
     history.push('/')
   }
 
@@ -38,35 +50,41 @@ function MTGAppBar() {
       <AppBar position='static' className={classes.appbar}>
         <Toolbar>
           <Link to='/' className={classes.link}>
+            <Box mr={1}>
+              <MtgDeckbuilderGradientIcon />
+            </Box>
             <Typography variant='h6' className={classes.title}>
               MTG Deckbuilder
             </Typography>
           </Link>
 
-          <Button component={Link} to='/sets' color='primary' className={classes.button}>
+          <SecondaryToolbarButton component={Link} to='/sets'>
             Sets
-          </Button>
-          <Typography variant='h6' className={classes.strecter}></Typography>
+          </SecondaryToolbarButton>
+
           {!user ? (
             <>
-              <Button component={Link} to='/login' color='primary' className={classes.button}>
+              <Typography variant='h6' className={classes.strecter}></Typography>
+              <PrimaryButton component={Link} to='/login'>
                 Log in
-              </Button>{' '}
-              <Button component={Link} to='/signup' color='primary' className={classes.button}>
+              </PrimaryButton>{' '}
+              <PrimaryButton component={Link} to='/signup'>
                 Sign up
-              </Button>{' '}
+              </PrimaryButton>{' '}
             </>
           ) : (
             <>
-              <Button component={Link} to='/decks/new' color='primary' className={classes.button}>
-                Create a new deck
-              </Button>{' '}
-              <Button component={Link} to='/user/decks' color='primary' className={classes.button}>
+              <SecondaryToolbarButton component={Link} to='/user/decks'>
                 My decks
-              </Button>{' '}
-              <Button color='primary' className={classes.button} onClick={handleLogout}>
-                Log out
-              </Button>{' '}
+              </SecondaryToolbarButton>
+              <SecondaryToolbarButton component={Link} to=''>
+                My cubes
+              </SecondaryToolbarButton>
+              <Typography variant='h6' className={classes.strecter}></Typography>
+              <PrimaryActionButton component={Link} to='/decks/new' startIcon={<AddIcon />}>
+                New deck
+              </PrimaryActionButton>
+              <PrimaryButton onClick={handleLogout}>Log out</PrimaryButton>
             </>
           )}
         </Toolbar>
