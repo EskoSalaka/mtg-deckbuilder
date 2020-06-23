@@ -2,7 +2,7 @@ import React from 'react'
 import MTGAppBar from './components/MTGAppBar'
 import MTGFooter from './components/MTGFooter'
 import { Router, Route, Switch } from 'react-router-dom'
-
+import { Helmet } from 'react-helmet'
 import history from './history'
 import PrivateRoute from './components/PrivateRoute'
 
@@ -38,6 +38,9 @@ export default function App() {
       <CssBaseline />
       <ThemeProvider theme={theme}>
         <AuthProvider>
+          <Helmet>
+            <title>Mtg deckbuilder</title>
+          </Helmet>
           <Router history={history}>
             <MTGAppBar />
             <Switch>
@@ -50,7 +53,6 @@ export default function App() {
               <PrivateRoute exact path='/decks/new' comp={CreateSealedView} />
               <PrivateRoute exact path='/decks/edit/:deckID' comp={DeckBuilderView} />
               <PrivateRoute exact path='/decks/:deckID' comp={DeckView} />
-
               <PrivateRoute exact path='/user/decks' comp={UserDecksView} />
             </Switch>
           </Router>
