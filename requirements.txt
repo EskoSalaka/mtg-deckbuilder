@@ -15,7 +15,7 @@ marshmallow-sqlalchemy==0.21.0
 mtgtools==0.9.50
 persistent==4.5.1
 psycopg2==2.8.4
-PyJWT==1.7.1
+PyJWT==2.4.0
 python-dateutil==2.8.1
 python-dotenv==0.10.3
 six==1.13.0
